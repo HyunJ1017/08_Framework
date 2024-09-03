@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TEST3_결과</title>
+</head>
+<body>
+
+  <h1>TEST3_결과</h1>
+
+  <hr>
+
+  <h3 >th:each문 사용하기</h3>
+
+  <h4>선탁한 색상</h4>
+  <p th:text="|param.color : ${param.color}|"></p>
+  <p th:text="|param.colorArr : ${param.colorArr}|"></p>
+  <ul>
+    <!-- param.color 길이만큼 반복하고, 요소를 꺼내서 c 변수에 저장 -->
+    <li th:each="c : ${param.color}" th:text="${c}"></li>
+  </ul>
+  
+  
+  <h4>선탁한 과일</h4>
+  <p th:text="|param.fruit : ${param.fruit}|"></p>
+  
+  <ul>
+    <li th:each="f : ${param.fruit}" th:text="${f}"></li>
+  </ul>
+
+
+</body>
+</html>

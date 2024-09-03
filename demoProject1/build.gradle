@@ -1,0 +1,51 @@
+// build.gradle 이란??
+// - project의 버전, 프레임워크, 라이브러리 등을 작성하는 파일
+// - gradle(빌드도구)이 해당 파일을 읽어서
+//   프로젝트에 버전에 맞는 설정, 프레임워크/라이브러리 다운로드를 진행
+
+/* 내용 추가, 변경 후 반드시
+   프로젝트 폴더 우클릭
+   -> gradle 메뉴 -> Refresh Gradle Project 클릭하기
+*/
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.3'
+	id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'edu.kh'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+// 외부 연결된 사이트(https://mvnrepository.com/)에서 
+// 아래에 작성된 모듈, 라이브러리를 다운로드 받아서 프로젝트에 자동으로 추가
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

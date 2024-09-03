@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TEST2_결과</title>
+</head>
+<body>
+  
+  <h1>TEST2_결과</h1>
+
+  <hr>
+
+  <ul>
+    <!-- 제목 : 자바네 정석 -->
+    <li th:text="|제목 : ${param.title}|">제목 : 입력된 제목</li>
+    <li th:text="|작성자 : ${param.writer}|">작성자 : 입력된 작성자</li>
+    <li th:text="|가격 : ${param.price}원|">가격 : 입력된 가격(원)</li>
+    <li th:text="|출판 : ${param.publisher}|">출판 : 입력된 출판사</li>
+  </ul>
+
+
+</body>
+</html>

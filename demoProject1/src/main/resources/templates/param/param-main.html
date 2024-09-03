@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Localhost</title>
+</head>
+<body>
+
+  <h1>서버로 파라미터 제출하기</h1>
+
+  <hr>
+
+  <h3 style="color:blue">1. HttpServletRequest.getParameter("Key") 사용하기</h3>
+
+  <form action="/param/test1">
+    이름 : <input type="text"   name="inputName"> <br>
+    나이 : <input type="number" name="inputAge"> <br>
+    주소 : <input type="text"   name="inputAddress"> <br>
+    <button type="submit">제출하기</button>
+  </form>
+
+  <hr>
+
+  <h3>2. @RequestParam 이용하기</h3>
+
+  <pre>
+    - 낱개(단수, 하나, 독립된) 파라미터 컨트롤러에 얻는방법
+  </pre>
+
+  <form action="/param/test2" method="POST">
+    <table>
+      <tr>
+        <td>책 제목</td>
+        <td>: <input type="text"   name="title"></td>
+      </tr>
+      <tr>
+        <td>작성자</td>
+        <td>: <input type="text"   name="writer"></td>
+      </tr>
+      <tr>
+        <td>가격</td>
+        <td>: <input type="number" name="price"></td>
+      </tr>
+      <tr>
+        <td>출판사</td>
+        <td>: <input type="text"   name="publisher"></td>
+      </tr>
+    </table>
+
+    <button>제출하기</button>
+  </form>
+
+  <hr>
+
+  <h3>2. @RequestParam 이용하기</h3>
+
+  <pre>
+    - 여러개(복수, 많이, 더많이) 파라미터 컨트롤러에 얻는방법
+  </pre>
+
+  <form action="/param/test3" method="post">
+    색상 : 
+    Red   <input type="checkbox" name="color" value="Red"> 
+    Green <input type="checkbox" name="color" value="Green">
+    Blue  <input type="checkbox" name="color" value="Blue"> 
+
+    <br><br>
+
+    과일 :
+    Apple  <input type="checkbox" name="fruit" value="Apple"> 
+    Banana <input type="checkbox" name="fruit" value="Banana">
+    Orange <input type="checkbox" name="fruit" value="Orange"> 
+
+    <br><br>
+
+    상품명  : <input type="text" name="productName"> <br>
+    유통기한 : <input type="date" name="expirationDate"> <br>
+
+
+    <br><br>
+    <button>제출하기</button>
+  </form>
+
+  
+</body>
+</html>

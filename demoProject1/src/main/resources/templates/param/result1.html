@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!-- 타임리프 사용을 위한 xmls 속성 추가 -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TEST1_결과</title>
+</head>
+<body>
+  
+  <h1>TEST1_결과</h1>
+
+  <hr>
+
+  <ul>
+    <!-- 타임리프는 html 속성 형태로 작성 -->
+     <!-- 타임리프에서 사용되는 EL은 Spring EL 이라고 한다 -->
+    <li th:text="${param.inputName}">입력받은이름</li>
+    <li th:text="${param.inputAge}">입력받은나이</li>
+    <li th:text="${param.inputAddress}">입력받은주소</li>
+  </ul>
+
+
+  <h3 th:text="${message}">전달받은 메시지</h3>
+
+
+</body>
+</html>
