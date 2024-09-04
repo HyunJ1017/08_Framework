@@ -8,9 +8,11 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import edu.kh.demo.dto.Member;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
@@ -169,6 +171,113 @@ public class ParameterController {
 		// forward
 		return "param/result3";
 		
+	}
+	
+	// @RequestParam 속성 확인하기
+	@GetMapping("test4")
+	public String test4(
+			//@RequestParam("inputId") String id,
+			//@RequestParam(value = "inputId") String id,
+			@RequestParam(value = "inputId", required = true) String id,
+			//@RequestParam("inputPw") String pw,
+			//@RequestParam(name = "inputPw") String pw,
+			@RequestParam(name = "inputPw", required = true) String pw,
+			//@RequestParam("saveId")  String save
+			//@RequestParam(name = "saveId", required = true)  String save
+			//@RequestParam(name = "saveId", required = false)  String save	// 체크되지 않을때 null 반환
+			@RequestParam(value = "saveId", required = false, defaultValue = "X")  String save	
+			) {
+		
+		/* type="text" 관련 input 태그는 값을 작성하지 않은경우 "" 이 제출된다.
+		   -> 제출되는 값이 존재하기 때문에
+				     There was an unexpected error (type=Bad Request, status=400).
+					   Required parameter 'saveId' is not present.
+					오류가 발생하지 않고
+					@RequestParam에 아무 속성을 적지 않아도 잘 얻어와 진다.
+			 
+		 * name 속성 == value 속성(같은속성)
+		   
+		 * required : 필수
+		   -> 기본값이 true
+		   -> true : 꼭 제출되어야 하는 파라미터
+		   -> 제출되지 않을경우 HTTP 상태코드 400 -> 400 Bad Request 에러 발생
+		   -> type="text" 에는 의미 없음 -> ""이 제출되기 때문
+		   
+		   @checkbox, redio : 체크되지 않으면 제출 X ->> 400에러
+		   
+		   @직접 쿼리스트링을 작성하는데
+		    key=value가 누락된 경우 ->> 400에러
+		    
+		    required = false 일때, 값이 제출되지 않으면 ->> null
+		   
+		 * defaultValue :
+		   - required = false 이면서, 값이 제출되지 않았을 경우
+		   	 매개변수 대입할 값 지정
+		 * 
+		 */
+		
+		
+		log.debug("inputId : {}", id);
+		log.debug("inputPw : {}", pw);
+		log.debug("saveId : {}", save);
+		
+		
+		/* Spring에서 redirect 하는 방법 */
+		// -> redirect 하려는 요청 주소 앞에 "redirect:" 붙여주면 됨
+		return "redirect:/param/main";
+	}
+	
+	
+	/* @ModelAttribute를 이용한 파라미터 얻어오기 */
+	
+	//@ModelAttribute
+	// - DTO(또는 VO)와 같이 사용하는 어노테이션
+	
+	// - 전달 받은 파라미터의 name 속성 값이
+	//   같이 사용되는 DTO의 필드명과 같다면
+	//   자동으로 setter를 호출해서 필드에 값을 세팅
+	
+	// *** @ModelAttribute 사용 시 주의사항 ***
+	// - DTO에 기본 생성자가 필수로 존재해야 한다!
+	// - DTO에 setter가 필수로 존재해야 한다!
+	
+	// *** @ModelAttribute 어노테이션은 생략이 가능하다! ***
+	
+	// *** @ModelAttribute를 이용해 값이 필드에 세팅된 객체를
+	//		"커맨드 객체" 라고 한다 ***
+	
+	// 많은 양의 파라미터를 하나의 DTO로 한 번에 저장할 수 있어
+	// 굉장히 편함
+	
+	@PostMapping("test5")
+	public String test5(
+			@RequestParam("memberId")   String memberId,
+			@RequestParam("memberPw")   String memberPw,
+			@RequestParam("memberName") String memberName,
+			@RequestParam("memberAge")  int    memberAge,
+			// -> Key값과 변수명이 같을경우 @RequestParam의 ()생략이 가능했지만
+			// 지금 버전은 생략하면 오류 발생 --> 파라미터 명시해야함
+			/*@ModelAttribute*/ Member member2 // == 커맨드객체
+			) {
+		
+		log.debug("memberId : {}", memberId);
+		log.debug("memberPw : {}", memberPw);
+		log.debug("memberName : {}", memberName);
+		log.debug("memberAge : {}", memberAge);
+		
+		// Member 객체를 생성해서 전달받은 값 생성하기
+		Member member1 = new Member();
+		member1.setMemberId(memberId);
+		member1.setMemberPw(memberPw);
+		member1.setMemberName(memberName);
+		member1.setMemberAge(memberAge);
+		
+		log.debug("member1 : {}", member1);
+		
+		//@ModelAttribute를 이용한 파라미터
+		log.debug("member2 : {}", member2);
+		
+		return "redirect:/param/main";
 	}
 
 }

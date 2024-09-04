@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thymeleaf</title>
+  <style>
+    body{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    body > *{
+      min-width: 500px;
+    }
+  </style>
+</head>
+
+<body>
+  
+  <header>
+    <h1 style="color: dodgerblue;">Thymeleaf</h1>
+  </header>
+
+  <main>
+
+    <hr>
+
+    <ol>
+      <li>
+        <a href="/example/ex1">Thymeleaf 예제 1</a>
+      </li>
+
+      <li>
+        <form action="/example/ex2" method="post">
+          <h4>타임리프 예제 2</h4>
+  
+          이름 : <input type="text"   name="inputName"> <br>
+          나이 : <input type="number" name="inputAge">  <br>
+          <br>
+          
+          색상 :
+          Red   <input type="checkbox" name="color" value="Red">
+          Green <input type="checkbox" name="color" value="Green">
+          Blue  <input type="checkbox" name="color" value="Blue">
+  
+          <button>제출하기</button>
+        </form>
+      </li>
+    </ol>
+
+
+
+
+
+
+
+
+
+
+
+  </main>
+
+
+  <footer style="height: 300px;"></footer>
+
+
+
+</body>
+</html>

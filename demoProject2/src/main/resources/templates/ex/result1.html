@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>타임리프 예제1</title>
+  <style>
+    body{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    body > *{
+      min-width: 500px;
+    }
+
+    ul>li:nth-of-type(4){
+      display: inline-block;
+      font-family: 'LOTTERIACHAB';
+      color: gold;
+      background-color: black;
+      border-radius: 3px;
+      font-size: 1.8em;
+    }
+
+    @font-face {
+    font-family: 'LOTTERIACHAB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/LOTTERIACHAB.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1 style="color: dodgerblue;">타임리프 예제 1</h1>
+  </header>
+
+  <main>
+
+    <hr>
+
+    <pre>
+    Spring EL(스프링표현언어)
+
+    - ${key}
+      : request scope에 세팅된 값 얻어와 출력
+
+    - th:text 속성
+      : 해당 속성이 작성된 content 영역(태그 시작 종료 사이)에 "속성값"을 출력
+
+    * 타임리프 th 속성들은 해석이 완료된 후 사라지게 된다
+     -> 응답화면을 브라우저 개발자도구로 살펴보면
+       th: 속성이 하나도 보이지 않는다
+
+    </pre>
+
+    <h4 th:text="${test1}">key값 test1에 세팅된 값</h4>
+    <h4 th:text="${test2}">key값 test2에 세팅된 값</h4>
+
+    <hr>
+
+    <h3>단일 값 출력</h3>
+
+    <pre>
+    th:block 태그
+
+    - 타임리프에서 제공하는 유일한 태그
+      (나머지는 다 속성)
+    
+    - th 속성을 사용할 만 한 마땅한 테그가 없을 경우에 임시로 사용하는 목적
+
+    - 주로 조건문, 반복문에서 많이 사용함
+    </pre>
+
+    <p>
+      상품명 : <th:block th:text="${productName}"></th:block>
+      <br>
+      가격 : <th:block th:text="${price}"></th:block>원
+    </p>
+
+    <hr>
+
+    <h3>복수 값 출력</h3>
+
+    <p th:text="${fruitList}"></p>
+
+    <h4>fruitList에 저장된 요소 1개씩 출력 - index 이용</h4>
+    
+    <pre>
+      * List에서 지정된 index번째 요소 얻어오기
+      List.get(index)
+      
+      * 타임리프에서 List에서 지정된 index번째 요소 얻어오기
+      List[index]
+    </pre>
+    <ul>
+      <li th:text="${fruitList[0]}"></li>
+      <li th:text="${fruitList[1]}"></li>
+      <li th:text="${fruitList[2]}"></li>
+      <li th:text="${fruitList[3]}"></li>
+    </ul>
+    
+    <h4>fruitList에 저장된 요소 1개씩 출력 - th:each 이용</h4>
+
+    <pre>
+      th:each="item : ${list}"  
+  
+      - 해당 HTML 요소를 list의 길이 만큼 반복
+  
+      - list에 저장된 요소를 순차접근하여 item에 저장
+      
+      - 해당 코드가 작성된 HTML요소 내부에서 item 사용 가능
+    </pre>
+
+    <ul>
+      <!-- 
+        th:block 태그를 이용해서 반복문 th:each 작성
+        -> 반복이 끝나면 th:block태그는 사라짐 
+      -->
+      <th:block th:each="f : ${fruitList}">
+        <li th:text="${f}"></li>
+      </th:block>
+    </ul>
+
+    <hr>
+
+    <h3>전달받은 DTO 값 출력하기</h3>
+
+    <ul>
+      <li th:text="${std.studentNo}">학번</li>
+      <li th:text="${std.name}">이름</li>
+      <li th:text="${std.age}">나이</li>
+    </ul>
+  
+    <h3>th:object 와 *{필드명} 사용하기</h3>
+
+    <pre>
+    *{key} : 선택 변수, 객체에 포함된 필드를 출력
+    th:object 속성 : 작성된 태그 내에서 지정된 객체의 필드를 쉽게 접근하게 하는 속성
+    </pre>
+
+    <ul th:object="${std}">
+      <li th:text="*{studentNo}">학번</li>
+      <li th:text="*{name}">이름</li>
+      <li th:text="*{age}">나이</li>
+    </ul>
+
+    <hr>
+
+    <h4>DTO 필드 중 List가 포함된 경우</h4>
+    <ul th:object="${std2}">
+      <li th:text="*{studentNo}"></li>
+      <li th:text="*{name}"></li>
+      <li th:text="*{age}"></li>
+      <ul><li th:each="h : *{hobbyList}" th:text="${h}"></li></ul>
+    </ul>
+
+
+
+
+
+
+
+  </main>
+
+  <footer style="height: 300px;"></footer>
+  
+</body>
+</html>

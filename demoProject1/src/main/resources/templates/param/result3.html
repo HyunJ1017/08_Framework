@@ -13,20 +13,20 @@
 
   <h3 >th:each문 사용하기</h3>
 
-  <h4>선탁한 색상</h4>
+  <h4>선택한 색상</h4>
   <p th:text="|param.color : ${param.color}|"></p>
   <p th:text="|param.colorArr : ${param.colorArr}|"></p>
   <ul>
     <!-- param.color 길이만큼 반복하고, 요소를 꺼내서 c 변수에 저장 -->
-    <li th:each="c : ${param.color}" th:text="${c}"></li>
+    <li th:each="c : ${param.color}" th:text="${c}">빨간</li>
   </ul>
   
   
-  <h4>선탁한 과일</h4>
-  <p th:text="|param.fruit : ${param.fruit}|"></p>
+  <h4>선택한 과일</h4>
+  <p th:text="|param.fruit : ${param.fruit}|">th:text="|param.fruit : ${param.fruit}|"</p>
   
   <ul>
-    <li th:each="f : ${param.fruit}" th:text="${f}"></li>
+    <li th:each="f : ${param.fruit}" th:text="${f}">사과</li>
   </ul>
 
 
