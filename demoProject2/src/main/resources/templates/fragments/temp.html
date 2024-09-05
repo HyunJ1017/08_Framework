@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>코드조각모음인데열지는않을파일이니까타이틀은지워도됨</title>
+  <style>
+    a{color: blueviolet;}
+  </style>
+</head>
+<body>
+
+  <!-- menu라는 이름을 가진 조각 -->
+  <div th:fragment= "menu">
+    <ul style="list-style: square;">
+      <li><a href="#">메뉴 1</a></li>
+      <li><a href="#">메뉴 2</a></li>
+      <li><a href="#">메뉴 3</a></li>
+      <li><a href="#">메뉴 4</a></li>
+      <li><a href="#">메뉴 5</a></li>
+      <li><a href="#">메뉴 6</a></li>
+    </ul>
+  </div>
+
+
+
+  <h1 style="background-color: red; color: white;" th:fragment= "fr-test">
+    Thymeleaf Fragment 테스트중</h1>
+  
+
+  
+</body>
+</html>

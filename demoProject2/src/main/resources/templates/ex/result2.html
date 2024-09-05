@@ -81,7 +81,8 @@
     해당태그에 src 속성으로 대입시켜줌 
   -->
   <img th:src="#{image.logo}" alt="logo#" width="500px">
-
+  <!-- footer.html 파일을 해당 위치에 출력 -->
+  <th:block th:replace= "~{fragments/footer}"></th:block>
 
 </body>
 </html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>타임리프 예제 3</title>
+</head>
+<body>
+
+  <h1>타임리프 예제 3</h1>
+
+  <hr>
+
+  <ol>
+    <li>boardNo : <th:block th:text="${boardNo}"></th:block></li>
+    <li>key : <th:block th:text="${key}"></th:block></li>
+    <li>query : <th:block th:text="${query}"></th:block></li>
+  </ol>
+
+  <h3>링크(URL) 조합에 사용되는 Spring El @{}</h3>
+
+  <ul>
+    <li>그냥요청하기</li>
+    <li>
+      <a href="/example/ex3/test">/example/ex3/test 주소 요청</a>
+    </li>
+
+    <br>
+
+    <li>주소에 쿼리스트링으로 key=aaa, query=bbb 서버에 값 전달</li>
+    <li>
+      <a href="/example/ex3/test?key=aaa&query=bbb">/example/ex3/test?key=aaa&query=bbb 주소 요청</a>
+    </li>
+
+    <br>
+
+    <li>th:href = "@{ ... ( key = ${ key }, ... ) }"</li>
+    <li>
+      <a th:href="@{/example/ex3/test(key=${key}, query=${query}, boardNo=${boardNo})}">@{/example/ex3/test(key=${key}, query=${query}, boardNo=${boardNo})}</a>
+    </li>
+    <li>Spring El의 @{} 를 이용해 쿼리스트링 자동 완성</li>
+  </ul>
+
+
+  <hr>
+
+  <h3>PathVariable</h3>
+  <p>
+    주소(URL, 경로) 중 일부분을 변수 값 처럼 사용
+  </p>
+
+  <ul>
+    <li><!-- 1,2,3 을 queryString처럼 사용하고 싶은걸 PathVariable 이라고 함 -->
+      <a href="/example/ex3/1">>> 1번</a>
+    </li>
+
+    <li>
+      <a href="/example/ex3/2">>> 2번</a>
+    </li>
+
+    <li>
+      <a href="/example/ex3/3">>> 3번</a>
+    </li>
+
+    <li>
+      <a th:href="@{/example/ex3/{abc}(abc=${boardNo})}">>> ${boardNo}번</a>
+    </li>
+  </ul>
+    <!-- footer.html 파일을 해당 위치에 출력 -->
+    <th:block th:replace= "~{fragments/footer}"></th:block>
+</body>
+</html>

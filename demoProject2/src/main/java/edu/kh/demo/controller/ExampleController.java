@@ -6,12 +6,15 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import edu.kh.demo.dto.Student;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Slf4j
 @RequestMapping("example")
@@ -96,7 +99,6 @@ public class ExampleController {
 		
 		model.addAttribute("std2", std2);
 		
-
 		return "ex/result1";
 	}
 	
@@ -115,6 +117,87 @@ public class ExampleController {
 		
 		return "ex/result2";
 	}
+	
+	//=====================================================================
+	
+	/**
+	 * 
+	 * @param model : Spring에서 데이터를 전달하는 용도의 객체
+	 *              (기본 scope : request)
+	 * @return
+	 */
+	@GetMapping("ex3")
+	public String getMethodName(Model model) {
+		
+		model.addAttribute("boardNo", 10);
+		model.addAttribute("key", "제목");
+		model.addAttribute("query", "검색어");
+		
+		return "ex/result3";
+	}
+	
+	//=====================================================================
+	
+	/* @PathVariable
+	 * - 주소 중 일부분을 변수 값 처럼 사용
+	 *  + 해당 어노테이션으로 얻어온 값은
+	 *    현재 메서드 + forward한 html 파일에서 사용 가능
+	 */
+//	@GetMapping("/example/ex3/1")
+	// 주소 중 값을 얻어오고 싶은 부분을 {}로 작성하고
+	// {}를 지칭하는 이름(==참조명) 내부에 작성
+	@GetMapping("ex3/{number}")
+	public String pathVariableTest(
+				@PathVariable("number") int num
+				// 주소중 {number} 자리에 작성된 값을 얻어와 매개변수 int num에 저장
+				) {
+		
+		log.debug("num : {}", num);
+		
+		
+		return "ex/testResult";
+	}
+	
+	//=====================================================================
+	
+	@GetMapping("ex4")
+	public String ex4(Model model) {
+		
+		Student std = Student.builder()
+													.studentNo("33333")
+													.name("맹구")
+													.age(5)
+													.build();
+		
+		model.addAttribute("std", std);
+		model.addAttribute("num", 200);
+		
+		return "ex/result4";
+	}
+	
+	//=====================================================================
+	
+	@GetMapping("ex5")
+	public String ex5(Model model) {
+		
+		model.addAttribute("message", "서버에서 전달된 메세지");
+		model.addAttribute("num", 123450);
+		
+		Student std = Student.builder().studentNo("6789").build();
+		model.addAttribute("std", std);
+		
+		model.addAttribute("start", 1);
+		model.addAttribute("end", 100);
+		
+		return "ex/result5";
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 
 }

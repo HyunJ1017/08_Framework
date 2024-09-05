@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>타임리프 예제 4</title>
+</head>
+<body>
+
+  <h1>타임리프 예제 4(조건문)</h1>
+
+  <hr>
+
+  <h3>th:if / th:unless</h3>
+
+  <pre>
+    th:if = "조건식"
+    th:if = "${조건식}""
+    - 조건식이 true인 경우에 수행, 출력
+
+    th:unless = "조건식"
+    - 조건식이 false인 경우에 수행
+  </pre>
+
+  <!-- th:block 타임리프를 사용할 마땅한 태그가 없을때 
+  + 조건문, 반복문 가독성 증가-->
+  <th:block th:if= "${std == null}">
+    <h3>std 없음</h3>
+  </th:block>
+  <th:block th:unless= "${std == null}">
+    <h3 th:text="${std}">std 있음</h3>
+  </th:block>
+  
+  <hr>
+
+  <h3>조건식에 작성된 변수에 값이 존재하는지 확인하는 방법</h3>
+  
+  <p>
+    th:unless = "${변수명 == null}"
+    <br>
+    th:if = "${변수명|key}"
+    <br>
+    -> 변수에 값이 있으면 true, 없으면 null;
+  </p>
+
+  <!-- th:unless = "${변수명 == null}" -->
+  <th:block th:if= "${std}"> 
+    <h3>std 있음!!</h3>
+  </th:block>
+
+  <!-- th:if = "${변수명 == null}" -->
+  <th:block th:unless= "${std}">
+    <h3>std 없음...</h3>
+  </th:block>
+
+  <hr>
+
+  <h3>th:switch / th:case</h3>
+
+  <th:block th:switch="${num}">
+    <p th:case="100">AAAAAAAAAAAAAAAAA</p>
+    <p th:case="200">BBBBBBBBBBBBBBBBB</p>
+
+    <!-- 100,200이 아닌 모든경우, "*" 은 마지막에만 작성 가능
+      마지막에 안쓰면 뒤에있는것들은 실행 안함-->
+    <p th:case="*">CCCCCCCCCCCCCCCCC</p>
+
+  </th:block>
+
+  <hr>
+
+  <h3>삼항 연산자</h3>
+
+  <pre>
+    ( 조건식 ? true : false )
+  </pre>
+
+  <!-- 타임리프에서
+   문자열은 "", '' 가리지 않고 작성 가능
+   => 작성법은 HTML이니까 -->
+  <h4 th:text="${std.age == 5} ? '다섯살' : '다섯살 아님' "></h4>
+  <h4 th:text="${std.name == '철수'} ? '철수맞음' : '철수 아님' "></h4>
+
+  <hr>
+
+  <h3>Elvis 연산자 ( ?: )</h3>
+
+  <pre>
+    [작성법]
+    값 ?: 값이 없을 때
+
+    - 값이 존재하는 경우 : 값 출력
+    - 값이 없는 경우 : 값이 없을 때 출력
+  </pre>
+
+  <h4 th:text="${americano} ?: 'americano 없음'"></h4>
+  <h4 th:text="${std} ?: '학생 없음'"></h4>
+  <h4 th:text="${member} ?: '회원 없음'"></h4>
+
+  <hr>
+
+  <h3>No-Operation 연산자 ( 값 ?: _ )</h3>
+
+  <pre>
+    - 값이 존재하징 않을 경우 태그 사이에 존재하는 내용(content영역)을 출력하는 연산자
+  </pre>
+
+  <h4 th:text="${std} ?: _"> std 정보 출력 </h4>
+  <h4 th:text="${member} ?: _"> 멤버 정보 출력 </h4>
+  <!-- member가 없으면 대체이미지 출력 -->
+  <h4 th:text="${member} ?: _">
+    <img th:src="#{image.logo}" alt="logo#" width="500px">
+  </h4>
+
+
+  <!-- footer.html 파일을 해당 위치에 출력 -->
+  <th:block th:replace= "~{fragments/footer}"></th:block>
+</body>
+</html>

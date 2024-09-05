@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- "연결할 Mapper 인터페이스 파일 경로 작성 (필수)" -->
+<mapper namespace="edu.kh.demo.mapper.TestMapper">
+
+  <!-- 해당 태그는 무조건 삭제!! -->
+  <!--<cache-ref namespace=""/>-->
+ 
+	<!-- 수행 하려는 SQL 구문 태그 작성-->
+	<!-- <select id="" parameterType="" resultType="">SQL 작성</select>
+	
+	<insert id="" parameterType="">SQL 작성</insert>
+	<update id="" parameterType="">SQL 작성</update>
+	<delete id="" parameterType="">SQL 작성</delete> -->
+
+
+	<!-- 사용자 이름 조회 -->
+	<select id="selectUserName" parameterType="_int" resultType="string">
+		SELECT USER_NAME
+		FROM TB_USER
+		WHERE USER_NO = #{userNo}
+	</select>
+
+</mapper>
