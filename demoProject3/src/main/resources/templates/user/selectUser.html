@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="|${user.userId} 상세정보 페이지|">UserNo 조회</title>
+  <style>
+    html{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    body{
+      min-width: 800px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 th:text="|${user.userId} 상세정보 페이지|"></h1>
+
+  <form th:action="@{/user/update/{userNo}(userNo=${user.userNo})}" method="POST">
+    <table border="1" style="border-collapse: collapse;">
+      <tbody>
+        <tr>
+          <th>userNo</th>
+          <td th:text="${user.userNo}"></td>
+        </tr>
+        
+        <tr>
+          <th>userId</th>
+          <td th:text="${user.userId}"></td>
+        </tr>
+  
+        <tr>
+          <th>userPw</th>
+          <td>
+            <input type="text" name="userPw"  th:value="${user.userPw}">
+          </td>
+        </tr>
+  
+        <tr>
+          <th>userName</th>
+          <td>
+            <input type="text" name="userName"  th:value="${user.userName}">
+          </td>
+        </tr>
+  
+        <tr>
+          <th>enrollDate</th>
+          <td th:text="${user.enrollDate}"></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="width: 260px; display: flex; flex-direction: row-reverse;">
+      <button type="button" id="goToList">목록으로</button>
+      <button type="button" id="deleteBtn">삭제</button>
+      <button>수정</button>
+    </div>
+  </form>
+
+  <!-- 삭제동작용 form -->
+  <form th:action="@{/user/delete/{userNo}(userNo=${user.userNo})}"
+        id = "deleteForm" method="post">
+  </form>
+
+  <script>
+    const goToList = document.querySelector("#goToList");
+
+    // 목록으로버튼 클릭시
+    goToList.addEventListener("click", () => {location.href="/user/selectAll"});
+
+    const deleteBtn= document.querySelector("#deleteBtn");
+    const deleteForm= document.querySelector("#deleteForm");
+
+    // 삭제버튼 클릭시
+    deleteBtn.addEventListener("click", () => {
+      // 취소 버튼을 클릭한 경우
+      if(!confirm("삭제하시겠습니까?")) return;
+
+      // 확인 버튼을 클릭한 경우 deleteForm 제출
+      deleteForm.submit();
+
+    });
+
+  </script>
+
+  <!-- message 출력하는 script 조각 추가 -->
+   <th:block th:replace= "~{user/selectAll :: messageAlert }"></th:block>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>메인페이지</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+  <header>
+    <h1>Todo_List</h1>
+    
+    <h3>전체 Todo의 갯수 : <th:block th:text="${listSize}"></th:block> / 완료된 Todo 갯수 : <th:block th:text="${completeCount}"></th:block></h3>
+    <hr>
+  </header>
+
+  <main>
+    <h4>할 일 추가</h4>
+    <form action="/todo/add" method="post" id="addForm">
+      <div>
+        제목 : <input type="text" name="todoTitle"> 
+      </div>
+      <div>
+        <textarea name="todoDetail" rows="3" cols="50" placeholder="상세 내용"></textarea>
+      </div>
+      <button>추가</button>
+    </form>
+
+    <hr>
+    <!-- 할 일 목록 출력 -->
+    <table id="todoList" border="1">
+      <thead>
+        <tr>
+          <th>번호</th>
+          <th>할 일 제목</th>
+          <th id="completeOrder">완료 여부</th>
+          <th>등록 날짜</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <th:block th:each= "todo :${todoList}" th:object="${todo}">
+          <tr>
+            <th th:text="*{listNo}">
+              할일번호
+            </th>
+
+            <th>
+              <a th:href="@{/todo/detail/{listNo}(listNo=*{listNo})}"
+               th:text="*{todoTitle}"
+               th:style="'color: ' + *{color}">할일제목</a>
+            </th>
+
+            <th th:text="*{complete}">
+              완료여부
+            </th>
+
+            <td th:text="*{regDate}">생성시간</td>
+
+          </tr>
+        </th:block>
+
+      </tbody>
+    </table>
+  </main>
+
+
+<!-- 정렬 저장용 숨은값 -->
+<input type="hidden" name="order">
+<input type="hidden" name="completeCount">
+
+<!-- 메세지출력 -->
+
+<script src="/js/main.js"></script>
+</body>
+</html>

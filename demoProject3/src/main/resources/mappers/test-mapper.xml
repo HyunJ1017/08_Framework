@@ -6,6 +6,26 @@
 
   <!-- 해당 태그는 무조건 삭제!! -->
   <!--<cache-ref namespace=""/>-->
+  
+  <!-- 
+  	<select> 태그에서 사용할 수 있는 속성
+  	
+  	- parameterType : 전달받은 값의 자료형
+  	
+  	- resultType    : 조회된 결과 "행"의 자료형
+  	
+  	(중요!)
+  	자료형 작성시
+  	- 기본 자료형 : mybatis 제공 별칭으로 작성
+  	
+  	- 참조형(클래스) : 
+  		mybatis 제공 별칭
+  			또는
+  		패키지명 + 클래스명
+  			또는
+  		사용자 지정 별칭
+  
+   -->
  
 	<!-- 수행 하려는 SQL 구문 태그 작성-->
 	<!-- <select id="" parameterType="" resultType="">SQL 작성</select>
@@ -21,5 +41,93 @@
 		FROM TB_USER
 		WHERE USER_NO = #{userNo}
 	</select>
+	
+	<!-- 
+		마이바티스는 조회된 컬럼명과
+		결과를 담으려는 DTO 필드명이 같을 경우
+		자동으로 값을 담아줄 수 있다.
+		
+		mybatis-config.xml 파일에 카멜표기법 = "_"표기법
+		mapUnderscoreToCamelCase 때문에 가능해짐
+	 -->
+	
+	<!-- 사용자 전체 조회 -->
+	<select id="selectAll"
+			resultType="edu.kh.demo.dto.UserDto">
+		SELECT
+			USER_NO,
+			USER_ID,
+			USER_PW,
+			USER_NAME,
+			TO_CHAR(ENROLL_DATE, 'YYYY"년" MM"월" DD"일"') ENROLL_DATE
+		FROM TB_USER
+		ORDER BY USER_NO ASC
+	</select>
+	
+	<!-- userNo가 일치하는 User 조회 -->
+	<!-- resultType으로 별칭 사용(DBConfig 참고) -->
+	<select id="selectUser"
+			parameterType="_int"
+			resultType="UserDto">
+		SELECT
+			USER_NO,
+			USER_ID,
+			USER_PW,
+			USER_NAME,
+			TO_CHAR(ENROLL_DATE, 'YYYY"년" MM"월" DD"일"') ENROLL_DATE
+		FROM TB_USER
+		WHERE USER_NO = #{userNo}
+	</select>
+	
+	<!-- 
+		** <insert>, <update>, <delete> 태그에서 사용할 수 있는 속성
+		
+		- parameterType : 전달받은 값의 자료형
+  	
+  		* resultType    : 없음. 결과가 무조건 int 타입이니까
+  							(안적어도 암묵적으로 _int)
+  		
+	 -->
+	
+	<!-- 
+		사용자 정보 수정, 
+		parameterType : 지정된 별칭
+		- 전달받은 파라미터가 DTO 또는 Map 인 경우
+		  SQL 필드명 또는 key값을 작성하면 된다.
+	 -->
+	<update id="updateUser"
+			parameterType="UserDto">
+		
+		UPDATE TB_USER
+		SET
+			USER_PW = #{userPw},
+			USER_NAME = #{userName}
+		WHERE
+			USER_NO = #{userNo}
+		
+	</update>
+	
+	<!-- 사용자 삭제 -->
+	<delete id="deleteUser"
+	        parameterType="_int">
+	
+		DELETE
+		FROM TB_USER
+		WHERE USER_NO = #{userNo}
+	
+    </delete>
+    
+    <!-- 사용자 추가 -->
+    <insert id="insertUser"
+    		parameterType="UserDto">
+    	INSERT INTO TB_USER
+    	VALUES(
+    		SEQ_USER_NO.NEXTVAL,
+    		#{userId},
+    		#{userPw},
+    		#{userName},
+    		DEFAULT
+    		)
+    </insert>
 
 </mapper>

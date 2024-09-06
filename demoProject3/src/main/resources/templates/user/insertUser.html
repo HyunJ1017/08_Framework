@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="${userName} ? |${userName} 조회결과| : '조회결과 없음'">조회 결과</title>
+  <title>유저추가</title>
   <style>
     html{
       display: flex;
@@ -16,7 +16,10 @@
   </style>
 </head>
 <body>
-  <h1 th:text="${userName} ?: '조회결과 없음'"></h1>
 
+  <h1>유저 추가하기</h1>
+
+  <th:block th:replace= "~{fragments/insertUser}"></th:block>
+  
 </body>
 </html>

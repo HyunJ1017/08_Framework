@@ -1,0 +1,52 @@
+/*테이블 스타일 지정*/
+body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+header{
+  min-width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+main{
+  min-width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 30px 120px 30px;
+  border: 1px solid  #000000
+}
+
+hr{
+  width: 80%;
+}
+
+#todoList{
+  border-collapse: collapse;
+}
+
+#todoList td, #todoList th{
+  padding: 5px 8px;
+}
+
+thead th{
+  background-color: skyblue;
+}
+
+tbody > tr:nth-of-type(2n){
+  background-color: rgba(221, 221, 221, 0.867);
+}
+
+a{
+  text-decoration: none;
+}
+
+#completeOrder{
+  user-select: none;
+}
+#completeOrder:hover{
+  cursor: pointer;
+}

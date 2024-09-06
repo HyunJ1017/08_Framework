@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>사용자 전체 조회</title>
+  <style>
+    html{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    body{
+      min-width: 800px;
+    }
+    thead th{
+      padding: 5px;
+      background-color: hotpink;
+      color: white;
+    }
+    table * {
+      text-align: center;
+    }
+    tbody td {
+      padding: 2px;
+    }
+  </style>
+</head>
+<body>
+  <h1>사용자 전체 조회</h1>
+
+  <button onclick="location.href='/user/insert'">사용자 추가</button>
+
+  <h4 th:text="|전체 유저 수 : ${userList.size}|"></h4>
+
+  <table border="1" style="border-collapse: collapse;">
+    <thead>
+      <tr>
+        <th>userNo</th>
+        <th style="width: 100px;">userId</th>
+        <th>userPw</th>
+        <th>userName</th>
+        <th>enrollDate</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- th:block 타임리프가 해석되고 사하지는 태그 -->
+      <th:block th:each= "user:${userList}" 
+             th:object="${user}">
+
+        <tr>
+          <th th:text="*{userNo}">USER_NO</th>
+          <td>
+            <a th:href="@{/user/select/{userNo}(userNo=*{userNo})}"
+               th:text="*{userId}">USER_ID</a>
+          </td>
+          <td th:text="*{userPw}">USER_PW</td>
+          <td th:text="*{userName}">USER_NAME</td>
+          <td th:text="*{enrollDate}">ENROLL_DATE</td>
+        </tr>
+
+      </th:block>
+    </tbody>
+
+  </table>
+  
+
+  <!-- [ script th:inline="javascript" ]
+   타임리프로 출력되는 Java 데이터를 JS에 맞는 타입으로 변경 -->
+  <script th:inline="javascript" th:fragment= "messageAlert">
+
+    // Naturall Template
+    const message = /*[[${message}]]*/ "서버로부터 받은 메시지";
+
+    if(message != null){
+      alert(message);
+    }
+
+  </script>
+
+  <!-- 
+  Natural Template
+  
+  const temp = /*타임리프구문*/ html단독실행값;
+  - 해당 html이 forward되어 응답용으로 사용 될 때
+  -> /*타임리프구문*/ 해석되서 적용
+
+  - 해당 html이 local 환경에서 단독 실행되었을 때
+  -> html단독실행값 해석되서 적용
+-->
+
+</body>
+</html>

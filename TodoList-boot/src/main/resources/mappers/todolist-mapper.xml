@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- "연결할 Mapper 인터페이스 파일 경로(페키지 + 인터페이스 명) 작성 (필수)" -->
+<mapper namespace="edu.kh.todolist.mapper.TodoMapper">
+
+	<!-- 전체목록확인 -->
+	<select id="todoListFullView"
+			resultType="Todo">
+			
+		SELECT
+	 		LIST_NO,
+	 		TODO_TITLE,
+	 		TODO_DETAIL,
+	 		COMPLETE,
+	 		TO_CHAR(REG_DATE, 'YYYY"년" MM"월" DD"일"') REG_DATE,
+	 		COLOR
+	 	FROM TODOLIST
+	 	ORDER BY LIST_NO
+	 	
+	</select>
+	
+	<!-- 완료된 할일 갯수 확인 -->
+	<select id="countCompleteCount"
+			resultType="_int">
+			
+		SELECT
+			COUNT(COMPLETE)
+		FROM TODOLIST
+		WHERE COMPLETE = 'O'
+	 	
+	</select>
+	
+	<!-- 새 할일 추가 -->
+	<insert id="insertTodo"
+			parameterType="Todo">
+		INSERT INTO TODOLIST
+		VALUES(
+			SEQ_LIST_NO.NEXTVAL,
+			#{todoTitle},
+			#{todoDetail},
+			DEFAULT,
+			DEFAULT)
+	</insert>
+	
+	<!-- 목록 불러오기 -->
+	<select id="selectTodo"
+			parameterType="_int"
+			resultType="Todo">
+		SELECT
+			LIST_NO,
+	 		TODO_TITLE,
+	 		TODO_DETAIL,
+	 		COMPLETE,
+	 		TO_CHAR(REG_DATE, 'YYYY"년" MM"월" DD"일"') REG_DATE,
+	 		COLOR
+		FROM TODOLIST
+		WHERE LIST_NO = #{listNo}
+	</select>
+	
+</mapper>

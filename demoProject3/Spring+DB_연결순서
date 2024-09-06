@@ -1,0 +1,20 @@
+-> DBConfig.java에 작성
+
+1) config.properties 내용을 읽어와
+	HikariConfig Bean 등록
+	
+2) HikariConfig Bean을 이용해서
+  	DataSource(Java DBCP 사용을 위한 인터페이스) Bean 등록
+
+3) DataSoruce Bean을 이용해서
+   DataSourceTransactionManager Bean 등록
+   (DBCP을 이용해서 SQL 수행 시 트랜잭션을 처리를 관리) 
+   
+4) DataSoruce + mapper파일 + mybatis-config.xml을 이용해
+	SqlSessionFactory Bean 등록
+	-> SqlSession: DB연결 + SQL파일 위치등록 + 마이바티스 설정 적용 + 클래스 별칭 등록
+	
+5) SqlSessionFacty 이용해
+	SqlSessionTemplate Bean 등록
+	-> DB연결 + 마이바티스 기능 사용
+		+ Spring 제공 트랜잭션 관련 어노테이션 사용 가능

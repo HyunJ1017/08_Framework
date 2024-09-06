@@ -1,0 +1,98 @@
+<form action="/user/insert" method="POST">
+  <table>
+    <tr>
+      <td>ID</td>
+      <td>
+        <th:block th:if= "${user}">
+          <input type="text" name="userId" id="userId" th:value="${user.userId}">
+        </th:block>
+        <th:block th:unless= "${user}">
+          <input type="text" name="userId" id="userId" >
+        </th:block>
+      </td>
+    </tr>
+    <tr>
+      <td>PW</td>
+      <td>
+        <th:block th:if= "${user}">
+          <input type="password" name="userPw" id="userPw"  th:value="${user.userPw}">
+        </th:block>
+        <th:block th:unless= "${user}">
+          <input type="password" name="userPw" id="userPw" >
+        </th:block>
+      </td>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td>
+        <th:block th:if= "${user}">
+          <input type="text" name="userName" id="userName" th:value="${user.userName}">
+        </th:block>
+        <th:block th:unless= "${user}">
+          <input type="text" name="userName" id="userName">
+        </th:block>
+      </td>
+    </tr>
+  </table>
+  <button id="insertBtn" disabled>추가하기</button>
+  <button type="button" onclick="location.href='/user/selectAll'">목록으로</button>
+</form>
+
+<script>
+  const userId = document.querySelector("#userId");
+  const userPw = document.querySelector("#userPw");
+  const userName = document.querySelector("#userName");
+  const insertBtn = document.querySelector("#insertBtn");
+
+  let count = 0;
+  let count2 = 0;
+  let count3 = 0;
+
+  userId.addEventListener("input", e => {
+
+    if(e.target.value != ''){
+      count=1;
+    } else {
+      count=0;
+    }
+
+    if(count + count2 + count3 == 3){
+      insertBtn.disabled = false;
+    } else {
+      insertBtn.disabled = true;
+    }
+  });
+
+  userPw.addEventListener("input", e => {
+
+    if(e.target.value != ""){
+      count2=1;
+    } else {
+      count2=0;
+    }
+
+    if(count + count2 + count3 == 3){
+      insertBtn.disabled = false;
+    } else {
+      insertBtn.disabled = true;
+    }
+  });
+
+  userName.addEventListener("input", e => {
+
+    if(e.target.value != ""){
+      count3=1;
+    } else {
+      count3=0;
+    }
+
+    if(count + count2 + count3 == 3){
+      insertBtn.disabled = false;
+    } else {
+      insertBtn.disabled = true;
+    }
+  });
+
+
+</script>
+
