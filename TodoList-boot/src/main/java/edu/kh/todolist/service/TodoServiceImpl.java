@@ -53,6 +53,35 @@ public class TodoServiceImpl implements TodoService {
 		
 		return mapper.selectTodo(listNo);
 	}
+
+
+	/**완료여부변경
+	 * 
+	 */
+	@Override
+	public int completeChange(Todo todo) {
+		
+		return  mapper.completeChange(todo);
+	}
+
+
+	/**할일 수정
+	 * 
+	 */
+	@Override
+	public int updateTodo(Todo todo) {
+		
+		return mapper.updateTodo(todo);
+	}
+
+	/** 삭제
+	 * 
+	 */
+	@Override
+	public int deleteTodo(int listNo) {
+		// TODO Auto-generated method stub
+		return  mapper.deleteUser(listNo);
+	}
 	
 	
 	

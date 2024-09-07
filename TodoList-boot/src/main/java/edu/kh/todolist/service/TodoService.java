@@ -31,5 +31,26 @@ public interface TodoService {
 	 */
 	Todo selectTodo(int listNo);
 
+	/**완료여부 변경
+	 * 
+	 * @param todo
+	 * @return
+	 */
+	int completeChange(Todo todo);
+
+	/**할일 수정
+	 * 
+	 * @param todo
+	 * @return
+	 */
+	int updateTodo(Todo todo);
+
+	/**삭제
+	 * 
+	 * @param listNo
+	 * @return
+	 */
+	int deleteTodo(int listNo);
+
 
 }

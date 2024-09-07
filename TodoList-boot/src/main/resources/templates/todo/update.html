@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/update.css">
+</head>
+<body>
+  
+  <main>
+    
+    <h4>할 일 수정</h4>
+    <form action="/todo/update" method="post" id="updateForm">
+      <input type="hidden" name="listNo" th:value="${todo.listNo}">
+
+      <div>
+        제목 : <input type="text" name="todoTitle" th:value="${todo.todoTitle}">
+      </div>
+
+      <div>
+        글자색 : <input type="color" name="color" th:value="${todo.color}">
+      </div>
+
+      <div>
+        <textarea name="todoDetail" rows="3" cols="50" placeholder="상세 내용" th:text="${todo.todoDetail}">세부내용 작성창</textarea>
+      </div>
+
+      <button type="submit">수정</button>
+      <button type="button" id="goToList">목록으로</button>
+
+    </form>
+
+
+  </main>
+
+
+
+
+  <!-- messageAlert -->
+  <th:block th:replace= "~{/fragments/messageAlert}"></th:block>
+
+<script src="/js/update.js"></script>
+</body>
+</html>

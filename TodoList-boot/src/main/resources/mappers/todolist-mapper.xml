@@ -39,6 +39,7 @@
 			#{todoTitle},
 			#{todoDetail},
 			DEFAULT,
+			DEFAULT,
 			DEFAULT)
 	</insert>
 	
@@ -56,5 +57,39 @@
 		FROM TODOLIST
 		WHERE LIST_NO = #{listNo}
 	</select>
+	
+	<!-- 완료여부 변경 -->
+	<update id="completeChange"
+			parameterType="Todo">
+			
+		UPDATE TODOLIST
+		SET COMPLETE = #{complete}
+		WHERE LIST_NO = #{listNo}
+		
+	</update>
+	
+	<!--할일 수정-->
+	<update id="updateTodo"
+			parameterType="Todo">
+			
+		UPDATE TODOLIST
+		SET
+			TODO_TITLE = #{todoTitle},
+			TODO_DETAIL = #{todoDetail},
+			COLOR = #{color}
+		WHERE LIST_NO = #{listNo}
+		
+	</update>
+	
+	<!-- deleteUser -->
+	<delete id="deleteUser"
+			parameterType="_int">
+	
+		DELETE
+		FROM TODOLIST
+		WHERE LIST_NO = #{listNo}
+	
+	</delete>
+	
 	
 </mapper>

@@ -4,10 +4,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="/css/detail.css">
 </head>
 <body>
   
-  <h1>dusrufghkldsl</h1>
+  <main>
+
+
+  
+    <!-- 할일 제목 넣기 -->
+    <h1 th:style="'color:' + ${todo.color}">선택한 할일 제목</h1>
+
+    <!-- 완료여부 -->
+    <div class="complete">
+      <span>완료여부 : </span>
+      <th:block th:if    = "${todo.complete} == 'O'"><span class="green">완료한 할일 입니다</span></th:block>
+      <th:block th:unless= "${todo.complete} == 'O'"><span class="red">미완료한 할일 입니다</span></th:block>
+    </div>
+
+    <div th:text="|작성일자 : ${todo.regDate}|"></div>
+
+    <div class="content" th:text="${todo.todoDetail}"></div>
+
+    <div class="btn-container">
+      <div>
+        <button id="goToList">목록으로</button>
+      </div>
+
+      <div>
+        <form action="/todo/comChange" method="post" style="display: inline-block;">
+          <input type="hidden" name="listNo"   th:value="${todo.listNo}">
+          <input type="hidden" name="complete" th:value="${todo.complete}">
+          <button>완료 여부 변경</button>
+
+        </form>
+        <button id="updateBtn">수정</button>
+        <button id="deleteBtn">삭제</button>
+      </div>
+    </div>
+
+
+
+  </main>
+
+
+
+  <input type="hidden" id="listNo" th:value="${todo.listNo}">
+
+<!-- messageAlert -->
+<th:block th:replace= "~{/fragments/messageAlert}"></th:block>
+
+<script src="/js/detail.js"></script>
 
 </body>
 </html>
