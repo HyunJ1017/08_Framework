@@ -4,6 +4,14 @@ body{
   align-items: center;
 }
 
+main > h1 {
+  color: darkgreen;
+  font-family: 'TheJamsil5Bold';
+  font-weight: 100;
+  font-size: 2em;
+  margin: 50px 0 25px;
+}
+
 div {
   margin: 10px 0;
 }
@@ -16,10 +24,10 @@ div {
 .red{ color: red;}
 
 .content {
-  border: 2px solid #ccc;
+  border: 2px solid rgb(125, 247, 113);
   padding: 10px;
   width: 480px;
-  min-height: 300px;
+  min-height: 200px;
 
   /* 내부 내용을 pre태그처럼 html에 작성된 그대로 출력 */
   white-space: pre-wrap;
@@ -30,4 +38,23 @@ div {
   flex-direction: row;
   justify-content: space-between;
   width: 500px;
+}
+
+/* ************************************************* */
+@font-face {
+  font-family: 'TheJamsil5Bold';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+.BookkMyungjoBd{
+  font-family: 'BookkMyungjo-Bd';
+}
+
+@font-face {
+  font-family: 'BookkMyungjo-Bd';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/BookkMyungjo-Bd.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
 }

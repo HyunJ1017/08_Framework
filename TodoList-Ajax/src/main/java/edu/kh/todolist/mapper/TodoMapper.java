@@ -1,47 +1,52 @@
-package edu.kh.todolist.service;
+package edu.kh.todolist.mapper;
 
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 
 import edu.kh.todolist.dto.Sub;
 import edu.kh.todolist.dto.Todo;
 
-public interface TodoService {
-
-	/** 전체리스트조회
+@Mapper
+public interface TodoMapper {
+	
+	/**
+	 * 리스트 전체조회
 	 * @return
 	 */
 	List<Todo> todoListFullView();
-	List<Todo> todoListFullViewOder(int ordernum);
+	List<Todo> todoListFullViewComASC();
+	List<Todo> todoListFullViewComDESC();
 
-	/**완료된 카운드 숫자 확인
-	 * 
+	/**
+	 * 완료목표갯수확인
 	 * @return
 	 */
 	int countCompleteCount();
 
-	/**새 목록 추가
+	/** 새 할일 추가
 	 * 
 	 * @param todo
 	 * @return
 	 */
 	int insertTodo(Todo todo);
-	
-	/** detail뷰 넘어가기전에 todo받기
+
+	/** 목록 불러오기
 	 * 
 	 * @param listNo
 	 * @return
 	 */
 	Todo selectTodo(int listNo);
-
-	/**완료여부 변경
+	
+	/**완료여부변경
 	 * 
 	 * @param todo
 	 * @return
 	 */
 	int completeChange(Todo todo);
 
-	/**할일 수정
-	 * 
+	/**
+	 * 할일 수정
 	 * @param todo
 	 * @return
 	 */
@@ -52,7 +57,7 @@ public interface TodoService {
 	 * @param listNo
 	 * @return
 	 */
-	int deleteTodo(int listNo);
+	int deleteUser(int listNo);
 	
 	/** 과제목록 불러오기
 	 * 
@@ -68,6 +73,12 @@ public interface TodoService {
 	 */
 	int insertSub(Sub sub);
 	
+	/** 제목 줏어오기
+	 * 
+	 * @param todoNo
+	 * @return
+	 */
+	String searchTitle(int todoNo);
 
 
 }

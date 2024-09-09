@@ -110,6 +110,15 @@ public class TodoServiceImpl implements TodoService {
 		
 		return mapper.insertSub(sub);
 	}
+
+	/** 제목 주서오기
+	 * 
+	 */
+	@Override
+	public String searchTitle(int todoNo) {
+		
+		return mapper.searchTitle(todoNo);
+	}
 	
 	
 	

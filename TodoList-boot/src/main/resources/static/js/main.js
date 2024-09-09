@@ -1,8 +1,8 @@
 /* 제목이 작성되지 않은경우 #addForm의 제출 막기*/
 
 const addForm = document.querySelector("#addForm");
-const title = document.querySelector("[name=title]");
-const detail = document.querySelector("[name=detail]");
+const title = document.querySelector("[name=todoTitle]");
+const detail = document.querySelector("[name=todoDetail]");
 
 // addForm이 제출될려고 할때
 addForm.addEventListener("submit", e=>{
@@ -24,6 +24,11 @@ addForm.addEventListener("submit", e=>{
     alert("내용을 입력 해 주세요");
     detail.focus();
   }
+  if(input2.length > 1000){ //내용이 한계치보다 초과되어 입력되었을때
+    e.preventDefault(); // form 제출 이벤트 막기
+    alert("현재 글자수 : " + input2.length + "\n1000자 이하만 작성이 가능합니다");
+    detail.focus();
+  }
 
 })
 
@@ -32,6 +37,32 @@ const completeOrder = document.querySelector("#completeOrder");
 
 completeOrder.addEventListener("click", () => {
   const order = document.querySelector("[name=order]");
-  const completeCount = document.querySelector("[name=completeCount]");
-  location.href = "/main/orderby?order=" + order.value + "&completeCount=" + completeCount.value;
+  location.href = "/todo/orderby/" + order.value;
 });
+
+
+
+/* 버튼 */
+
+const detailBtn = document.querySelectorAll(".detailBtn");
+const detailBtnAnswer = document.querySelectorAll(".detailBtnAnswer");
+const todoDetail = document.querySelectorAll(".todoDetail");
+const detailHref = document.querySelectorAll(".detailHref");
+
+for( let i = 0 ; i < detailBtn.length ; i++){
+
+  detailBtn[i].addEventListener("click", ()=>{
+    if(detailBtn[i].innerText == 'v'){
+      detailBtn[i].innerText = '접기';
+      detailBtnAnswer[i].innerHTML = '<td colspan="4" >' + todoDetail[i].value + '</td><td><button class="goBtn">go</button></td>';
+      const goBtn = document.querySelector(".goBtn");
+      goBtn.addEventListener("click", ()=>{
+        location.href = detailHref[i].value;
+      });
+
+    } else {
+      detailBtn[i].innerText = 'v';
+      detailBtnAnswer[i].innerHTML = '';
+    }
+  })
+}

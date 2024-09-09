@@ -14,19 +14,20 @@
     <form action="/todo/update" method="post" id="updateForm">
       <input type="hidden" name="listNo" th:value="${todo.listNo}">
 
-      <div>
+      <div class="BookkMyungjoBd">
         제목 : <input type="text" name="todoTitle" th:value="${todo.todoTitle}">
       </div>
 
-      <div>
+      <div class="BookkMyungjoBd">
         글자색 : <input type="color" name="color" th:value="${todo.color}">
       </div>
 
       <div>
-        <textarea name="todoDetail" rows="3" cols="50" placeholder="상세 내용" th:text="${todo.todoDetail}">세부내용 작성창</textarea>
+        <textarea name="todoDetail" rows="15" cols="50" placeholder="상세 내용" th:text="${todo.todoDetail}">세부내용 작성창</textarea>
       </div>
 
       <button type="submit">수정</button>
+      <button type="button" id="goToDetaile">뒤로가기</button>
       <button type="button" id="goToList">목록으로</button>
 
     </form>

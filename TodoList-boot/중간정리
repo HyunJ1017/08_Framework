@@ -1,0 +1,19 @@
+
+
+// @controller : 요청 응답/제어, controller임을 명시 + Bean 등록
+
+// @autowired : 의존성주입 (DI)
+				Bean에 등록된 객체중 같은 자료형 객체를 의존성 주입
+
+// @requestmapping : handlermapping
+
+// Model : Spring에서 사용하는 데이터전달용 객체(기본 request scope, 변경가능)
+
+// @transactional
+
+// Mapper
+
+
+
+
+

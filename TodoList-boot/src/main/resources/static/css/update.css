@@ -8,3 +8,30 @@ body{
 div{
   margin: 20px;
 }
+
+main > h4 {
+  color: darkgreen;
+  font-family: 'TheJamsil5Bold';
+  font-weight: 100;
+  font-size: 2em;
+  margin: 50px 0 25px;
+}
+
+/* ************************************************* */
+@font-face {
+  font-family: 'TheJamsil5Bold';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+.BookkMyungjoBd{
+  font-family: 'BookkMyungjo-Bd';
+}
+
+@font-face {
+  font-family: 'BookkMyungjo-Bd';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/BookkMyungjo-Bd.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}

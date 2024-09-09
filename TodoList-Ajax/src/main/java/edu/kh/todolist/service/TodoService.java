@@ -68,6 +68,13 @@ public interface TodoService {
 	 */
 	int insertSub(Sub sub);
 	
+	/** 제목 주서오기
+	 * 
+	 * @param todoNo
+	 * @return
+	 */
+	String searchTitle(int todoNo);
+	
 
 
 }

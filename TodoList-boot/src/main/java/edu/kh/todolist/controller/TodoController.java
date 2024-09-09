@@ -1,5 +1,7 @@
 package edu.kh.todolist.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.kh.todolist.dto.Sub;
 import edu.kh.todolist.dto.Todo;
 import edu.kh.todolist.service.TodoService;
 
@@ -53,6 +56,7 @@ public class TodoController {
 		return "redirect:/";
 	}
 	
+	
 	/**할일목록 세부 선택
 	 * 
 	 * @param listNo
@@ -66,8 +70,10 @@ public class TodoController {
 			) {
 		
 		Todo todo = service.selectTodo(listNo);
+		List<Sub> subList = service.selectSub(listNo);
 		
 		model.addAttribute("todo", todo);
+		model.addAttribute("subList", subList);
 		
 		return "todo/detail";
 	}
@@ -95,12 +101,19 @@ public class TodoController {
 		int result = service.completeChange(todo);
 		
 		String message = null;
-		if(result>0) message = "변경완료";
-		else				 message = "유감";
+		String path = null;
+		if(result>0) {
+			message = "변경완료";
+			path = "redirect:/todo/detail/" + listNo;
+		}
+		else				 {
+			message = "할 일이 존재하지 않습니다. \n 유감";
+			path = "redirect:/";
+		}
 		
 		ra.addFlashAttribute("message", message);
 		
-		return "redirect:detail/" + listNo;
+		return path;
 	}
 	
 	/** 수정페이지 get
@@ -179,6 +192,72 @@ public class TodoController {
 		
 		return "redirect:/";
 	}
+	
+	/**완료여부로 정렬하기
+	 * @param order 이전에 정렬되어있는 방법 식별할 저장값
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("orderby/{orderValue}")
+	public String orderComplete(
+			@PathVariable("orderValue") String order,
+			Model model
+			) {
+		
+		int ordernum = 0;
+		
+		if(order.equals("X")) {
+			order = "O";
+			ordernum = 1;
+		} else {
+			order = "X";
+			ordernum = 2;
+		}
+		
+		List<Todo> todoList = service.todoListFullViewOder(ordernum);
+		int completeCount = service.countCompleteCount();
+		
+		model.addAttribute("todoList", todoList);
+		model.addAttribute("completeCount", completeCount);
+		
+		int listSize = todoList.size();
+		model.addAttribute("listSize", listSize);
+		
+		model.addAttribute("order", order);
+		
+		return "common/main";
+	}
+	
+	
+	/** 과제추가하기
+	 * 
+	 * @param subjectTitle
+	 * @param subjectDetail
+	 * @return
+	 */
+	@PostMapping("addSub")
+	public String postMethodName(
+			@RequestParam("subjectTitle") String subjectTitle,
+			@RequestParam("subjectDetail") String subjectDetail,
+			@RequestParam("listNo") int listNo,
+			Model model
+			) {
+
+		Sub sub = Sub.builder().listNo(listNo).subjectTitle(subjectTitle).subjectDetail(subjectDetail).build();
+		
+		log.debug(sub+"");
+		int result = service.insertSub(sub);
+		
+		String message = null;
+		if(result>0) message = "과제추가성공";
+		else				 message = "유감";
+		
+		model.addAttribute("message", message);
+		
+		return "redirect:/todo/detail/" + listNo;
+	}
+	
+	
 	
 	
 

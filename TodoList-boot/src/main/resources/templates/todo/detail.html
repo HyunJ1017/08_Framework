@@ -13,7 +13,7 @@
 
   
     <!-- 할일 제목 넣기 -->
-    <h1 th:style="'color:' + ${todo.color}">선택한 할일 제목</h1>
+    <h1 th:text="${todo.todoTitle}">선택한 할일 제목</h1>
 
     <!-- 완료여부 -->
     <div class="complete">
@@ -22,7 +22,9 @@
       <th:block th:unless= "${todo.complete} == 'O'"><span class="red">미완료한 할일 입니다</span></th:block>
     </div>
 
-    <div th:text="|작성일자 : ${todo.regDate}|"></div>
+    <div class="BookkMyungjoBd" th:text="|작성일자 : ${todo.regDate}|">작성일자</div>
+    <div class="BookkMyungjoBd" th:text="|글자수 : ${todo.todoDetail.length} / 1000|">글자수 00 / 1000</div>
+    <div style="display: flex; flex-direction: row;">설정 색깔 : <div th:style="'width: 45px; height: 15px; margin: 3px; background-color: ' + ${todo.color}"></div></div>
 
     <div class="content" th:text="${todo.todoDetail}"></div>
 
@@ -43,7 +45,44 @@
       </div>
     </div>
 
+    <hr>
+    <button id="insertSub">과제 추가입력</button>
+    <div id="insertAnswer"></div>
+    <!-- 과제 목록 출력 -->
+    <table id="subList" border="1">
+      <thead>
+        <tr>
+          <th colspan="3">세부 과제 목록</th>
 
+        </tr>
+      </thead>
+
+      <tbody>
+        <th:block th:each= "sub :${subList}" th:object="${sub}">
+          <tr>
+            <td th:text="*{subjectNo}" class="subjectNo">
+              할일번호
+            </td>
+
+            <td th:text="*{subjectTitle}">
+              과제 이름
+            </td>
+            
+            <td th:text="*{complete}">완료여부</td>
+            <td><button type="button" class="completeSub" th:text="*{complete} == 'O' ? '완료' : '미완' ">완료여부변경버튼</button></td>
+            
+          </tr>
+          
+          <tr>
+            <th colspan="3" th:text="*{subjectDetail}">
+              과제 내용
+            </th>
+
+          </tr>
+        </th:block>
+
+      </tbody>
+    </table>
 
   </main>
 

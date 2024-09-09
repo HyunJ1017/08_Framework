@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import edu.kh.todolist.dto.Sub;
 import edu.kh.todolist.dto.Todo;
 
 @Mapper
@@ -14,6 +15,8 @@ public interface TodoMapper {
 	 * @return
 	 */
 	List<Todo> todoListFullView();
+	List<Todo> todoListFullViewComASC();
+	List<Todo> todoListFullViewComDESC();
 
 	/**
 	 * 완료목표갯수확인
@@ -56,6 +59,19 @@ public interface TodoMapper {
 	 */
 	int deleteUser(int listNo);
 	
+	/** 과제목록 불러오기
+	 * 
+	 * @param listNo
+	 * @return
+	 */
+	List<Sub> selectSub(int listNo);
 	
+	/** 과제 추가하기
+	 * 
+	 * @param sub
+	 * @return
+	 */
+	int insertSub(Sub sub);
+
 
 }

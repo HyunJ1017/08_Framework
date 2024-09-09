@@ -1,4 +1,7 @@
-/*테이블 스타일 지정*/
+* {
+  box-sizing: border-box;
+}
+
 body {
   width: 100%;
   display: flex;
@@ -17,15 +20,38 @@ main{
   flex-direction: column;
   align-items: center;
   padding: 30px 30px 120px 30px;
-  border: 1px solid  #000000
+  border: 1px solid  #bdbdbd
 }
 
-hr{
-  width: 80%;
+
+/* 해더 */
+header > h1 {
+  color: darkgreen;
+  font-family: 'TheJamsil5Bold';
+  font-weight: 100;
+  font-size: 3em;
+  margin: 80px 0 25px;
 }
 
+header > h3{
+  margin: 18px 0 5px;
+}
+
+header > hr{  width: 85%;}
+
+/* 메인 */
+main > h4{
+  color: darkgreen;
+  font-family: 'TheJamsil5Bold';
+  font-weight: 100;
+  font-size: 1.2em;
+  
+}
+
+/* 테이블 */
 #todoList{
   border-collapse: collapse;
+  border: white solid 0.5px;
 }
 
 #todoList td, #todoList th{
@@ -33,11 +59,43 @@ hr{
 }
 
 thead th{
-  background-color: skyblue;
+  background-color: rgb(11, 138, 0);
+  color: rgb(235, 235, 235);
 }
 
-tbody > tr:nth-of-type(2n){
-  background-color: rgba(221, 221, 221, 0.867);
+thead > tr > th:last-child{
+  min-width: 60px;
+}
+
+tr>td:last-child{
+  /* display: flex;
+  align-items: center; */
+  /* border-collapse: collapse;
+  border: white solid 0.5px; */
+  /* position: relative; */
+}
+
+.pre-wrap{
+  /* 내부 내용을 pre태그처럼 html에 작성된 그대로 출력 */
+  white-space: pre-wrap;
+}
+
+td > button {
+  /* position: absolute; */
+  font-size: 0.8em;
+}
+
+tbody{
+  background-color: #d2ffcc;
+}
+
+tbody tr:nth-of-type(4n-1){
+  background-color: rgba(39, 39, 39, 0.1);
+}
+tbody .regDate{
+  font-size: 0.8em;
+  width: 140px;
+  text-align: center;
 }
 
 a{
@@ -47,6 +105,26 @@ a{
 #completeOrder{
   user-select: none;
 }
+
 #completeOrder:hover{
   cursor: pointer;
+}
+
+
+/* ********** */
+@font-face {
+  font-family: 'TheJamsil5Bold';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+.BookkMyungjoBd{
+  font-family: 'BookkMyungjo-Bd';
+}
+@font-face {
+  font-family: 'BookkMyungjo-Bd';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/BookkMyungjo-Bd.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
 }
