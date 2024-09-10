@@ -17,6 +17,12 @@ public interface TodoMapper {
 	List<Todo> todoListFullView();
 	List<Todo> todoListFullViewComASC();
 	List<Todo> todoListFullViewComDESC();
+	
+	/** 전체갯수확인
+	 * 
+	 * @return
+	 */
+	int totalCount();
 
 	/**
 	 * 완료목표갯수확인
@@ -43,7 +49,7 @@ public interface TodoMapper {
 	 * @param todo
 	 * @return
 	 */
-	int completeChange(Todo todo);
+	int completeChange(int listNo);
 
 	/**
 	 * 할일 수정
@@ -59,12 +65,28 @@ public interface TodoMapper {
 	 */
 	int deleteUser(int listNo);
 	
+	/** 제목 줏어오기
+	 * 
+	 * @param todoNo
+	 * @return
+	 */
+	String searchTitle(int todoNo);
+	
+	/**************************************************/
+	
 	/** 과제목록 불러오기
 	 * 
 	 * @param listNo
 	 * @return
 	 */
-	List<Sub> selectSub(int listNo);
+	List<Sub> selectAllSub(int listNo);
+	
+	/** 과제 1개 불러오기
+	 * 
+	 * @param subjectNo : 조회할 과제번호
+	 * @return
+	 */
+	Sub selectSub(int subjectNo);
 	
 	/** 과제 추가하기
 	 * 
@@ -73,12 +95,30 @@ public interface TodoMapper {
 	 */
 	int insertSub(Sub sub);
 	
-	/** 제목 줏어오기
+	/** 과제 완료여부 변경
 	 * 
-	 * @param todoNo
+	 * @param sub : subjectNo 변경할 과제번호, complete 수정될 완료상태
 	 * @return
 	 */
-	String searchTitle(int todoNo);
+	int completeChangeSub(Sub sub);
+	
+	/** 과제 수정
+	 * 
+	 * @param sub
+	 * @return
+	 */
+	int updateSub(Sub sub);
+	
+	/** 과제 삭제
+	 * 
+	 * @param subjectNo
+	 * @return
+	 */
+	int deleteSub(int subjectNo);
+	
+	
+
+	
 
 
 }

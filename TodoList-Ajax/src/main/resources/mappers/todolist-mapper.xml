@@ -47,12 +47,22 @@
 	 	
 	</select>
 	
+	<!-- 전체 갯수 확인 -->
+	<select id="totalCount"
+			resultType="_int">
+			
+		SELECT
+			COUNT(*)
+		FROM TODOLIST
+	 	
+	</select>
+	
 	<!-- 완료된 할일 갯수 확인 -->
 	<select id="countCompleteCount"
 			resultType="_int">
 			
 		SELECT
-			COUNT(COMPLETE)
+			COUNT(*)
 		FROM TODOLIST
 		WHERE COMPLETE = 'O'
 	 	
@@ -88,10 +98,10 @@
 	
 	<!-- 완료여부 변경 -->
 	<update id="completeChange"
-			parameterType="Todo">
+			parameterType="_int">
 			
 		UPDATE TODOLIST
-		SET COMPLETE = #{complete}
+		SET COMPLETE = DECODE(COMPLETE, 'O', 'X', 'O')
 		WHERE LIST_NO = #{listNo}
 		
 	</update>
@@ -119,11 +129,21 @@
 	
 	</delete>
 	
+	<!-- 할일 제목찾기 -->
+	<select id="searchTitle"
+			parameterType="_int"
+			resultType="string">
+		SELECT TODO_TITLE
+		FROM TODOLIST
+		WHERE LIST_NO = #{todoNo}
+	</select>
+	
 	
 	
 	<!-- ============================================ -->
 	<!-- listNo에 맞는 과제목록 불러오기 -->
-	<select id="selectSub"
+	<select id="selectAllSub"
+			parameterType="_int"
 			resultType="Sub">
 			
 		SELECT
@@ -134,6 +154,23 @@
 	 		COMPLETE
 	 	FROM SUBJECTLIST
 	 	WHERE LIST_NO = #{listNo}
+	 	ORDER BY SUBJECT_NO
+	 	
+	</select>
+	
+	<!-- 과제 불러오기 -->
+	<select id="selectSub"
+			parameterType="_int"
+			resultType="Sub">
+			
+		SELECT
+	 		SUBJECT_NO,
+	 		LIST_NO,
+	 		SUBJECT_TITLE,
+	 		SUBJECT_DETAIL,
+	 		COMPLETE
+	 	FROM SUBJECTLIST
+	 	WHERE SUBJECT_NO = #{subjectNo}
 	 	ORDER BY SUBJECT_NO
 	 	
 	</select>
@@ -150,12 +187,36 @@
 			DEFAULT)
 	</insert>
 	
-	<select id="searchTitle"
-			parameterType="_int"
-			resultType="string">
-		SELECT TODO_TITLE
-		FROM TODOLIST
-		WHERE LIST_NO = #{todoNo}
-	</select>
+	<!-- 과제 완료여부 변경 -->
+	<update id="completeChangeSub"
+			parameterType="Sub">
+			
+		UPDATE SUBJECTLIST
+		SET COMPLETE = #{complete}
+		WHERE SUBJECT_NO = #{subjectNo}
+		
+	</update>
+	
+	<!-- 과제 수정-->
+	<update id="updateSub"
+			parameterType="Todo">
+			
+		UPDATE SUBJECTLIST
+		SET
+			SUBJECT_TITLE = #{subjectTitle},
+			SUBJECT_DETAIL = #{subjectDetail}
+		WHERE SUBJECT_NO = #{subjectNo}
+		
+	</update>
+	
+	<!-- 과제 삭제 -->
+	<delete id="deleteSub"
+			parameterType="_int">
+	
+		DELETE
+		FROM SUBJECTLIST
+		WHERE SUBJECT_NO = #{subjectNo}
+	
+	</delete>
 	
 </mapper>

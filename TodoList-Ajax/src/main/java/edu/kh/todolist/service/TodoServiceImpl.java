@@ -37,7 +37,15 @@ public class TodoServiceImpl implements TodoService {
 		return mapper.todoListFullViewComDESC();
 	}
 
-
+	/** 전체갯수확인
+	 * 
+	 */
+	@Override
+	public int totalCount() {
+		
+		return mapper.totalCount();
+	}
+	
 	/**
 	 * 완료된목록숫자확인
 	 */
@@ -69,9 +77,9 @@ public class TodoServiceImpl implements TodoService {
 	 * 
 	 */
 	@Override
-	public int completeChange(Todo todo) {
+	public int completeChange(int listNo) {
 		
-		return  mapper.completeChange(todo);
+		return  mapper.completeChange(listNo);
 	}
 
 
@@ -89,17 +97,38 @@ public class TodoServiceImpl implements TodoService {
 	 */
 	@Override
 	public int deleteTodo(int listNo) {
-		// TODO Auto-generated method stub
 		return  mapper.deleteUser(listNo);
 	}
 
+	/** 제목 주서오기
+	 * 
+	 */
+	@Override
+	public String searchTitle(int todoNo) {
+		
+		return mapper.searchTitle(todoNo);
+	}
+	
+	/*****************************************************/
+	
 	/** 과제목록 불러오기
 	 * 
 	 */
 	@Override
-	public List<Sub> selectSub(int listNo) {
+	public List<Sub> selectAllSub(int listNo) {
 		
-		return mapper.selectSub(listNo);
+		return mapper.selectAllSub(listNo);
+	}
+	
+	/** 과제 1개 불러오기
+	 * 
+	 * @param subjectNo : 조회할 과제번호
+	 * @return
+	 */
+	@Override
+	public Sub selectSub(int subjectNo) {
+		
+		return mapper.selectSub(subjectNo);
 	}
 
 	/** 과제 추가하기
@@ -111,14 +140,37 @@ public class TodoServiceImpl implements TodoService {
 		return mapper.insertSub(sub);
 	}
 
-	/** 제목 주서오기
+	/** 과제 완료여부 변경
+	 * 
+	 * @param sub : subjectNo 변경할 과제번호, complete 수정될 완료상태
+	 * @return
+	 */
+	@Override
+	public int completeChangeSub(Sub sub) {
+		
+		return mapper.completeChangeSub(sub);
+	}
+
+	/** 과제 수정
 	 * 
 	 */
 	@Override
-	public String searchTitle(int todoNo) {
+	public int updateSub(Sub sub) {
 		
-		return mapper.searchTitle(todoNo);
+		return mapper.updateSub(sub);
 	}
+
+	/** 과제삭제
+	 * 
+	 */
+	@Override
+	public int deleteSub(int subjectNo) {
+		
+		return mapper.deleteSub(subjectNo);
+	}
+
+
+
 	
 	
 	

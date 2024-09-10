@@ -11,7 +11,7 @@
   <header>
     <h1>Todo_List</h1>
     
-    <h3>전체 Todo의 갯수 : <th:block th:text="${listSize}"></th:block> / 완료된 Todo 갯수 : <th:block th:text="${completeCount}"></th:block></h3>
+    <h3>전체 Todo의 갯수 : <span id="totalCount" th:text="${listSize}"></span> / 완료된 Todo 갯수 :  <span id="completeCount">[[${completeCount}]]</span></h3>
     <hr>
   </header>
 
@@ -41,7 +41,7 @@
         </tr>
       </thead>
 
-      <tbody>
+      <tbody id="tbody">
         <th:block th:each= "todo :${todoList}" th:object="${todo}">
           <tr>
             <th th:text="*{listNo}">
@@ -61,33 +61,102 @@
 
             <td th:text="*{regDate}" class="regDate">생성시간</td>
 
-            <td><button class="detailBtn">v</button><input type="hidden" th:value="*{todoDetail}" class="todoDetail"></td>
-            
+            <td><button class="detailBtn"  th:data-list-no="*{listNo}">v</button></td>
 
           </tr>
-          <!-- <tr class="detailBtnAnswer" th:style="'background-color:' + *{color}"></tr> -->
-          <!-- 너무 눈아픔 -->
-          <tr class="detailBtnAnswer pre-wrap"></tr>
         </th:block>
 
       </tbody>
     </table>
 
+    
+    <!-- 
+      할 일 상세 조회 시 출력되는 화면 
+      popup layer : 현재 페이지 위에 새로운 레이어를 띄우는 것
+    -->
+    <!-- 처음에 숨겨놓기 -->
+    <div id="popupLayer" class="popup-hidden">
 
-    <hr>
+      <div class="popup-row">
+        번호 : <span id="popupTodoNo"></span>
+        | 
+        제목 : <span id="popupTodoTitle"></span>
 
-    <h3>Ajax 기초 연습 - todoNo 일치하는 할 일의 제목 얻어오기</h3>
+        <span id="popupClose">&times;</span>
+      </div>
 
-    <input type="number" id="inputTodoNo">
-    <button id="searchBtn">찾기</button>
+      <div class="popup-row">
+        완료 여부 : <span id="popupComplete"></span>
+        | 
+        등록일 : <span id="popupRegDate"></span>
+      </div>
 
+      <div>
+        Color : <input type="color" id="popupColor">
+      </div>
 
+      <div class="popup-row">
+        [내용]
+        <div id="popupTodoContent"></div>
+      </div>
 
+      <div class="btn-container">
+        <button id="changeComplete">완료 여부 변경</button>
+
+        <button id="updateView">수정</button>
+
+        <button id="deleteBtn">삭제</button>
+      </div>
+    </div>
+
+    <!-- 수정 팝업 레이어 (처음에 숨겨져 있음)-->
+    <div id="updateLayer" class="popup-hidden">
+      <div class="popup-row">
+        제목 : <input type="text" id="updateTitle">
+      </div>
+      <div>
+        글자색 : <input type="color" id="updateColor">
+      </div>
+
+      <div class="popup-row">
+        <textarea id="updateContent" cols="50" rows="5"></textarea>
+      </div>
+
+      <div class="btn-container">
+        <button id="updateBtn">수정</button>      
+        <button id="updateCancel">취소</button>      
+      </div>
+    </div>
 
 
 
 
   </main>
+
+  <footer>
+    <hr>
+
+    <h3>Ajax 기초 연습 - todoNo(단일값) 일치하는 할 일의 제목(단일값) 얻어오기</h3>
+
+    <input type="number" id="inputTodoNo">
+    <button id="searchBtn">찾기</button>
+
+    <hr>
+
+    <h3>todoNo(단일값) 일치하는 할 일의 모든 정보(다수의값) 얻어오기</h3>
+    <input type="number" id="inputTodoNo2">
+    <button id="searchBtn2">찾기</button>
+
+    <ul id="result2">
+
+    </ul>
+
+
+  </footer>
+
+
+
+
 
 
 
@@ -97,6 +166,8 @@
 
 <!-- 메세지출력 -->
 <th:block th:replace= "~{/fragments/messageAlert}"></th:block>
+
+<script src="/js/practice.js"></script>
 
 <script src="/js/main.js"></script>
 </body>
