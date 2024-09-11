@@ -169,6 +169,15 @@ public class TodoServiceImpl implements TodoService {
 		return mapper.deleteSub(subjectNo);
 	}
 
+	/** 디테일 호출
+	 * 
+	 */
+	@Override
+	public String getDetail(int listNo) {
+		
+		return mapper.getDetail(listNo);
+	}
+
 
 
 	

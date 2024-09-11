@@ -111,6 +111,13 @@ public interface TodoService {
 	 * @return
 	 */
 	int deleteSub(int subjectNo);
+	
+	/** 해당 listNo의 세부사항 호출
+	 * 
+	 * @param listNo
+	 * @return
+	 */
+	String getDetail(int listNo);
 
 
 

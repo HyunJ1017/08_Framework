@@ -30,35 +30,46 @@
 
     <hr>
     <!-- 할 일 목록 출력 -->
-    
+    <table id="todoList" border="1">
+      <thead>
+        <tr>
+          <th>번호</th>
+          <th>할 일 제목</th>
+          <th id="completeOrder">완료 여부</th>
+          <th>등록 날짜</th>
+          <th>/</th>
+        </tr>
+      </thead>
 
+      <tbody id="tbody">
+        <th:block th:each= "todo :${todoList}" th:object="${todo}">
+          <tr>
+            <th th:text="*{listNo}">
+              할일번호
+            </th>
 
-  <section class="flexColumn">
-    <div class="flexRow">
-      <div class="block">번호</div>
-      <div class="block">할 일 제목</div>
-      <div class="block" id="completeOrder">완료 여부</div>
-      <div class="block">등록 날짜</div>
-      <div class="block">/</div>
-    </div>
+            <th>
+              <a th:href="@{/todo/detail/{listNo}(listNo=*{listNo})}"
+               th:text="*{todoTitle}"
+               th:style="'color: ' + *{color}">할일제목</a>
+               <input type="hidden" th:value="'/todo/detail/' + *{listNo}" class="detailHref">
+            </th>
 
-    <div id="tbody">
-    <th:block th:each= "todo :${todoList}" th:object="${todo}">
+            <th th:text="*{complete}">
+              완료여부
+            </th>
 
-      <div class="flexRow">
-        <div class="block" th:text="*{listNo}">할일번호</div>
-        <div class="block"><a th:href="@{/todo/detail/{listNo}(listNo=*{listNo})}"th:text="*{todoTitle}"th:style="'color: ' + *{color}">할일제목</a><input type="hidden" th:value="'/todo/detail/' + *{listNo}" class="detailHref"></div>
-        <div class="block" th:text="*{complete}">완료여부</div>
-        <div class="block regDate" th:text="*{regDate}">생성시간</div>
-        <div class="block"><button class="detailBtn"  th:data-list-no="*{listNo}">v</button></div>
-      </div>
-      <div class="flexRow btnAnswer"></div>
-    </th:block>
-    </div>
-  </section>
+            <td th:text="*{regDate}" class="regDate">생성시간</td>
 
+            <td><button class="detailBtn"  th:data-list-no="*{listNo}">v</button></td>
 
+          </tr>
 
+          <tr class="btnAnswer"></tr>
+        </th:block>
+
+      </tbody>
+    </table>
 
     
     <!-- 

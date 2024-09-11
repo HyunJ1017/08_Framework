@@ -116,6 +116,13 @@ public interface TodoMapper {
 	 */
 	int deleteSub(int subjectNo);
 	
+	/** 디테일 호출
+	 * 
+	 * @param listNo
+	 * @return
+	 */
+	String getDetail(int listNo);
+	
 	
 
 	

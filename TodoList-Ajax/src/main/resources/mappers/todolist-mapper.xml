@@ -133,9 +133,22 @@
 	<select id="searchTitle"
 			parameterType="_int"
 			resultType="string">
+			
 		SELECT TODO_TITLE
 		FROM TODOLIST
 		WHERE LIST_NO = #{todoNo}
+		
+	</select>
+	
+	<!-- 디테일 찾기 -->
+	<select id="getDetail"
+			parameterType="_int"
+			resultType="string">
+			
+		SELECT TODO_DETAIL
+		FROM TODOLIST
+		WHERE LIST_NO = #{todoNo}
+		
 	</select>
 	
 	

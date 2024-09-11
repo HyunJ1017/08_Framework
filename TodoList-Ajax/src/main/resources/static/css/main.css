@@ -1,6 +1,33 @@
-#todoList{
-  border-collapse: collapse;
+*{
+  box-sizing: border-box;
 }
+
+.flexColumn{
+  display: flex;
+  flex-direction: column;
+}
+.flexRow{
+  display: flex;
+  flex-direction: row;
+}
+.block{
+  display: block;
+}
+.flexRow div{border: 1px solid black;}
+
+.flexRow > div:first-of-type{width: 40px;}
+.flexRow > div:nth-of-type(2){width: 160px;}  
+.flexRow > div:nth-of-type(3){width: 75px;}
+.flexRow > div:nth-of-type(4){width: 160px;}
+.flexRow > div:last-of-type{width: 40px;}
+.btnAnswer{width: 475px;}
+.trAnswer{
+  max-height: 150px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  border: 1px solid black;
+}
+
 
 #popupLayer{
   width: 400px;
@@ -74,6 +101,11 @@
 
 .btn-container > button{ margin: 5px;}
 
+#popupTodoContent{
+  max-height: 170px;
+  overflow: auto;
+}
+
 
 
 /* ----------------------------------------------------- */
@@ -102,3 +134,8 @@
 
 
 #updateTitle{ width: 300px; }
+
+.updateContent{
+  max-height: 170px;
+  overflow: auto;
+}

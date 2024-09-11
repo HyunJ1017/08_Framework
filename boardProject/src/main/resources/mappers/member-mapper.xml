@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- Mapper 인터페이스와 연결하는 방법
+namespace 속성 값으로 MemberMapper 인터페이스의 패키지명 + 인터페이스명 작성
+ -->
+<mapper namespace = "edu.kh.project.member.mapper.MemberMapper">
+	
+	<!-- 
+		TIP
+		
+		parameterType 속성은 필수가 아님.
+		-> Mybatis TypeHandler가 파라미터의 타입을 알아서 판별할 수 있다
+		
+		** 잘 쓰던가 쓰지 말던가
+		
+		단, SELECT 태그에서 ResultType은 필수
+	-->
+	
+	<!-- 로그인 -->
+	<select id="login" resultType="Member">
+	SELECT 
+	  	MEMBER_NO, 
+	  	MEMBER_EMAIL, 
+	  	MEMBER_NICKNAME, 
+	  	MEMBER_PW,
+		MEMBER_TEL, 
+		MEMBER_ADDRESS, 
+		PROFILE_IMG, 
+		AUTHORITY,
+		TO_CHAR(ENROLL_DATE, 
+			'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') ENROLL_DATE
+	FROM "MEMBER"
+	WHERE MEMBER_EMAIL = #{memberEmail}
+	AND   MEMBER_DEL_FL = 'N'
+	</select>
+	<!-- MEMBER_DEL_FL = 'N' : 탈퇴하지 않은 회원 -->
+  
+</mapper>

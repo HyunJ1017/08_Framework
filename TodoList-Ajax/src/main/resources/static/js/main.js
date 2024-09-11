@@ -154,11 +154,13 @@ function selectTodoList(){
     for( let todo of todoList){
       
       // 1) todoNo가 들어갈 th테그
-      const todoNo = document.createElement("th");
+      const todoNo = document.createElement("div");
+      todoNo.classList.add("block");
       todoNo.innerText = todo.listNo;
       
       // 2) todoTitle이 들어갈 td, a 요소 생성
-      const todoTitle = document.createElement("td");
+      const todoTitle = document.createElement("div");
+      todoTitle.classList.add("block");
       const a = document.createElement("a");
       a.innerText = todo.todoTitle;
       a.href = `/todo/detail/${todo.listNo}`;
@@ -177,32 +179,41 @@ function selectTodoList(){
       });
       
       // 3) 완료여부
-      const todoComplete = document.createElement("th");
+      const todoComplete = document.createElement("div");
+      todoComplete.classList.add("block");
       todoComplete.innerText = todo.complete;
       
       // 4) 등록일
-      const regDate = document.createElement("td");
+      const regDate = document.createElement("div");
+      regDate.classList.add("block");
       regDate.innerText = todo.regDate;
       
       // 4.5) 버튼 부분
+      const buttonDiv = document.createElement("div");
+      buttonDiv.classList.add("block");
       const button = document.createElement("button");
       button.innerText = 'v';
       button.classList.add("detailBtn");
+      button.dataset.listNo = todo.listNo;
+      buttonDiv.appendChild(button);
 
       // 5) tr을 만들어 1,2,3,4 에서 만든 요소 자식으로 추가
-      const tr = document.createElement("tr");
-      tr.id = ''
-      tr.append( todoNo, todoTitle, todoComplete, regDate, button )
+      const div = document.createElement("div");
+      div.classList.add("flexRow");
+      div.append( todoNo, todoTitle, todoComplete, regDate, buttonDiv )
       
+      // 5-5) detaile 넣어줄 표시 안해둘 행
+      const div2 = document.createElement("tr");
+      div2.classList.add("flexRow")
+      div2.classList.add("btnAnswer")
+
       // 6) tbody에 tr 추가
-      tbody.append(tr);
+      tbody.append(div, div2);
       
     }
     
-    
-    
-    
-    
+    /* 버튼이벤트 다시만들기 */
+    btnEvent();
     
   })
   .catch( e => console.log(e));
@@ -218,6 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // a : 반복마다 하나씩 꺼내져서 저장되는 변수
     a.addEventListener("click", e => {
       e.preventDefault();
+      console.log("a클릭됨");
       selectTodo(e.target.href);
     })
   })
@@ -232,13 +244,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* 버튼 */
 
-const detailBtn = document.querySelectorAll(".detailBtn");
-const detailBtnAnswer = document.querySelectorAll(".detailBtnAnswer");
 
 btnEvent = () => {
+  const detailBtn = document.querySelectorAll(".detailBtn");
+  // 응답해줄 행 햏
+  const btnAnswer = document.querySelectorAll(".btnAnswer");
 
+  
   for( let i = 0 ; i < detailBtn.length ; i++){
-
+    
     detailBtn[i].addEventListener("click", ()=>{
       if(detailBtn[i].innerText == 'v'){
         detailBtn[i].innerText = '접기';
@@ -247,13 +261,27 @@ btnEvent = () => {
         console.log(listNo);
 
         /* detail 정보 받아와서 <tr> 집어넣고, id생성해주기*/
-
+        // 어디에넣을건데?
+        // class로 tr 만들고 같은순서에 ㄱㄱ
+        fetch("/todo/getDetail/" + listNo)
+        .then(response => {
+          if(response.ok) return response.text();
+          throw new Error("디테일호출 오류발생, " + response.status)
+        })
+        .then(detail => {
+          console.log(detail);  // 여기까지 이상없음
+          btnAnswer[i].innerHTML = '<td colspan="4">'+ detail +'</td><td></td>';
+          btnAnswer[i].classList.add("trAnswer"); // css적용할 클래스 추가
+        })
+        .catch(err => console.log(err));
+        
         //const goBtn = document.querySelector(".goBtn");
-
+        
       } else {
         detailBtn[i].innerText = 'v';
-        /* 누른버튼 data값이랑 일치하는 tr id 찾아서 remove */
-
+        /* 내용지우기 */
+        btnAnswer[i].innerHTML = '';
+        btnAnswer[i].classList.remove("trAnswer");
       }
     })
   }
@@ -265,14 +293,15 @@ btnEvent = () => {
  * @param url : /todo/detail/10 형태
 */
 function selectTodo(url){
-  
+  console.log("이벤트 시작");
+
   fetch(url)
   .then(response => {
     if(response.ok) { // 요청응답 성공시
 
       //return response.json();
       // -> response.text() + JSON.parse(response|result) 합친 메서드
-
+      console.log("응답 정상");
       return response.json();
     }
 

@@ -207,5 +207,13 @@ public class TodoAjaxController {
 		return service.updateTodo(todo);
 	}
 	
+	@ResponseBody
+	@GetMapping("getDetail/{listNo}")
+	public String getDetail( @PathVariable("listNo") int listNo ) {
+		
+		return service.getDetail(listNo);
+	}
+	
+	
 
 }
