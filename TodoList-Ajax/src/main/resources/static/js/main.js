@@ -517,3 +517,28 @@ updateBtn.addEventListener("click", ()=>{
   
 });
 
+const clickHrSub = document.querySelector("#clickHrSub");
+let clickHrSubCheck = 'off';
+
+clickHrSub.addEventListener("click", () => {
+  
+  const popupLayer = document.querySelector("#popupLayer");
+  const subSection = document.querySelector("#subSection");
+
+  if(clickHrSubCheck === 'off'){
+    clickHrSubCheck = 'on';
+    alert("on");
+
+    popupLayer.style.width='1000px';
+    subSection.style.width='400px';
+    subSection.classList.remove('popup-hidden');
+  } else {
+    clickHrSubCheck = 'off';
+    alert("off");
+    
+    popupLayer.style.width='510px';
+    subSection.style.width='0';
+    subSection.classList.add('popup-hidden');
+  }
+
+});

@@ -33,7 +33,7 @@
 
 
 #popupLayer{
-  width: 400px;
+  width: 510px;
   height: 400px;
   border: 3px solid pink;
   border-radius: 15px;
@@ -116,7 +116,15 @@
 }
 
 .textCenter{
-  padding: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.textCenter:hover{
+  cursor: pointer;
+}
+#subSection{
+  width: 0;
 }
 
 /* ----------------------------------------------------- */

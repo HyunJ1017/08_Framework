@@ -67,7 +67,7 @@
     -->
     <!-- 처음에 숨겨놓기 -->
     <div id="popupLayer" class="popup-hidden">
-      <section class="popup-row">
+      <section class="popup-row" style="width: 500px;">
         <div class="popup-row">
           번호 : <span id="popupTodoNo"></span>
           | 
@@ -99,9 +99,13 @@
           <button id="deleteBtn">삭제</button>
         </div>
       </section>
-      <section class="flexRow textCenter">
+      <section class="flexRow textCenter" id="clickHrSub">
         <hr class="clickHr">
-        ><br>><br>>
+        <p>펼<br>치<br>기</p>
+      </section>
+      <section id="subSection" class="popup-hidden flexColumn">
+        <div>sub목록1</div>
+        <div>sub목록2</div>
       </section>
       
     </div>
