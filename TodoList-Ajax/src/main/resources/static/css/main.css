@@ -6,13 +6,16 @@
   display: flex;
   flex-direction: column;
 }
+
 .flexRow{
   display: flex;
   flex-direction: row;
 }
+
 .block{
   display: block;
 }
+
 .flexRow div{border: 1px solid black;}
 
 .flexRow > div:first-of-type{width: 40px;}
@@ -46,7 +49,8 @@
   right: 0;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
 }
 
 
@@ -106,7 +110,14 @@
   overflow: auto;
 }
 
+.clickHr{
+  position: absolute;
+  height: 350px;
+}
 
+.textCenter{
+  padding: auto;
+}
 
 /* ----------------------------------------------------- */
 
@@ -128,8 +139,8 @@
   right: 0;
 
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  justify-content: center;
 }
 
 
