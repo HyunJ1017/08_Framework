@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller // 요청/응답 제어 역할 명시 + Bean 등록(IOC)
 @RequestMapping("member") // /member로 시작하는 요청 맵핑
 @Slf4j // log 필드 자동 생성 Lombok 어노테이션
-public class MamberController {
+public class MemberController {
 	
 	@Autowired // 의존성주입(DI)
 	private MemberService service;

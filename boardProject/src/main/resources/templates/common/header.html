@@ -1,7 +1,7 @@
 <header>
   <section>
     <!-- 클릭 시 메인 페이지로 이동하는 로고 -->
-    <a href="/">
+    <a href="/" id="logoLink">
       <img src="/images/logo.jpg" alt="메인 로고" id="homeLogo">
     </a>
   </section>
@@ -36,8 +36,42 @@
   </section>
 
 
-  <!-- 안쓰는 섹션 -->
-  <section></section>
+  <!-- 해더 우측 섹션 -->
+  <section>
+
+    <!-- 우측 상단 로그인 / 드롭다운 메뉴 -->
+     <div class="header-top-menu"><!-- 클래스명은 "-", ID는 카멜표기법 -->
+
+      <!-- 로그인 X -->
+      <th:block th:unless= "${session.loginMember}">
+        <a href="/">메인 페이지</a>
+        |
+        <a href="/member/login">로그인</a>
+      </th:block>
+
+      <!-- 로그인 OK -->
+      <th:block th:if="${session.loginMember}">
+        
+        <!-- input 체크박스의 라벨, 클릭시 input 클릭한것과 동일한 효과 -->
+        <label for="headerMenuToggle">
+          [[${session.loginMember.memberNickname}]]
+
+          <i class="fa-solid fa-caret-down"></i>
+        </label>
+
+        <input type="checkbox" id="headerMenuToggle">
+
+        <!-- 닉네임 클릭 시 보이는 메뉴 -->
+        <div class="header-menu">
+          <a href="#">내정보</a>
+          <a href="/member/logout">로그아웃</a>
+        </div>
+
+      </th:block>
+
+
+     </div>
+  </section>
 
 
 </header>

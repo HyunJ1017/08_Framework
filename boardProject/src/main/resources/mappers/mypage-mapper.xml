@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.kh.project.myPage.mapper.MyPageMapper">
+
+	<!-- 
+		parameterType은 작성하지 않아도 TypeHandler가 자동으로 인식
+		select 타입에서는 resultType이 필수로 작성되야 함
+	 -->
+
+	<!-- 회원정보 수정 -->
+	<update id="updateInfo">
+		UPDATE "MEMBER"
+		SET
+			MEMBER_NICKNAME = #{memberNickname},
+			MEMBER_TEL = #{memberTel},
+			MEMBER_ADDRESS = #{memberAddress}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+	
+	<!-- 회원 닉네임 중복검사 -->
+	<select id="checkNickname" resultType="int">
+	SELECT COUNT(*)
+	FROM "MEMBER"
+	WHERE MEMBER_NO > 0
+	AND MEMBER_NICKNAME = #{input}
+	</select>
+	<!-- 
+		MEMBER_NO > 0
+		인덱스 객체를 사용해서 검색 속도 향상시키기
+	 -->
+  
+</mapper>

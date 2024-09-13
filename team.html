@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    div {
+      box-sizing: border-box;
+    }
+
+    .container {
+      width: 660px;
+      margin: auto;
+    }
+
+    .btn-area {
+      margin-top: 50px;
+      text-align: center;
+    }
+
+    .btn-area>div {
+      width: 100px;
+      height: 30px;
+      margin: 10px;
+      display: inline-block;
+      border: 2px solid;
+      border-radius: 15px;
+      font-size: 20px;
+      line-height: 20px;
+      cursor: pointer;
+    }
+
+    #start {
+      border-color: #2ec4b6;
+      color: #2ec4b6;
+    }
+
+    #start:hover {
+      background-color: #2ec4b6;
+      color: white;
+    }
+
+    #stop {
+      border-color: #e71d36;
+      color: #e71d36;
+    }
+
+    #stop:hover {
+      background-color: #e71d36;
+      color: white;
+    }
+
+
+    .items {
+      height: 50px;
+      width: 100px;
+      margin: 15px 5px;
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid black;
+      text-align: center;
+      line-height: 50px;
+      display: inline-block;
+      font-size: 20px;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+
+    .items::selection {
+      color: rgba(0, 0, 0, 0);
+    }
+
+    .row0 div {
+      border-color: #f94144;
+      color: #f94144;
+    }
+
+    .row1 div {
+      border-color: #f3722c;
+      color: #f3722c;
+    }
+
+    .row2 div {
+      border-color: #f8961e;
+      color: #f8961e;
+    }
+
+    .row3 div {
+      border-color: #90be6d;
+      color: #90be6d;
+    }
+
+    .row4 div {
+      border-color: #43aa8b;
+      color: #43aa8b;
+    }
+
+    .row5 div {
+      border-color: #577590;
+      color: #577590;
+    }
+
+
+    #open {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 100px;
+    }
+
+    #open:hover {
+      background-color: black;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="btn-area">
+    <div id="start">start</div>
+    <div id="stop">stop</div>
+    <div id="open">open</div>
+  </div>
+
+
+  <div class="container"></div>
+
+
+  <script>
+
+    // let students =
+    //   [ '최윤호', '김민지', '이은지', '박소현', '이현지',
+    //     '김예린', '김주희', '박지환', '김현수', '김민석',
+    //     '김다혜', '윤승현', '김주연', '이하영', '김희수',
+    //     '김동현', '김민정', '김윤지', '김세희', '김동욱',
+    //     '김현정', '김민기', '김윤호', '김동현', '이유진',
+    //     '박지현', '김대호', '김민우', '김윤성', '김소현'];
+
+    let students =['권희연','성상민','정원근','정인재','이동현','정소희','고현우','김동현','이영수','강태환','임경우','조원찬','홍윤기','박현준','강진형','김형진','유준선','이소진','정호정','김성엽','이홍종','황유진','김대현','김정원','임호현','임세훈','김성민','이나서']
+
+
+    let teams = [];
+    let temp = [];
+
+    for (let i = 0; i < students.length; i += 5) {
+      temp.push(students.slice(i, i + 5));
+    }
+
+    /** 배열을 섞는 함수 */
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    /** 같은 인덱스 번째 끼리 묶기*/
+    function groupByIndex(teams) {
+      return teams[0].map((v, i) => teams.map(team => team[i]));
+    }
+
+    /** 팀 섞기  */
+    function reset() {
+      teams = temp.map(arr => shuffle(arr));
+      teams = groupByIndex(teams);
+      teams = teams.map(arr => shuffle(arr));
+      teams = shuffle(teams);
+      // console.log(teams);
+    }
+
+
+    function startFn() {
+      document.getElementById("open").style.display = "none";
+
+      const startBtn = document.getElementById("start");
+      startBtn.removeEventListener("click", startFn);
+
+      const container = document.querySelector(".container");
+      container.innerHTML = "";
+
+      let row;
+      let count = 0;
+      for (let i = 0; i < 30; i++) {
+        if (i % 6 == 0) {
+          row = document.createElement("div");
+          row.classList.add("row" + (count++));
+        }
+
+        const items = document.createElement("div");
+        items.classList.add("items");
+        row.appendChild(items);
+
+        if (i % 6 == 5) {
+          container.appendChild(row);
+        }
+      }
+
+      const copyList = [...students]; // 학생목록 복사
+
+      interval = setInterval(function () {
+        // shuffle(copyList);   // 섞기
+        reset();
+
+        const itemsList = document.querySelectorAll(".items");
+        itemsList.forEach((item, index) => {
+          const rowIndex = Math.floor(index / 6);
+          const colIndex = index % 6;
+          item.textContent = teams[rowIndex][colIndex];
+        });
+      }, 70);
+    }
+
+
+    // start 버튼 클릭 이벤트 핸들러 
+    document.getElementById("start").addEventListener("click", startFn);
+
+    document.getElementById("stop").addEventListener("click", function () {
+      document.getElementById("start").addEventListener("click", startFn);
+      document.getElementById("open").style.display = "inline-block";
+
+      clearInterval(interval);
+
+      document.querySelectorAll(".items").forEach(function (item) {
+        const style = window.getComputedStyle(item);
+        item.style.backgroundColor = style.borderColor;
+      });
+
+    });
+
+    document.addEventListener("click", function (event) {
+      if (event.target.classList.contains("items")) {
+        event.target.style.transitionDuration = "0.75s";
+        event.target.style.backgroundColor = "white";
+        event.target.removeEventListener("click", arguments.callee);
+      }
+    });
+
+    document.getElementById("open").addEventListener("click", () => {
+      document.querySelectorAll(".items").forEach(function (item) {
+        item.style.transitionDuration = "0.75s";
+        item.style.backgroundColor = "white";
+      });
+    });
+
+  </script>
+</body>
+
+</html>
