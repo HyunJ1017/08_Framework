@@ -103,8 +103,9 @@
         <hr class="clickHr">
         <p>펼<br>치<br>기</p>
       </section>
-      <!-- 서브리스트목록 -->
       <section id="subSection" class="popup-hidden flexColumn">
+        <div>sub목록1</div>
+        <div>sub목록2</div>
       </section>
       
     </div>
@@ -141,6 +142,32 @@
 
   </main>
 
+  <footer>
+    <hr>
+
+    <h3>Ajax 기초 연습 - todoNo(단일값) 일치하는 할 일의 제목(단일값) 얻어오기</h3>
+
+    <input type="number" id="inputTodoNo">
+    <button id="searchBtn">찾기</button>
+
+    <hr>
+
+    <h3>todoNo(단일값) 일치하는 할 일의 모든 정보(다수의값) 얻어오기</h3>
+    <input type="number" id="inputTodoNo2">
+    <button id="searchBtn2">찾기</button>
+
+    <ul id="result2">
+
+    </ul>
+
+
+  </footer>
+
+
+
+
+
+
 
 
 <!-- 정렬 저장용 숨은값 -->
@@ -148,6 +175,8 @@
 
 <!-- 메세지출력 -->
 <th:block th:replace= "~{/fragments/messageAlert}"></th:block>
+
+<script src="/js/practice.js"></script>
 
 <script src="/js/main.js"></script>
 </body>

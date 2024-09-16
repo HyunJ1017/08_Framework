@@ -65,10 +65,12 @@ public class ParameterController {
 		String inputName = req.getParameter("inputName");
 		String inputAge = req.getParameter("inputAge");
 		String inputAddress = req.getParameter("inputAddress");
+		String bindingTest = req.getParameter("bindingTest");
 		
 		System.out.println(inputName);
 		System.out.println(inputAge);
 		System.out.println(inputAddress);
+		System.out.println(bindingTest);
 		
 		// requestScope에 K:"message", V:"메시지입니다" 세팅
 		req.setAttribute("message", "메시지입니다");

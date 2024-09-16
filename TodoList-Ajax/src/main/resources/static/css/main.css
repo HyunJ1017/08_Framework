@@ -123,6 +123,7 @@
 .textCenter:hover{
   cursor: pointer;
 }
+/* 서브리스트목록 */
 #subSection{
   width: 0;
 }

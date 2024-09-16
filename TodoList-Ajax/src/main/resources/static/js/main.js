@@ -443,12 +443,12 @@ const updateCancel = document.querySelector("#updateCancel"); // 수정 취소
 
 // 수정레이어열기에대한코드
 updateView.addEventListener("click", ()=>{
-
+  
   // 팝업 레이어 닫기
   popupLayer.classList.add("popup-hidden");
   // 수정 레이어 열기
   updateLayer.classList.remove("popup-hidden");
-
+  
   // 상세조회 제목/내용
   const todoTitle = document.querySelector("#popupTodoTitle").innerText;
   const todoContent = document.querySelector("#popupTodoContent").innerHTML;
@@ -459,13 +459,13 @@ updateView.addEventListener("click", ()=>{
   document.querySelector("#updateContent").value = todoContent.replaceAll("<br>", "\n");// 줄바꿈문자변경
   document.querySelector("#updateColor").value = color;
 
-
+  
   // 수정버튼 #updateBtn에 listNo(PK) 숨겨넣기
   // dataset 속성 : 요소에 js에서 사용할 값(data)를 추가하는 속성
   // 요소.dataset속성명 = "값"; -> 대입
   // 요소.dataset속성명;        -> 값 얻어오기
   updateBtn.dataset.listNo = document.querySelector("#popupTodoNo").innerText;
-
+  
 });
 
 // 수정취소에 대한 코드
@@ -476,7 +476,7 @@ updateCancel.addEventListener("click", ()=>{
 
 // 수정버튼 (#updateBtn) 클릭시
 updateBtn.addEventListener("click", ()=>{
-
+  
   const obj = {};
   // 버튼에 데이터셋값 얻어오기
   obj.listNo = updateBtn.dataset.listNo;
@@ -485,13 +485,13 @@ updateBtn.addEventListener("click", ()=>{
   obj.color = document.querySelector("#updateColor").value;
 
   console.log(obj);
-
+  
   // 비동기로 할 일 수정 요청
   fetch("/todo/updateTodo", {
     method : "PUT",
-   headers : {"Content-Type" : "application/json"},
-   body : JSON.stringify(obj)
-   // obj 객체를 JSON 문자열 형태로변환해서 제출
+    headers : {"Content-Type" : "application/json"},
+    body : JSON.stringify(obj)
+    // obj 객체를 JSON 문자열 형태로변환해서 제출
   })
   .then(response => {
     if(response.ok) return response.text();
@@ -499,16 +499,16 @@ updateBtn.addEventListener("click", ()=>{
   })
   .then(result => {
     console.log(result);  // 1 | 0
-
+    
     if(result > 0){// 수정 성공
       alert("수정 성공");
     } else { // 실패
       alert("수정 실패");
     }
-
+    
     // 수정 레이어 숨기기
     updateLayer.classList.add("popup-hidden");
-
+    
     // 상세조회(팝업레이어 열기) 함수 호출
     selectTodo("/todo/detail/" + updateBtn.dataset.listNo);
     selectTodoList();
@@ -516,6 +516,9 @@ updateBtn.addEventListener("click", ()=>{
   .catch(err=>console.error(err));
   
 });
+
+/******************************************************************************************** */
+/* 서브리스트 구역 만들기 */
 
 const clickHrSub = document.querySelector("#clickHrSub");
 let clickHrSubCheck = 'off';
@@ -525,6 +528,8 @@ clickHrSub.addEventListener("click", () => {
   const popupLayer = document.querySelector("#popupLayer");
   const subSection = document.querySelector("#subSection");
 
+  const listNo = document.querySelector("#popupTodoNo").innerText;
+  
   if(clickHrSubCheck === 'off'){
     clickHrSubCheck = 'on';
     alert("on");
@@ -532,6 +537,21 @@ clickHrSub.addEventListener("click", () => {
     popupLayer.style.width='1000px';
     subSection.style.width='400px';
     subSection.classList.remove('popup-hidden');
+
+    let htmlString = '';
+    
+    /* 비동기로 서브목록 불러오기 */
+    fetch("/sub/selectSub/" + listNo)
+    .then(response => {
+      if(response.ok) return response.json();
+      throw new Error("불러오기 실패 " + response.status);
+    })
+    .then(subList => {
+      console.log(subList);
+    })
+    .catch( err => console.log(err) );
+
+
   } else {
     clickHrSubCheck = 'off';
     alert("off");
