@@ -199,13 +199,14 @@ function selectTodoList(){
 
       // 5) tr을 만들어 1,2,3,4 에서 만든 요소 자식으로 추가
       const div = document.createElement("div");
-      div.classList.add("flexRow");
+      div.classList.add("flexRow", "tbodyRow");
       div.append( todoNo, todoTitle, todoComplete, regDate, buttonDiv )
       
       // 5-5) detaile 넣어줄 표시 안해둘 행
       const div2 = document.createElement("tr");
       div2.classList.add("flexRow")
       div2.classList.add("btnAnswer")
+      div2.style.backgroundColor = todo.color + '30';
 
       // 6) tbody에 tr 추가
       tbody.append(div, div2);
@@ -270,7 +271,7 @@ btnEvent = () => {
         })
         .then(detail => {
           console.log(detail);  // 여기까지 이상없음
-          btnAnswer[i].innerHTML = '<td colspan="4">'+ detail +'</td><td></td>';
+          btnAnswer[i].innerHTML = '<div>'+ detail +'</div>';
           btnAnswer[i].classList.add("trAnswer"); // css적용할 클래스 추가
         })
         .catch(err => console.log(err));
@@ -335,6 +336,13 @@ function selectTodo(url){
     
   })
   .catch( err => console.log(err));
+
+  clickHrSubCheck = 'off';
+  document.querySelectorAll(".subListViewer").forEach(e => e.remove());
+  
+  popupLayer.style.width='510px';
+  subSection.style.width='0';
+  subSection.classList.add('popup-hidden');
 }
 
 
@@ -363,8 +371,8 @@ changeComplete.addEventListener("click", ()=>{
   PUT    : 수정 (UPDATE)
   DELETE : 삭제 (DELETE)
   */
- 
- fetch("/todo/completeChange", {
+
+  fetch("/todo/completeChange", {
    method : "PUT",
    headers : {"Content-Type" : "application/json"},
    body : listNo
@@ -527,38 +535,137 @@ clickHrSub.addEventListener("click", () => {
   
   const popupLayer = document.querySelector("#popupLayer");
   const subSection = document.querySelector("#subSection");
-
+  
   const listNo = document.querySelector("#popupTodoNo").innerText;
   
   if(clickHrSubCheck === 'off'){
     clickHrSubCheck = 'on';
-    alert("on");
-
+    
     popupLayer.style.width='1000px';
     subSection.style.width='400px';
     subSection.classList.remove('popup-hidden');
-
+    document.querySelector(".textCenterDiv").innerText = '🔻🔻🔻';
+    
     let htmlString = '';
     
     /* 비동기로 서브목록 불러오기 */
-    fetch("/sub/selectSub/" + listNo)
-    .then(response => {
-      if(response.ok) return response.json();
-      throw new Error("불러오기 실패 " + response.status);
-    })
-    .then(subList => {
-      console.log(subList);
-    })
-    .catch( err => console.log(err) );
-
+    selectSub(listNo);
 
   } else {
     clickHrSubCheck = 'off';
-    alert("off");
+    document.querySelectorAll(".subListViewer").forEach(e => e.remove());
     
     popupLayer.style.width='510px';
     subSection.style.width='0';
     subSection.classList.add('popup-hidden');
+    document.querySelector(".textCenterDiv").innerText = '🔺🔺🔺';
   }
-
+  
 });
+
+/******************************************************************************************** */
+/* 서브화면출력함수 */
+function selectSub(listNo){
+  /* 기존에 있던 내용 지우기 */
+  document.querySelectorAll(".subListViewer").forEach(e => e.remove());
+  
+  fetch("/sub/selectSub/" + listNo)
+  .then(response => {
+    if(response.ok) return response.json();
+    throw new Error("불러오기 실패 " + response.status);
+  })
+  .then(subList => {
+    // console.log(subList);
+    
+    /* 반복출력 */
+    for(let sub of subList){
+      const article1 = document.createElement("article");
+      article1.classList.add("flexRow", "subListViewer");
+      article1.innerHTML =
+          '<div class="block subjectNum">' + sub.subjectNo + '</div>'
+        + '<div class="block subjectTitle">' + sub.subjectTitle + '</div>'
+        + '<div class="block complete" data-subject-no="' + sub.subjectNo + '">' + sub.complete + '</div>';
+          
+    const article2 = document.createElement("article");
+    article2.classList.add("flexRow", "subListViewer");
+    if(sub.subjectDetail === null){
+      article2.innerHTML = '';
+    } else {
+      article2.innerHTML =
+      '<div class="subjectDetail">' + sub.subjectDetail + '</div>';
+    }
+    
+    subSection.append( article1, article2 );
+  }
+  subCompleteChange();
+  })
+  .catch( err => console.log(err) );
+    
+};
+
+/******************************************************************************************** */
+/* 서브리스트 추가하기 */
+const addBtn2 = document.querySelector("#addBtn2");
+
+addBtn2.addEventListener("click", () => {
+  
+  const listNo = document.querySelector("#popupTodoNo").innerText;
+  const subjectTitle = document.querySelector("#subjectTitle").value;
+  const subjectDetail = document.querySelector("#subjectDetail").value;
+  
+  console.log(listNo + ', ' + subjectTitle + ', ' + subjectDetail);
+  
+  fetch("/sub/insert", {
+    method : "POST",
+    headers: {"Content-Type": "application/json"},
+    body : JSON.stringify( { "listNo":listNo, "subjectTitle":subjectTitle, "subjectDetail":subjectDetail} )
+  })
+  .then( response => {
+    if(response.ok) return response.text();
+    throw new Error("추가 통신실패" + response.status);
+  })
+  .then(result => {
+    console.log(result);
+    
+    if(result > 0){
+      document.querySelector("#subjectTitle").value = '';
+      document.querySelector("#subjectDetail").value = '';
+      selectSub(listNo);
+    } else {
+      alert("추가실패");
+    }
+  })
+  .catch(err => console.log( err ));
+});
+
+
+/******************************************************************************************** */
+/* 완료여부수정 */
+
+function subCompleteChange(){
+  document.querySelectorAll(".complete").forEach( c => {
+    c.addEventListener("click", ()=>{
+      // alert(c.dataset.subjectNo)
+      const subNo = c.dataset.subjectNo;
+
+      fetch("/sub/completeChange", {
+        method : "PUT",
+        headers : {"Content-Type" : "application/json"},
+        body : subNo
+      })
+      .then(response => {
+        if(response.ok) return response.json();
+        throw new Error("완료여부변경실패" + response.status)
+      })
+      .then(result => {
+        console.log(result);
+
+        // 정상 시행시 완료여부 값 반대로 변경
+        c.innerText = c.innerText == 'O' ? 'X' : 'O';
+
+      })
+      .catch(err=>console.error(err));
+
+    } );
+  });
+}

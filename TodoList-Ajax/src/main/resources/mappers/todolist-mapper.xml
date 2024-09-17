@@ -201,12 +201,11 @@
 	</insert>
 	
 	<!-- 과제 완료여부 변경 -->
-	<update id="completeChangeSub"
-			parameterType="Sub">
+	<update id="completeChangeSub">
 			
 		UPDATE SUBJECTLIST
-		SET COMPLETE = #{complete}
-		WHERE SUBJECT_NO = #{subjectNo}
+		SET COMPLETE = DECODE(COMPLETE, 'O', 'X', 'O')
+		WHERE SUBJECT_NO = #{subNo}
 		
 	</update>
 	

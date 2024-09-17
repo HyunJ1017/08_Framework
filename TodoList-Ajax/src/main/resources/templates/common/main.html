@@ -45,14 +45,14 @@
     <div id="tbody">
     <th:block th:each= "todo :${todoList}" th:object="${todo}">
 
-      <div class="flexRow">
+      <div class="flexRow tbodyRow">
         <div class="block" th:text="*{listNo}">할일번호</div>
         <div class="block"><a th:href="@{/todo/detail/{listNo}(listNo=*{listNo})}"th:text="*{todoTitle}"th:style="'color: ' + *{color}">할일제목</a><input type="hidden" th:value="'/todo/detail/' + *{listNo}" class="detailHref"></div>
         <div class="block" th:text="*{complete}">완료여부</div>
         <div class="block regDate" th:text="*{regDate}">생성시간</div>
-        <div class="block"><button class="detailBtn"  th:data-list-no="*{listNo}">v</button></div>
+        <div class="block btnDiv"><button class="detailBtn"  th:data-list-no="*{listNo}">v</button></div>
       </div>
-      <div class="flexRow btnAnswer"></div>
+      <div class="flexRow btnAnswer" th:style="'background-color: ' + *{color} + '30'"></div>
     </th:block>
     </div>
   </section>
@@ -101,10 +101,19 @@
       </section>
       <section class="flexRow textCenter" id="clickHrSub">
         <hr class="clickHr">
-        <p>펼<br>치<br>기</p>
+        <div class="textCenterDiv">🔺🔺🔺</div>
       </section>
       <!-- 서브리스트목록 -->
       <section id="subSection" class="popup-hidden flexColumn">
+      
+        <div class="BookkMyungjoBd">
+          제목 : <input type="text" id="subjectTitle"> 
+        </div>
+        <div>
+          상세내용 : <input type="text" id="subjectDetail" placeholder="생략가능">
+          <button class="BookkMyungjoBd" id="addBtn2">추가</button>
+        </div>
+      
       </section>
       
     </div>

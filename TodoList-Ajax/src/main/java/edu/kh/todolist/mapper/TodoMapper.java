@@ -123,6 +123,13 @@ public interface TodoMapper {
 	 */
 	String getDetail(int listNo);
 	
+	/** 서브 완료여부 변경
+	 * 
+	 * @param subNo
+	 * @return
+	 */
+	int completeChangeSub(int subNo);
+	
 	
 
 	

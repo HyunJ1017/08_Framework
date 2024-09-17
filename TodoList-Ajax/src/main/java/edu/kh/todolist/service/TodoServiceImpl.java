@@ -178,6 +178,14 @@ public class TodoServiceImpl implements TodoService {
 		return mapper.getDetail(listNo);
 	}
 
+	/**서브완료변경
+	 * 
+	 */
+	@Override
+	public int completeChangeSub(int subNo) {
+		return mapper.completeChangeSub(subNo);
+	}
+
 
 
 	

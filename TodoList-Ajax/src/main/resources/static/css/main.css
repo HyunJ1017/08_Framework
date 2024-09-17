@@ -2,6 +2,27 @@
   box-sizing: border-box;
 }
 
+body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+header{
+  min-width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+main{
+  min-width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 30px 120px 30px;
+  border: 1px solid  #bdbdbd
+}
+
 .flexColumn{
   display: flex;
   flex-direction: column;
@@ -16,21 +37,47 @@
   display: block;
 }
 
-.flexRow div{border: 1px solid black;}
+/* todoList 목록 */
 
-.flexRow > div:first-of-type{width: 40px;}
-.flexRow > div:nth-of-type(2){width: 160px;}  
-.flexRow > div:nth-of-type(3){width: 75px;}
-.flexRow > div:nth-of-type(4){width: 160px;}
-.flexRow > div:last-of-type{width: 40px;}
-.btnAnswer{width: 475px;}
+.tbodyRow div{border: 1px solid black;}
+
+.tbodyRow > div:first-of-type{
+  width: 40px;
+  text-align: center;
+}
+.tbodyRow > div:nth-of-type(2){
+  width: 160px;
+  text-align: center;
+}
+.tbodyRow > div:nth-of-type(3){
+  width: 75px;
+  text-align: center;
+}
+.tbodyRow > div:nth-of-type(4){
+  width: 160px;
+  text-align: center;
+}
+.tbodyRow > div:last-of-type{
+  width: 45px;
+  text-align: center;
+}
+.btnDiv button{
+  width: 43px;
+  border: 0;
+  background-color: #fff;
+}
+.btnAnswer{width: 480px;}
 .trAnswer{
   max-height: 150px;
+  height: 77px;
+  padding: 10px;
   overflow-y: auto;
   white-space: pre-wrap;
   border: 1px solid black;
 }
 
+/* ----------------------------------------------------- */
+/* 팝업레이어설정 */
 
 #popupLayer{
   width: 510px;
@@ -107,14 +154,14 @@
 
 #popupTodoContent{
   max-height: 170px;
-  overflow: auto;
+  overflow: auto; /* 길어질 시 스크롤 */
 }
 
+/* 팝업레이거 가운데 */
 .clickHr{
   position: absolute;
   height: 350px;
 }
-
 .textCenter{
   display: flex;
   justify-content: center;
@@ -123,11 +170,60 @@
 .textCenter:hover{
   cursor: pointer;
 }
+.textCenterDiv{
+  border: 1px solid black;
+  background-color: white;
+  height: 150px;
+  writing-mode: vertical-rl;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  border-radius: 12px;
+  z-index: 1;
+}
+
 /* 서브리스트목록 */
 #subSection{
   width: 0;
+  padding: 10px;
+  margin: 10px;
+  max-height: 355px;
+  overflow-y: auto;
+}
+.subListViewer > .subjectNum{/* subNum */
+  flex-grow: 0;
+  width: 80px;
+  text-align: center;
+  padding: 5px;
+}
+.subListViewer > .subjectTitle{/*sub제목 */
+  flex-grow: 1;
+  text-align: center;
+  padding: 5px;
+}
+.subListViewer > .complete{/* sub완료여부 */
+  flex-grow: 0;
+  width: 80px;
+  border: 0;
+  background-color: white;
+  text-align: center;
+  z-index: 999;
+  user-select: none;
 }
 
+.complete:hover{
+  cursor: pointer;
+  background-color: grey;
+}
+
+.subjectDetail{
+  border-bottom: 1px dotted gray;
+  width: 380px;
+  padding: 5px;
+  max-height: 44px;
+  overflow-y: auto;
+}
 /* ----------------------------------------------------- */
 
 /* 수정 팝업 레이어 */

@@ -118,6 +118,13 @@ public interface TodoService {
 	 * @return
 	 */
 	String getDetail(int listNo);
+	
+	/**서브 완료여부변경
+	 * 
+	 * @param subNo
+	 * @return
+	 */
+	int completeChangeSub(int subNo);
 
 
 
