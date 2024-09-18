@@ -155,12 +155,12 @@ function selectTodoList(){
       
       // 1) todoNo가 들어갈 th테그
       const todoNo = document.createElement("div");
-      todoNo.classList.add("block", "listNo");
+      todoNo.classList.add("block");
       todoNo.innerText = todo.listNo;
       
       // 2) todoTitle이 들어갈 td, a 요소 생성
       const todoTitle = document.createElement("div");
-      todoTitle.classList.add("block", "todoTitle");
+      todoTitle.classList.add("block");
       const a = document.createElement("a");
       a.innerText = todo.todoTitle;
       a.href = `/todo/detail/${todo.listNo}`;
@@ -180,18 +180,41 @@ function selectTodoList(){
       
       // 3) 완료여부
       const todoComplete = document.createElement("div");
-      todoComplete.classList.add("block", "todoComplete");
+      todoComplete.classList.add("block");
       todoComplete.innerText = todo.complete;
       
-      // 4) tr을 만들어 1,2,3, 에서 만든 요소 자식으로 추가
+      // 4) 등록일
+      const regDate = document.createElement("div");
+      regDate.classList.add("block");
+      regDate.innerText = todo.regDate;
+      
+      // 4.5) 버튼 부분
+      const buttonDiv = document.createElement("div");
+      buttonDiv.classList.add("block");
+      const button = document.createElement("button");
+      button.innerText = 'v';
+      button.classList.add("detailBtn");
+      button.dataset.listNo = todo.listNo;
+      buttonDiv.appendChild(button);
+
+      // 5) tr을 만들어 1,2,3,4 에서 만든 요소 자식으로 추가
       const div = document.createElement("div");
       div.classList.add("flexRow", "tbodyRow");
-      div.append( todoNo, todoTitle, todoComplete )
+      div.append( todoNo, todoTitle, todoComplete, regDate, buttonDiv )
+      
+      // 5-5) detaile 넣어줄 표시 안해둘 행
+      const div2 = document.createElement("tr");
+      div2.classList.add("flexRow")
+      div2.classList.add("btnAnswer")
+      div2.style.backgroundColor = todo.color + '30';
 
       // 6) tbody에 tr 추가
-      tbody.append(div);
+      tbody.append(div, div2);
       
     }
+    
+    /* 버튼이벤트 다시만들기 */
+    btnEvent();
     
   })
   .catch( e => console.log(e));
@@ -207,34 +230,71 @@ document.addEventListener("DOMContentLoaded", () => {
     // a : 반복마다 하나씩 꺼내져서 저장되는 변수
     a.addEventListener("click", e => {
       e.preventDefault();
-      console.log("Detaile화면열기");
+      console.log("a클릭됨");
       selectTodo(e.target.href);
     })
   })
 
+  btnEvent();
+  
 });
 
 
 /******************************************************************************************** */
+// 버튼에 이벤트추가하기
 
-/******************************************************************************************** */
-/* 
+/* 버튼 */
 
- > a 태그 클릭
- > selectTodo()호출
-   > 팝업레이어 보이게하고
-   > 내용,제목에 데이터셋
-     > 서브목록불러오기 호출
-       > 완료여부바꾸기 버튼기능 만들기 호출
-       > 업데이트만들기 함수 호출
+
+btnEvent = () => {
+  const detailBtn = document.querySelectorAll(".detailBtn");
+  // 응답해줄 행 햏
+  const btnAnswer = document.querySelectorAll(".btnAnswer");
+
   
-*/
+  for( let i = 0 ; i < detailBtn.length ; i++){
+    
+    detailBtn[i].addEventListener("click", ()=>{
+      if(detailBtn[i].innerText == 'v'){
+        detailBtn[i].innerText = '접기';
+
+        const listNo = detailBtn[i].dataset.listNo;
+        console.log(listNo);
+
+        /* detail 정보 받아와서 <tr> 집어넣고, id생성해주기*/
+        // 어디에넣을건데?
+        // class로 tr 만들고 같은순서에 ㄱㄱ
+        fetch("/todo/getDetail/" + listNo)
+        .then(response => {
+          if(response.ok) return response.text();
+          throw new Error("디테일호출 오류발생, " + response.status)
+        })
+        .then(detail => {
+          console.log(detail);  // 여기까지 이상없음
+          btnAnswer[i].innerHTML = '<div>'+ detail +'</div>';
+          btnAnswer[i].classList.add("trAnswer"); // css적용할 클래스 추가
+        })
+        .catch(err => console.log(err));
+        
+        //const goBtn = document.querySelector(".goBtn");
+        
+      } else {
+        detailBtn[i].innerText = 'v';
+        /* 내용지우기 */
+        btnAnswer[i].innerHTML = '';
+        btnAnswer[i].classList.remove("trAnswer");
+      }
+    })
+  }
+}
+/******************************************************************************************** */
+
 /**
  * 비동기로 할 일 상세 조회하여 팝업 레이어에 출력하기
  * @param url : /todo/detail/10 형태
 */
 function selectTodo(url){
-  // console.log("이벤트 시작");
+  console.log("이벤트 시작");
 
   fetch(url)
   .then(response => {
@@ -242,7 +302,7 @@ function selectTodo(url){
 
       //return response.json();
       // -> response.text() + JSON.parse(response|result) 합친 메서드
-      // console.log("응답 정상");
+      console.log("응답 정상");
       return response.json();
     }
 
@@ -262,30 +322,27 @@ function selectTodo(url){
 
     popupTodoNo.innerText = todo.listNo;
     popupTodoTitle.innerText = todo.todoTitle;
-    popupTodoTitle.dataset.listNo = todo.listNo;
     popupComplete.innerText = todo.complete;
     popupRegDate.innerText = todo.regDate;
     popupTodoContent.innerText = todo.todoDetail;
-    popupTodoContent.dataset.listNo = todo.listNo;
-    popupColor.value = todo.color;
+    popupColor.innerText = todo.color;
     
     // 팝업 레이어 보이게 하기
     // popup-hidden 클래스는 안보이게 해둠
     // 클래스중 popup-hidden 을 제거
     document.querySelector("#popupLayer").classList.remove("popup-hidden");
     
-    // 서브리스트목록 호출
-    selectSub(todo.listNo);
-
+    
+    
   })
   .catch( err => console.log(err));
 
-  // clickHrSubCheck = 'off';
-  // document.querySelectorAll(".subListViewer").forEach(e => e.remove());
+  clickHrSubCheck = 'off';
+  document.querySelectorAll(".subListViewer").forEach(e => e.remove());
   
-  // popupLayer.style.width='510px';
-  // subSection.style.width='0';
-  // subSection.classList.add('popup-hidden');
+  popupLayer.style.width='510px';
+  subSection.style.width='0';
+  subSection.classList.add('popup-hidden');
 }
 
 
@@ -383,6 +440,128 @@ deleteBtn.addEventListener("click", ()=>{
 });
 
 
+/******************************************************************************************** */
+
+/** 수정하기 */
+const popupLayer   = document.querySelector("#popupLayer"  );
+const updateLayer  = document.querySelector("#updateLayer" );
+const updateView   = document.querySelector("#updateView"  ); // 수정 레이어 여는 버튼
+const updateBtn    = document.querySelector("#updateBtn"   ); // 수정 요청하기
+const updateCancel = document.querySelector("#updateCancel"); // 수정 취소
+
+// 수정레이어열기에대한코드
+updateView.addEventListener("click", ()=>{
+  
+  // 팝업 레이어 닫기
+  popupLayer.classList.add("popup-hidden");
+  // 수정 레이어 열기
+  updateLayer.classList.remove("popup-hidden");
+  
+  // 상세조회 제목/내용
+  const todoTitle = document.querySelector("#popupTodoTitle").innerText;
+  const todoContent = document.querySelector("#popupTodoContent").innerHTML;
+  const color = document.querySelector("#popupColor").value;
+
+  // 수정 레이어 제목/ 내용 대입
+  document.querySelector("#updateTitle").value = todoTitle;
+  document.querySelector("#updateContent").value = todoContent.replaceAll("<br>", "\n");// 줄바꿈문자변경
+  document.querySelector("#updateColor").value = color;
+
+  
+  // 수정버튼 #updateBtn에 listNo(PK) 숨겨넣기
+  // dataset 속성 : 요소에 js에서 사용할 값(data)를 추가하는 속성
+  // 요소.dataset속성명 = "값"; -> 대입
+  // 요소.dataset속성명;        -> 값 얻어오기
+  updateBtn.dataset.listNo = document.querySelector("#popupTodoNo").innerText;
+  
+});
+
+// 수정취소에 대한 코드
+updateCancel.addEventListener("click", ()=>{
+  popupLayer.classList.remove("popup-hidden");
+  updateLayer.classList.add("popup-hidden");
+});
+
+// 수정버튼 (#updateBtn) 클릭시
+updateBtn.addEventListener("click", ()=>{
+  
+  const obj = {};
+  // 버튼에 데이터셋값 얻어오기
+  obj.listNo = updateBtn.dataset.listNo;
+  obj.todoTitle = document.querySelector("#updateTitle").value;
+  obj.todoDetail = document.querySelector("#updateContent").value;
+  obj.color = document.querySelector("#updateColor").value;
+
+  console.log(obj);
+  
+  // 비동기로 할 일 수정 요청
+  fetch("/todo/updateTodo", {
+    method : "PUT",
+    headers : {"Content-Type" : "application/json"},
+    body : JSON.stringify(obj)
+    // obj 객체를 JSON 문자열 형태로변환해서 제출
+  })
+  .then(response => {
+    if(response.ok) return response.text();
+    throw new Error("수정실패" + response.status)
+  })
+  .then(result => {
+    console.log(result);  // 1 | 0
+    
+    if(result > 0){// 수정 성공
+      alert("수정 성공");
+    } else { // 실패
+      alert("수정 실패");
+    }
+    
+    // 수정 레이어 숨기기
+    updateLayer.classList.add("popup-hidden");
+    
+    // 상세조회(팝업레이어 열기) 함수 호출
+    selectTodo("/todo/detail/" + updateBtn.dataset.listNo);
+    selectTodoList();
+  })
+  .catch(err=>console.error(err));
+  
+});
+
+/******************************************************************************************** */
+/* 서브리스트 구역 만들기 */
+
+const clickHrSub = document.querySelector("#clickHrSub");
+let clickHrSubCheck = 'off';
+
+clickHrSub.addEventListener("click", () => {
+  
+  const popupLayer = document.querySelector("#popupLayer");
+  const subSection = document.querySelector("#subSection");
+  
+  const listNo = document.querySelector("#popupTodoNo").innerText;
+  
+  if(clickHrSubCheck === 'off'){
+    clickHrSubCheck = 'on';
+    
+    popupLayer.style.width='1000px';
+    subSection.style.width='400px';
+    subSection.classList.remove('popup-hidden');
+    document.querySelector(".textCenterDiv").innerText = '🔻🔻🔻';
+    
+    let htmlString = '';
+    
+    /* 비동기로 서브목록 불러오기 */
+    selectSub(listNo);
+
+  } else {
+    clickHrSubCheck = 'off';
+    document.querySelectorAll(".subListViewer").forEach(e => e.remove());
+    
+    popupLayer.style.width='510px';
+    subSection.style.width='0';
+    subSection.classList.add('popup-hidden');
+    document.querySelector(".textCenterDiv").innerText = '🔺🔺🔺';
+  }
+  
+});
 
 /******************************************************************************************** */
 /* 서브화면출력함수 */
@@ -404,27 +583,23 @@ function selectSub(listNo){
       article1.classList.add("flexRow", "subListViewer");
       article1.innerHTML =
           '<div class="block subjectNum">' + sub.subjectNo + '</div>'
-        + '<div class="block subjectTitle canUpdate2" data-subject-no=' + sub.subjectNo + '>' + sub.subjectTitle + '</div>'
-        + '<div class="block subjectComplete" data-subject-no="' + sub.subjectNo + '">' + sub.complete + '</div>';
-        
-      const article2 = document.createElement("article");
-      article2.classList.add("flexRow", "subListViewer");
-      if(sub.subjectDetail === null){
-        article2.innerHTML = 
-        '<div class="subjectDetail canUpdate2" data-subject-no=' + sub.subjectNo + '>' + '> ' + '</div>';
-      } else {
-        article2.innerHTML =
-        '<div class="subjectDetail canUpdate2" data-subject-no=' + sub.subjectNo + '> ' + sub.subjectDetail + '</div>';
-      }
-        
-      subSection.append( article1, article2 );
-      document.querySelectorAll(".subjectTitle").forEach(e=> e.addEventListener("click", makeUpdateDiv1 ));
-      document.querySelectorAll(".subjectDetail").forEach(e=> e.addEventListener("click", makeUpdateDiv2 ));
+        + '<div class="block subjectTitle">' + sub.subjectTitle + '</div>'
+        + '<div class="block complete" data-subject-no="' + sub.subjectNo + '">' + sub.complete + '</div>';
+          
+    const article2 = document.createElement("article");
+    article2.classList.add("flexRow", "subListViewer");
+    if(sub.subjectDetail === null){
+      article2.innerHTML = '';
+    } else {
+      article2.innerHTML =
+      '<div class="subjectDetail">' + sub.subjectDetail + '</div>';
     }
-    subCompleteChange();
+    
+    subSection.append( article1, article2 );
+  }
+  subCompleteChange();
   })
   .catch( err => console.log(err) );
-
     
 };
 
@@ -468,11 +643,11 @@ addBtn2.addEventListener("click", () => {
 /* 완료여부수정 */
 
 function subCompleteChange(){
-  document.querySelectorAll(".subjectComplete").forEach( c => {
+  document.querySelectorAll(".complete").forEach( c => {
     c.addEventListener("click", ()=>{
       // alert(c.dataset.subjectNo)
       const subNo = c.dataset.subjectNo;
-      
+
       fetch("/sub/completeChange", {
         method : "PUT",
         headers : {"Content-Type" : "application/json"},
@@ -487,217 +662,10 @@ function subCompleteChange(){
 
         // 정상 시행시 완료여부 값 반대로 변경
         c.innerText = c.innerText == 'O' ? 'X' : 'O';
-        
+
       })
       .catch(err=>console.error(err));
 
     } );
   });
 }
-
-
-/******************************************************************************************** */
-/* 수정할수있는거 다 수정하기 */
-/* 하나씩만 열꺼니까 페이지 재요청 후 수정창열기 */
-/******************************************************************************************** */
-
-/* todo 제목박스 수정 */
-const popupTodoTitle = document.querySelector("#popupTodoTitle");
-/* todo 글자색 수정 */
-const popupColor = document.querySelector("#popupColor");
-/* todo 세부내용 수정 */
-const popupTodoContent = document.querySelector("#popupTodoContent");
-/* sub 제목 수정 */
-/* sub 내용 수정 */
-
-/******************************************************************************************** */
-/* todoTitle 클릭시 수정창 만들기 */
-popupTodoTitle.addEventListener("click", popupTodoTitleEvent);
-
-function popupTodoTitleEvent() {
-
-  const title = popupTodoTitle.innerText;
-  // const listNo = document.querySelector("#popupTodoNo").innerText;
-
-  /* 창 열기 전 화면 새로고침 */
-  // selectTodo("/todo/detail/" + listNo);
-
-  /* 내용 바꾸고 */
-  /* 내용에 기존 제목 넣고 */
-  popupTodoTitle.innerHTML =
-    '<div class="flexColumn">' +
-    '<input class="flexGrow" id="title" value=' + title + '>' +
-    '<div><button id="popupTodoTitleBtn">수정</button><button class="closeBtn">닫기</button></div>' +
-    '</div>';
-
-  /* 버튼에 이벤트 추가하고 */
-  const popupTodoTitleBtn = document.querySelector("#popupTodoTitleBtn");
-  popupTodoTitleBtn.removeEventListener("click", popupTodoTitleBtnEvent);
-  popupTodoTitleBtn.addEventListener("click", popupTodoTitleBtnEvent);
-  
-  popupTodoTitleBtn.classList.remove("canUpdate");
-  popupTodoTitle.removeEventListener("click", popupTodoTitleEvent);
-}
-
-/* todoTitle에 넣을 이벤트 */
-function popupTodoTitleBtnEvent() {
-
-  /* 누르면 수정할 항목 읽어오기*/
-  const obj = {};
-  obj.listNo = document.querySelector("#popupTodoNo").innerText;
-  obj.todoTitle = document.querySelector("#title").value; 
-
-  /* 비동기 요청 */
-  fetch("/todo/updateTodo", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(obj)
-  })
-    .then(response => {
-      if (response.ok) return response.text();
-      throw new Error("수정 실패: " + response.status);
-    })
-    .then(result => {
-      console.log(result); // 1 | 0
-
-      if (result > 0) { // 수정 성공
-        alert("수정 성공");
-      } else { // 실패
-        alert("수정 실패");
-      }
-
-      // 현재 목록 최신화
-      selectTodoList();
-      // 디테일 화면 최신화
-      selectTodo("/todo/detail/" + obj.listNo);
-    })
-    .catch(err => console.error(err));
-}
-
-
-/******************************************************************************************** */
-/******************************************************************************************** */
-/* TodoContent 클릭시 수정창 만들기 */
-popupTodoContent.addEventListener("click", popupTodoContentEvent);
-
-function popupTodoContentEvent() {
-
-  const content = popupTodoContent.innerText;
-  // const listNo = document.querySelector("#popupTodoNo").innerText;
-
-  /* 창 열기 전 화면 새로고침 */
-  // selectTodo("/todo/detail/" + listNo);
-
-  /* 내용 바꾸고 */
-  /* 내용에 기존 제목 넣고 */
-  popupTodoContent.innerHTML =
-    '<div class="flexColumn">' +
-    '<textarea id="insertDetail" rows="3" cols="35">' + content + '</textarea>' +
-    '<div><button id="popupTodoContentBtn">수정</button><button class="closeBtn">닫기</button></div>' +
-    '</div>';
-
-  /* 버튼에 이벤트 추가하고 */
-  const popupTodoContentBtn = document.querySelector("#popupTodoContentBtn");
-  popupTodoContentBtn.removeEventListener("click", popupTodoContentBtnEvent);
-  popupTodoContentBtn.addEventListener("click", popupTodoContentBtnEvent);
-  
-  popupTodoContentBtn.classList.remove("canUpdate");
-  popupTodoContent.removeEventListener("click", popupTodoContentEvent);
-}
-
-/* todoTitle에 넣을 이벤트 */
-function popupTodoContentBtnEvent() {
-
-  /* 누르면 수정할 항목 읽어오기*/
-  const obj = {};
-  obj.listNo = document.querySelector("#popupTodoNo").innerText;
-  obj.todoDetail = document.querySelector("#insertDetail").value;
-  alert(document.querySelector("#insertDetail").value);
-
-  /* 비동기 요청 */
-  fetch("/todo/updateTodo", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(obj)
-  })
-    .then(response => {
-      if (response.ok) return response.text();
-      throw new Error("수정 실패: " + response.status);
-    })
-    .then(result => {
-      console.log(result); // 1 | 0
-
-      if (result > 0) { // 수정 성공
-        alert("수정 성공");
-      } else { // 실패
-        alert("수정 실패");
-      }
-
-      // 현재 목록 최신화
-      selectTodoList();
-      // 디테일 화면 최신화
-      selectTodo("/todo/detail/" + obj.listNo);
-    })
-    .catch(err => console.error(err));
-}
-
-
-/******************************************************************************************** */
-
-
-function makeUpdateDiv1(e){
-  const updateSubNo = document.querySelector("#updateSubNo");
-  const updateValue = document.querySelector("#updateValue");
-  const updateSubject = document.querySelector("#updateSubject");
-  updateSubNo.innerText = e.target.dataset.subjectNo;
-  updateValue.innerText = 'title';
-  updateSubject.value = e.target.innerText;
-}
-function makeUpdateDiv2(e){
-  const updateSubNo = document.querySelector("#updateSubNo");
-  const updateValue = document.querySelector("#updateValue");
-  const updateSubject = document.querySelector("#updateSubject");
-  updateSubNo.innerText = e.target.dataset.subjectNo;
-  updateValue.innerText = 'detaile';
-  updateSubject.value = e.target.innerText;
-  
-}
-
-const subupdateBtn  = document.querySelector("#subupdateBtn");
-const updateSubNo   = document.querySelector("#updateSubNo");
-const updateValue   = document.querySelector("#updateValue");
-const updateSubject = document.querySelector("#updateSubject");
-
-subupdateBtn.addEventListener("click", () => {
-  if(document.querySelector("#updateSubNo").innerText == '' ) return;
-  
-  const obj = {};
-  
-  obj.updateSubNo = updateSubNo.innerText;
-  obj.updateValue = updateValue.innerText;
-  obj.updateSubject = updateSubject.value;
-  console.log(obj);
-
-  fetch("/sub/update", {
-    method : "PUT",
-    headers: {"Content-Type": "application/json"},
-    body : JSON.stringify(obj)
-  })
-  .then( response => {
-    if(response.ok) return response.text();
-    throw new Error( "서브통신에러, " + response.status )
-  })
-  .then( result => {
-    if(result > 0){
-      alert("수정완료");
-      updateSubNo.innerText = '';
-      updateValue.innerText = '';
-      updateSubject.value = '';
-    } else {
-      alert("유감...");
-    }
-
-  })
-  .catch(err => console.log(err) );
-
-});

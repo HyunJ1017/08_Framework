@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,8 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+
+import edu.kh.todolist.common.CommonFilter;
 
 /* @Configuration 어노테이션
  * - 서버 실행 시 자동으로 객체로 만들어져
@@ -92,5 +95,16 @@ public class DBConfig {
 	public DataSourceTransactionManager dataSourceTransactionManager(DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
+	
+	// common 필터 추가
+	@Bean
+  public FilterRegistrationBean<CommonFilter> loggingFilter() {
+      FilterRegistrationBean<CommonFilter> registrationBean = new FilterRegistrationBean<>();
+      
+      registrationBean.setFilter(new CommonFilter());
+      registrationBean.addUrlPatterns("/*");  // 필터를 적용할 URL 패턴 설정
+      
+      return registrationBean;
+  }
 
 }

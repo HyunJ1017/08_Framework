@@ -5,11 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.kh.todolist.dto.Todo;
 import edu.kh.todolist.service.TodoService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 public class MainController {
 	
@@ -30,6 +35,13 @@ public class MainController {
 		
 		// classpath:/templates/common/main.html
 		return "common/main";
+	}
+	
+	@PostMapping("common/update")
+	public String updateTodo(
+			@ModelAttribute Todo todo) {
+		log.debug("todo : {}", todo);
+		return null;
 	}
 	
 

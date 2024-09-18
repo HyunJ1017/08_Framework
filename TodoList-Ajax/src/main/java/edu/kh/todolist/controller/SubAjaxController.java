@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.kh.todolist.dto.Sub;
@@ -57,5 +58,19 @@ public class SubAjaxController {
 		
 		return service.completeChangeSub(subNo);
 	}
+	
+	@ResponseBody
+	@PutMapping("update")
+	public int updateSub(
+			@RequestParam("updateSubNo") String updateSubNo,
+			@RequestParam("updateValue") String updateValue,
+			@RequestParam("updateSubject") String updateSubject ) {
+		
+		log.debug(updateSubNo + updateValue + updateSubject);
+		
+		return 0;
+	}
+	
+	
 
 }

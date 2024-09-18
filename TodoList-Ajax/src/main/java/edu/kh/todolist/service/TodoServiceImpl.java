@@ -89,6 +89,20 @@ public class TodoServiceImpl implements TodoService {
 	@Override
 	public int updateTodo(Todo todo) {
 		
+		// 수정할 항목의 원본
+		Todo selectTodo = selectTodo( todo.getListNo() );
+		
+		// 비어있는 데이터 세팅
+		if(todo.getTodoTitle() == null) {
+			todo.setTodoTitle( selectTodo.getTodoTitle() );
+		}
+		if(todo.getTodoDetail() == null) {
+			todo.setTodoDetail( selectTodo.getTodoDetail() );
+		}
+		if(todo.getColor() == null) {
+			todo.setColor( selectTodo.getColor() );
+		}
+		
 		return mapper.updateTodo(todo);
 	}
 
@@ -156,6 +170,7 @@ public class TodoServiceImpl implements TodoService {
 	 */
 	@Override
 	public int updateSub(Sub sub) {
+		
 		
 		return mapper.updateSub(sub);
 	}
