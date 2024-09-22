@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- "연결할 Mapper 인터페이스 파일 경로(페키지 + 인터페이스 명) 작성 (필수)" -->
+<mapper namespace="edu.kh.todolist.mapper.ChatMapper">
+
+	<select id="getPassword" resultType="string">
+		SELECT MEMBER_PASSWORD FROM CAHTMEMBER WHERE MEMBER_NICKNAME = #{memberNickname}
+	</select>
+	
+	<select id="selectMember" resultType="ChatMember">
+		SELECT *
+		FROM CAHTMEMBER
+		WHERE
+			MEMBER_NICKNAME = #{memberNickname}
+		AND MEMBER_PASSWORD = #{memberPassword}
+	</select>
+	
+</mapper>

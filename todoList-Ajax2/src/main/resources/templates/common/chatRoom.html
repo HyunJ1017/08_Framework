@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/chatRoom.css">
+  <th:block th:replace="~{fragments/common.html}"></th:block>
+</head>
+<body>
+  <th:block th:replace= "~{fragments/header.html}"></th:block>
+  
+  <main>
+
+
+    <!-- 메인 페이지 내용  -->
+    <section class="content">
+
+      <section class="content-1">
+
+        <div id="chatViewer">체팅 출력박스</div>
+
+        <textarea rows="5" cols="50" id="inputChat" placeholder="체팅 입력박스"></textarea>
+        <button id="sendChatting">보내기</button>
+
+      </section>
+
+
+
+      <section class="content-2">
+        <!-- 로그인, 회원가입 버튼 -->
+
+        <!-- session에 loginMember가 없을경우 -->
+        <th:block th:unless="${session.loginMember}">
+          <!-- 로그인 박스 -->
+          <form action="/member/login" method="POST" id="loginForm">
+            <fieldset class="id-pw-area">
+  
+              <!-- 아이디/비밀번호 입력 -->
+              <section>
+                <input type="text" 
+                       name="memberEmail"
+                       placeholder="이메일">
+  
+                <input type="password" 
+                       name="memberPw" 
+                       placeholder="비밀번호"><!-- 암호화 -->
+              </section>
+  
+              <!-- 로그인 버튼 -->
+              <section>
+                <button>로그인</button>
+              </section>
+            </fieldset>
+  
+            <label>
+              <!-- label 태그 : input 태그의 제목을 나타내는 태그  -->
+              <input type="checkbox" name="saveEmail">
+              이메일 저장<!-- 쿠키 -->
+            </label>
+  
+            <article class="signup-find-area">
+              <a href="#">회원가입</a>
+              <span> | </span>
+              <a href="#">ID/PW 찾기</a>
+            </article>
+  
+          </form>
+        </th:block>
+        
+        <!-- session에 loginMember가 있을경우 -->
+        <th:block th:if="${session.loginMember}">
+          
+          <article class="login-area">
+              
+            <!-- 닉네임, 이메일, 로그아웃 버튼 영역 -->
+            <div class="my-info" th:object="${session.loginMember}">
+
+              <div>
+                <span th:text="*{memberNo}" id="memberNo">멤버넘버</span>
+                <a href="/myPage/info" id="nickname" th:text="*{memberNickname}">닉네임</a>
+
+                <a href="/member/logout" id="logoutBtn">로그아웃</a>
+              </div>
+
+            </div>
+          </article>
+
+        </th:block>
+      </section>
+
+    </section>
+  </main>
+
+  <footer></footer>
+  <script src="/js/chatRoom.js"></script>
+</body>
+</html>
