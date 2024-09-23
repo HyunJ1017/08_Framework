@@ -1,6 +1,7 @@
 package edu.kh.project.myPage.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,9 @@ public class MyPageServiceImple implements MyPageService{
 	
 	@Autowired
 	private MyPageMapper mapper;
+	
+	@Autowired // 의존성주입 DI
+	private BCryptPasswordEncoder encoder;
 
 	/**
 	 *  회원 정보 수정
@@ -42,6 +46,47 @@ public class MyPageServiceImple implements MyPageService{
 	public int checkNickname(String input) {
 		
 		return mapper.checkNickname(input);
+	}
+
+	/**
+	 * 비밀번호 변경
+	 * @param currentPw : 현재 비밀번호
+	 * @param newPw : 변경하려는 새 비밀번호
+	 * @param loginMember : 세션에서 얻어온 로그인한 회원 정보
+	 * @return
+	 */
+	@Override
+	public int changePw(String currentPw, String newPw, Member loginMember) {
+		
+		// 1) 입력받은 현재 비밀번호가 로그인한 회원의 비밀번호와 일치하는지 검사
+		// 		(BCryptPasswordEncoder.matches(평문, 암호문) 이용, 일반비교로는 비교 못함)
+		if( encoder.matches( currentPw, loginMember.getMemberPw() ) == false ) {// 실패시
+			return 0;
+		}
+		
+		// 2) 새 비밀번호 암호화
+		String encPw = encoder.encode(newPw);
+		
+		// 3) DB 비밀번호 변경(회원 번호, 암호화된 새 비밀번호)
+		loginMember.setMemberPw(encPw); // 세션에 저장된 회원 정보 중 PW 변경
+		
+		// 4) DB 비밀번호를 변경(회원번호, 암호화된 새 비밀번호)
+		return mapper.changePw(loginMember.getMemberNo(), encPw);
+	}
+	
+	/**
+	 * 회원 탈퇴
+	 */
+	@Override
+	public int secession(String memberPw, Member loginMember) {
+		
+		// 1) 비밀번호 일치 검사
+		if( encoder.matches( memberPw, loginMember.getMemberPw() ) == false) {
+			return 0; // 비밀번호가 일치하지 않으면 0 반환
+		}
+		
+		// 2) 회원 탈퇴 Mapper 호출
+		return mapper.secession( loginMember.getMemberNo() );
 	}
 
 }

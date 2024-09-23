@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.member.dto.Member;
@@ -65,7 +66,7 @@ public class MyPageController {
 	 * @param inputMember : 수정할 닉네임, 전화번호, 주소
 	 * @param loginMember : 현재 로그인된 회원 정보
 	 * 	session에 저장된 Member 객체의 주소가 반환됨
-	 *  == session에 저장된 Member 객체의 데이터를 수정할 수 있음 
+	 *  == session에 저장된 Member 객체의 데이터를 수정할 수 있음
 	 * @return
 	 */
 	@PostMapping("info")
@@ -119,9 +120,97 @@ public class MyPageController {
 		return service.checkNickname(input);
 	}
 	
+	/** 비밀번호 변경 사이드메뉴
+	 * 클릭시 변경 화면 html로 포워드
+	 * @return
+	 */
+	@GetMapping("changePw")
+	public String changePw() {
+		return "myPage/myPage-changePw";
+	}
 	
+	/** 실제 비밀번호 변경 메서드
+	 * @param currentPw : 현재 비밀번호
+	 * @param newPw : 변경하려는 새 비밀번호
+	 * @param loginMember : 세션에서 얻어온 로그인한 회원 정보
+	 * @param ra :리다이렉트 시 request scope로 데이터를 전달하는 일회성 객체
+	 */
+	@PostMapping("changePw")
+	public String changePw(
+			@RequestParam("currentPw") String currentPw,
+			@RequestParam("newPw") String newPw,
+			@SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra,
+			Model model
+			) {
+		
+		// 서비스 호출 후 결과 반환받기
+		int result = service.changePw(currentPw, newPw, loginMember);
+		
+		String message = null;
+		String path = null;
+		
+		// 결과에 따른 응답제어
+		if( result > 0 ) { // 성공시
+			message = "비밀번호가 변경 되었습니다.";
+			path = "info"; // 내정보 페이지로 리다이렉트
+		} else { // 실패시
+			message = "현재 비밀번호가 일치하지 않습니다.";
+			path = "changePw"; // 비밀번호 변경 페이지로 리다이렉트
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		// 상대경로로 작성된 주소작성( "/"로 시작되지 않음 )
+		// 현재 컨트롤러 매핑주소 : /myPage/changePw
+		// 작성된 주소가 제출되는 형태 : /myPage/ + path
+		return "redirect:" + path;
+	}
 	
+	/**
+	 * 회원 탈퇴 페이지로 전환 (GET)
+	 * @return
+	 */
+	@GetMapping("secession")
+	public String secession() {
+		return "myPage/myPage-secession";
+	}
 	
+	/**
+	 * 회원 탈퇴 메서드 (POST)
+	 * @param memberPw : 입력받은 비밀번호
+	 * @param loginMember : session에 있는 로그인되어있는 회원의 정보
+	 * @param ra : redirect시 request scope 데이터 전달
+	 * @param status : @SessionAtrubutes로 관리되는 세션데이터의 상테제어(세션만료용, 로그아웃에도 씀) 
+	 * @return
+	 */
+	@PostMapping("secession")
+	public String secession(
+			@RequestParam("memberPw") String memberPw,
+			@SessionAttribute("loginMember") Member loginMember,
+			RedirectAttributes ra,
+			SessionStatus status
+			) {
+		
+		// 서비스 호출 후 결과 받환받기
+		int result = service.secession(memberPw, loginMember);
+		
+		String message = null;
+		String path = null;
+		
+		if( result > 0 ) {
+			message = "탈퇴 되었습니다.";
+			path = "/"; // 메인페이지로 redirect
+			status.setComplete(); // 세션 만료 -> 로그아웃
+		} else {
+			message = "비밀번호가 일치하지 않습니다.";
+			path = "secession"; // 탈퇴페이지로 redirect
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
 	
 	
 	

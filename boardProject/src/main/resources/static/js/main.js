@@ -2,7 +2,7 @@
 function getCookie(key){
 
   // 1. cookie 전부 얻어오기 ( String )
-  const cookies = document.cookie; // "K=V;K=V;K=V;K=V;..."
+  const cookies = document.cookie; // "K=V;K=V;K=V;K=V;..." // console.log(cookies);
   
   // 2. "/"을 구분자 삼아서 배열 형태로 쪼개기(split)
   const arr = cookies.split("/"); // [K=V,  K=V, K=V...]
@@ -23,9 +23,9 @@ function getCookie(key){
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  const saveEmail = getCookie("saveEmail"); // 쿠키에 저장된 Email 얻어오기
+  const saveEmail = getCookie("saveEmail"); // 쿠키에 저장된 Email 얻어오기 // console.log(saveEmail);
 
-  // 저장된 이메일이 없는경우
+  // 저장된 이메일이 없는 경우
   if(saveEmail == undefined) return;
 
   const memberEmail = document.querySelector("#loginForm input[name=memberEmail]");

@@ -66,6 +66,7 @@ header > section:first-child{
   height: auto;
   transition: transform 0.6s ease;
   position: relative;
+  border-radius: 5px;
 }
 #homeLogo.expand {
   transform: scale(2.6); /* 원하는 크기만큼 확대 */

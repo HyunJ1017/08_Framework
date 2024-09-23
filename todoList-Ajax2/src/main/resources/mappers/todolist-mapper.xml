@@ -15,4 +15,34 @@
 		AND MEMBER_PASSWORD = #{memberPassword}
 	</select>
 	
+	<insert id="insertChat">
+		INSERT INTO
+			CHAT_COMMON
+		VALUES(
+			SEQ_CHAT_NO.NEXTVAL,
+			#{memberNo},
+			#{chatBody},
+			DEFAULT)
+	</insert>
+	
+	<select id="selectChat" resultType="Chatting">
+		SELECT
+			CHAT_NO,
+			MEMBER_NO,
+			CHAT_BODY,
+			TO_CHAR(CREATION_DATE, 'YYMMDD')
+		FROM
+			CHAT_COMMON
+		ORDER BY CHAT_NO
+	</select>
+	
+	<select id="selectName" resultType="string">
+		SELECT
+			MEMBER_NICKNAME
+		FROM
+			CAHTMEMBER
+		WHERE
+			MEMBER_NO = #{memberNo}
+	</select>
+	
 </mapper>
