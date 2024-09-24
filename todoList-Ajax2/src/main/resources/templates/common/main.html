@@ -4,37 +4,40 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>main</title>
-  <style>
-    *{box-sizing: border-box;}
-    html{display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    body{
-      border: 1px solid black;
-      border-radius: 15px;
-      width: 260px;
-      height: 200px;
-      padding: 10px;
-    }
-  </style>
+  <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-  <h1>LOG_IN</h1>
-  <form action="/member/login" method="post">
-    <table>
-      <tr>
-        <td>ID</td>
-        <td><input type="text" name="memberNickname" value="첫째돼지"></td>
-      </tr>
-      <tr>
-        <td>PW</td>
-        <td><input type="password" name="memberPassword" value="1"></td>
-      </tr>
-    </table>
-    <button>로그인</button>
-  </form>
+  <div class="loginDiv">
+    <form action="/member/insert" method="get">
+      <input type="text" name="memberNickname">
+      <button>입장</button>
+    </form>
+  </div>
+
+  <section id="buttonsSection">
+  <th:block th:each= "nickname : ${memberList}">
+    <div class="divBox">
+      <form action="/member/login" method="get">
+        <button th:text="${nickname}">닉네임</button>
+        <input type="hidden" name="memberNickname" th:value="${nickname}">
+      </form>
+    </div>
+  </th:block>
+</section>
+
+  <!-- <div class="divBox">
+    <form action="/member/login" method="get">
+      <button>첫째돼지</button>
+      <input type="hidden" name="memberNickname" value="첫째돼지">
+    </form>
+  </div>
+
+  <div class="divBox">
+    <form action="/member/login" method="get">
+      <button>둘리</button>
+      <input type="hidden" name="memberNickname" value="둘리">
+    </form>
+  </div> -->
+
 </body>
 </html>

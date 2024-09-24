@@ -3,131 +3,147 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>메인페이지</title>
+  <title>TodoList</title>
+
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
+  <h1>TodoList</h1>
 
-  <header>
-    
-  </header>
+  <h3>
+    전체 Todo 개수 : <span id="totalCount" th:text="${#lists.size(todoList)}"></span>
+    / 
+    완료된 Todo 개수 : <span id="completeCount">[[${completeCount}]]</span>
+  </h3>
+
+
+  <h4>할 일 추가</h4>
+  <!-- form 태그 요청은 무조건 동기식!!
+    (요청 후 깜박임 후에 화면 바뀜) == 새로고침 == 갱신 -->
+  <div>
+    <div>
+      제목 : <input type="text" id="todoTitle">
+    </div>
+    <div>
+      <textarea id="todoDetail"
+        rows="3" cols="50" placeholder="상세 내용"></textarea>
+    </div>
+
+    <button id="addBtn">추가</button>
+  </div>
+
+
+  <table id="todoList" border="1">
+    <thead>
+      <tr>
+        <th>번호</th>
+        <th>할 일 제목</th>
+        <th>완료 여부</th>
+        <th>등록 날짜</th>
+      </tr>
+    </thead>
   
-  <main>
-    <section class="leftSideSec flexColumn">
-      <div class="side-header flexColumn">
-        <h1 class="green">Todo_List</h1>
-        <h3>전체 Todo의 갯수 : <span id="totalCount" th:text="${listSize}"></span></h3>
-        <h3>/ 완료된 Todo 갯수 :  <span id="completeCount">[[${completeCount}]]</span></h3>
+    <tbody id="tbody">
+      <th:block th:each= "todo : ${todoList}" th:object="${todo}">
+        <tr>
+          <th th:text="*{todoNo}"></th>
 
-      </div>
-      <div class="flexColumn" id="listTable">
-        <div class="flexRow">
-          <div class="block listNo">번호</div>
-          <div class="block todoTitle">할 일 제목</div>
-          <div class="block todoComplete" id="completeOrder">완료 여부</div>
-        </div>
-  
-        <div id="tbody">
-          <th:block th:each= "todo :${todoList}" th:object="${todo}">
-    
-            <div class="flexRow tbodyRow">
-              <div class="block listNo" th:text="*{listNo}">할일번호</div>
-              <div class="block todoTitle"><a th:href="@{/todo/detail/{listNo}(listNo=*{listNo})}" th:text="*{todoTitle}" th:style="'color: ' + *{color}">할일제목</a></div>
-              <div class="block todoComplete" th:text="*{complete}">완료여부</div>
-            </div>
-          </th:block>
-        </div>
-      </div>
-      <div>
-        <div class="flexColumn side-footer">
-          <div>
-            제목 : <input type="text" id="todoTitle"> 
-          </div>
-          <div>
-            <textarea id="todoDetail" rows="3" cols="35" placeholder="상세 내용"></textarea>
-          </div>
-          <button id="addBtn" style="width: 80px;">추가</button>
-        </div>
-      </div>
-    </section>
+          <td>
+            <a th:href="@{/todo/detail/{todoNo}(todoNo=*{todoNo})}" 
+               th:text="*{todoTitle}"></a>
+          </td>
 
+          <th th:text="*{todoComplete} == 1 ? 'O' : 'X'"></th>
+          <td th:text="*{regDate}"></td>
+        </tr>
+      </th:block>
+    </tbody>
+  </table>
 
-    <section class="rightSideSec flexRow">
+  <!-- 
+    할 일 상세 조회 시 출력되는 화면 
+    popup layer : 현재 페이지 위에 새로운 레이어를 띄우는 것
+  -->
+  <!-- 처음에 숨겨놓기 -->
+  <div id="popupLayer" class="popup-hidden">
 
-      <div class="popup-hidden flexRow" id="popupLayer">
-        <section class="popup-row flexColumn" id="todoListSec">
-          <div class="popup-row">
-            번호 : <span id="popupTodoNo"></span>
-            | 
-            제목 : <div class="canUpdate inlineBlock" id="popupTodoTitle"></div>
-  
-            <span id="popupClose">&times;</span>
-          </div>
-  
-          <div class="popup-row">
-            완료 여부 : <span id="popupComplete"></span>
-            | 
-            등록일 : <span id="popupRegDate"></span>
-          </div>
-  
-          <div class="popup-row">
-            Color : <input type="color" id="popupColor">
-          </div>
-  
-          <div class="popup-row flexGrow2">
-            [내용]
-            <div class="canUpdate1" id="popupTodoContent"></div>
-          </div>
-  
-        </section>
-        <!-- 서브리스트목록 -->
-        <section class="flexColumn" id="subListSec">
-          <section class="flexRow">
-            <section id="addSub">
-              <!-- 세부항목 추가 -->
-              <div>
-                제목 : <input type="text" id="subjectTitle"> 
-              </div>
-              <div>
-                <textarea id="subjectDetail" rows="3" cols="35" placeholder="상세 내용"></textarea>
-                <button id="addBtn2">추가</button>
-              </div>
-  
-            </section>
-            <section class="btn-container">
-              <button type="button" id="changeComplete">완료 여부 변경</button>
-              <button type="button"  id="deleteBtn">전체삭제</button>
-            </section>
-          </section>
-          <section id="subSection" class="flexColumn">
-            <!-- 세부항목 목록 -->
-            <section class="flexRow">
-              <div class="subNum">번호</div>
-              <div class="subTitle">제목</div>
-              <div class="subComplete">완료여부</div>
-            </section>
-          
-          </section>
-          <section class="updateSec">
-            <!-- subList 수정창 -->
-            <div class="spaceBetween">
-              <span id="updateSubNo"></span><span id="updateValue"></span><button id="subupdateBtn">수정</button>
-            </div>
-            <textarea rows="3" cols="55" id="updateSubject"></textarea>
-          </section>
-        </section>
-        
-      </div>
+    <div class="popup-row">
+      번호 : <span id="popupTodoNo"></span>
+      | 
+      제목 : <span id="popupTodoTitle"></span>
 
-    </section>
+      <span id="popupClose">&times;</span>
+    </div>
 
-  </main>
+    <div class="popup-row">
+      완료 여부 : <span id="popupComplete"></span>
+      | 
+      등록일 : <span id="popupRegDate"></span>
+    </div>
+
+    <div class="popup-row">
+      [내용]
+      <div id="popupTodoContent"></div>
+    </div>
+
+    <div class="btn-container">
+      <button id="changeComplete">완료 여부 변경</button>
+
+      <button id="updateView">수정</button>
+
+      <button id="deleteBtn">삭제</button>
+    </div>
+  </div>
 
 
 
-<!-- 메세지출력 -->
-<th:block th:replace= "~{/fragments/messageAlert}"></th:block>
 
-<script src="/js/main.js"></script>
+  <!-- 수정 팝업 레이어 (처음에 숨겨져 있음)-->
+  <div id="updateLayer" class="popup-hidden">
+    <div class="popup-row">
+      제목 : <input type="text" id="updateTitle">
+    </div>
+
+    <div class="popup-row">
+      <textarea id="updateContent" cols="50" rows="5"></textarea>
+    </div>
+
+    <div class="btn-container">
+      <button id="updateBtn">수정</button>      
+      <button id="updateCancel">취소</button>      
+    </div>
+  </div>
+                    
+
+
+
+
+
+
+
+  <hr>
+  <h3>ajax 기초 연습 - todoNo(단일 값) 일치하는 할 일의 제목(단일 값) 얻어오기</h3>
+  <input type="number" id="inputTodoNo">
+  <button id="searchBtn">찾기</button>
+
+  <hr>
+  <h3>todoNo(단일 값) 일치하는 할 일의 모든 정보(다수 값) 얻어오기</h3>
+
+  <input type="number" id="inputTodoNo2">
+  <button id="searchBtn2">찾기</button>
+  <ul id="result2">
+
+  </ul>
+
+
+
+  <!-- footer 조각 추가 -->
+  <th:block th:replace= "~{common/footer}"></th:block>
+
+  <!-- static 폴더 기준으로 경로 작성 -->
+  <script src="/js/main.js"></script>
+
+  <script src="/js/practice.js"></script>
+
 </body>
 </html>

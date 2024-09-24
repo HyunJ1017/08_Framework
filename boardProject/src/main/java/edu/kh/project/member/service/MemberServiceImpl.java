@@ -19,7 +19,7 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired // 등록된 Bean 중에서 같은 타입의 Bean을 대입(DI)
 	private MemberMapper mapper;
 	
-	@Autowired // BCrypt 암호화 객체 의존성 주입 받기
+	@Autowired // BCrypt 암호화 객체 의존성 주입 받기, =>> common.config.SequrityConfig.java
 	private BCryptPasswordEncoder encoder;
 	
 	/** 비밀번호 암호화
@@ -45,9 +45,13 @@ public class MemberServiceImpl implements MemberService {
 	// 로그인 서비스
 	@Override
 	public Member login(String memberEmail, String memberPw) {
+		// 1. memberEmail이 일치하는 회원의 정보를 DB에서 조회
+		// 2. 이메일(id)이 일치하는 회원 정보가 없을 경우
+		// 3. DB에서 조회된 비밀번호와 입력받은 비밀번호가 같은지 확인
+		// 4. 로그인 결과 반환
 		
 		// 암호화 테스트
-//		log.debug("memberPw : {}", memberPw);
+		// log.debug("memberPw : {}", memberPw);
 		log.debug("암호화된 memberPw : {}", encoder.encode(memberPw));
 		
 		// 1. memberEmail이 일치하는 회원의 정보를 DB에서 조회
@@ -57,12 +61,50 @@ public class MemberServiceImpl implements MemberService {
 		// 2. 이메일(id)이 일치하는 회원 정보가 없을 경우
 		if(loginMember == null) return null;
 		
+
 		// 3. DB에서 조회된 비밀번호와 입력받은 비밀번호가 같은지 확인
 //		log.debug( "비밀번호 일치? : {}", encoder.matches( memberPw, loginMember.getMemberPw() ) );
 		if( !encoder.matches( memberPw, loginMember.getMemberPw() ) ) return null;
 		
 		// 4. 로그인 결과 반환
 		return loginMember;
+	}
+
+	// 회원가입
+	@Override
+	public int signUp(Member inputMember) {
+		// 1) 비밀번호 암호화(BCrypt)
+		// 2) 주소 미입력 시 null로 변경
+		// 3) mapper 호출 후 결과 반환
+		
+		// 1) 비밀번호 암호화(BCrypt)
+		String encPw = encoder.encode( inputMember.getMemberPw() );
+		inputMember.setMemberPw(encPw);
+		
+		// 2) 주소 미입력 시 null로 변경
+		// 빈칸 입력시 "" , "" , "" 가 합쳐져서 ",,"로 바뀜
+		// text타입의 input은 값이 작성되지 않으면 "" 빈칸
+		// checkbox,radio가 체크가 안되면 null
+		if( inputMember.getMemberAddress().equals(",,") ) {
+			inputMember.setMemberAddress(null);
+		}
+		
+		// 3) mapper 호출 후 결과 반환
+		return mapper.signUp(inputMember);
+	}
+
+	// 이메일 중복 검사
+	@Override
+	public int emailCheck(String inputEmail) {
+		
+		return mapper.emailCheck(inputEmail);
+	}
+
+	// 닉네임 중복 검사
+	@Override
+	public int duplication(String inputNickname) {
+		
+		return mapper.duplication(inputNickname);
 	}
 
 }

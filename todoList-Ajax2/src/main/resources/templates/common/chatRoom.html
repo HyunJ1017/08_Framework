@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chat</title>
-  <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/chatRoom.css">
 </head>
 <body>
@@ -17,14 +16,28 @@
 
       <section class="content-1">
 
-        <div id="chatViewer">체팅 출력박스</div>
+        <!-- 채팅화면을 출력할 Div -->
+        <div id="chatViewer">
 
+          <!-- 로그인 한 멤버의 메세지 (우측정렬) -->
+          <div class="justifyRight"><pre class="nameBoxPre">닉네임</pre></div>
+          <div class="justifyRight"><pre class="chatBodyPre"></pre>채팅내용</div>
+
+          <!-- 다른 멤버의 메세지 (좌측정렬) -->
+          <div class="justifyLeft"><pre class="nameBoxPre">닉네임</pre></div>
+          <div class="justifyLeft"><pre class="chatBodyPre">채팅내용</pre><pre class="chatDatePre">입력시간</pre></div>
+
+        </div>
+
+        <!-- 채팅 입력, 보내는 버튼 -->
         <textarea rows="5" cols="50" id="inputChat" placeholder="체팅 입력박스"></textarea>
         <button id="sendChatting">보내기</button>
-        <span id="memberNo" th:text="${loginMember.memberNo}"></span>
 
       </section>
 
+      <!-- JS에서 읽을 로그인 맴버의 정보 -->
+      <input type="hidden" id="memberNo" th:value="${loginMember.memberNo}">
+      <input type="hidden" id="loginMemberNickname" th:value="${loginMember.memberNickname}">
   </main>
 
   <footer></footer>

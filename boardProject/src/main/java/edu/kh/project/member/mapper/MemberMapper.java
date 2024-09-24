@@ -18,4 +18,10 @@ public interface MemberMapper {
 	 */
 	Member login(String memberEmail);
 
+	int signUp(Member inputMember);
+
+	int emailCheck(String inputEmail);
+
+	int duplication(String inputNickname);
+
 }

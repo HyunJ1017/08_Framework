@@ -20,4 +20,8 @@ public interface ChatMapper {
 
 	String selectName(int memberNo);
 
+	List<ChatMember> selectAllMember();
+
+	int insertMember(ChatMember member);
+
 }

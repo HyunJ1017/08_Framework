@@ -12,7 +12,11 @@
 		FROM CAHTMEMBER
 		WHERE
 			MEMBER_NICKNAME = #{memberNickname}
-		AND MEMBER_PASSWORD = #{memberPassword}
+	</select>
+	
+	<select id="selectAllMember" resultType="string">
+		SELECT MEMBER_NICKNAME
+		FROM CAHTMEMBER
 	</select>
 	
 	<insert id="insertChat">
@@ -30,7 +34,7 @@
 			CHAT_NO,
 			MEMBER_NO,
 			CHAT_BODY,
-			TO_CHAR(CREATION_DATE, 'YYMMDD')
+			TO_CHAR(CREATION_DATE, 'HH":"MI') CREATION_DATE
 		FROM
 			CHAT_COMMON
 		ORDER BY CHAT_NO
@@ -44,5 +48,15 @@
 		WHERE
 			MEMBER_NO = #{memberNo}
 	</select>
+	
+	<insert id="insertMember">
+		INSERT INTO
+			CAHTMEMBER
+		VALUES(
+			SEQ_MEMBER_NO.NEXTVAL,
+			#{memberNickname},
+			1,
+			DEFAULT)
+	</insert>
 	
 </mapper>

@@ -1,234 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<!-- "연결할 Mapper 인터페이스 파일 경로(페키지 + 인터페이스 명) 작성 (필수)" -->
-<mapper namespace="edu.kh.todolist.mapper.TodoMapper">
 
-	<!-- 전체목록확인 -->
-	<select id="todoListFullView"
-			resultType="Todo">
-			
-		SELECT
-	 		LIST_NO,
-	 		TODO_TITLE,
-	 		TODO_DETAIL,
-	 		COMPLETE,
-	 		TO_CHAR(REG_DATE, 'YYYY"년" MM"월" DD"일"') REG_DATE,
-	 		COLOR
-	 	FROM TODOLIST
-	 	ORDER BY LIST_NO
-	 	
-	</select>
-	<select id="todoListFullViewComASC"
-			resultType="Todo">
-			
-		SELECT
-	 		LIST_NO,
-	 		TODO_TITLE,
-	 		TODO_DETAIL,
-	 		COMPLETE,
-	 		TO_CHAR(REG_DATE, 'YYYY"년" MM"월" DD"일"') REG_DATE,
-	 		COLOR
-	 	FROM TODOLIST
-	 	ORDER BY COMPLETE ASC
-	 	
-	</select>
-	<select id="todoListFullViewComDESC"
-			resultType="Todo">
-			
-		SELECT
-	 		LIST_NO,
-	 		TODO_TITLE,
-	 		TODO_DETAIL,
-	 		COMPLETE,
-	 		TO_CHAR(REG_DATE, 'YYYY"년" MM"월" DD"일"') REG_DATE,
-	 		COLOR
-	 	FROM TODOLIST
-	 	ORDER BY COMPLETE DESC
-	 	
+<!-- namespace에는 연결할 Mapper 인터페이스의 패키지 + 인터페이스명 작성 -->
+<mapper namespace="edu.kh.todolist.mapper.TodoListMapper">
+	
+	<!-- resultType : 조회된 "행" 타입 -->
+	
+	<!-- 할 일 목록 조회 -->
+	<select id="selectTodoList" resultType="Todo">
+		SELECT 
+			TODO_NO, 
+			TODO_TITLE, 
+			TODO_COMPLETE, 
+			TO_CHAR(REG_DATE, 'YYYY-MM-DD HH24:MI:SS') REG_DATE 
+		FROM TB_TODO
+		WHERE TODO_NO > 0
+		ORDER BY TODO_NO ASC
 	</select>
 	
-	<!-- 전체 갯수 확인 -->
-	<select id="totalCount"
-			resultType="_int">
-			
-		SELECT
-			COUNT(*)
-		FROM TODOLIST
-	 	
+	
+	<!-- 완료된 할 일 개수 조회 -->
+	<select id="selectCompleteCount" resultType="_int">
+		SELECT COUNT(*) 
+		FROM TB_TODO
+		WHERE TODO_NO > 0
+		AND TODO_COMPLETE = 1
 	</select>
 	
-	<!-- 완료된 할일 갯수 확인 -->
-	<select id="countCompleteCount"
-			resultType="_int">
-			
-		SELECT
-			COUNT(*)
-		FROM TODOLIST
-		WHERE COMPLETE = 'O'
-	 	
-	</select>
 	
-	<!-- 새 할일 추가 -->
-	<insert id="insertTodo"
-			parameterType="Todo">
-		INSERT INTO TODOLIST
-		VALUES(
-			SEQ_LIST_NO.NEXTVAL,
-			#{todoTitle},
-			#{todoDetail},
-			DEFAULT,
-			DEFAULT,
-			DEFAULT)
+	<!-- DML은 결과가 항상 int라서 적지 않음!! (암묵적으로 int) -->
+	
+	<!-- 할 일 추가 -->
+	<insert id="todoAdd" parameterType="Todo">
+	
+		INSERT INTO TB_TODO(TODO_NO, TODO_TITLE, TODO_DETAIL)
+		VALUES(SEQ_TODO_NO.NEXTVAL, #{todoTitle}, #{todoDetail})
+	
 	</insert>
 	
-	<!-- 목록 불러오기 -->
-	<select id="selectTodo"
+	
+	<!-- 할 일 상세조회 -->
+	<select id="todoDetail"
 			parameterType="_int"
 			resultType="Todo">
-		SELECT
-			LIST_NO,
-	 		TODO_TITLE,
-	 		TODO_DETAIL,
-	 		COMPLETE,
-	 		TO_CHAR(REG_DATE, 'YYYY"년" MM"월" DD"일"') REG_DATE,
-	 		COLOR
-		FROM TODOLIST
-		WHERE LIST_NO = #{listNo}
+			
+		SELECT 
+			TODO_NO, 
+			TODO_TITLE, 
+			TODO_DETAIL,
+			TODO_COMPLETE, 
+			TO_CHAR(REG_DATE, 'YYYY-MM-DD HH24:MI:SS') REG_DATE 
+		FROM TB_TODO
+		WHERE TODO_NO = #{todoNo}
+	
 	</select>
 	
-	<!-- 완료여부 변경 -->
-	<update id="completeChange"
-			parameterType="_int">
-			
-		UPDATE TODOLIST
-		SET COMPLETE = DECODE(COMPLETE, 'O', 'X', 'O')
-		WHERE LIST_NO = #{listNo}
-		
+	
+	<!-- 완료 여부 변경 -->
+	<update id="todoComplete">
+		UPDATE TB_TODO
+		SET
+			TODO_COMPLETE = 
+				DECODE(TODO_COMPLETE, 0, 1, 0)
+		WHERE 
+			TODO_NO = #{todoNo}
 	</update>
 	
-	<!--할일 수정-->
-	<update id="updateTodo"
-			parameterType="Todo">
-			
-		UPDATE TODOLIST
+	
+	<!-- 할 일 수정 -->
+	<update id="todoUpdate" parameterType="Todo">
+		UPDATE TB_TODO
 		SET
 			TODO_TITLE = #{todoTitle},
-			TODO_DETAIL = #{todoDetail},
-			COLOR = #{color}
-		WHERE LIST_NO = #{listNo}
-		
+			TODO_DETAIL = #{todoDetail}
+		WHERE 
+			TODO_NO = #{todoNo}
 	</update>
 	
-	<!-- deleteUser -->
-	<delete id="deleteUser"
-			parameterType="_int">
-	
-		DELETE
-		FROM TODOLIST
-		WHERE LIST_NO = #{listNo}
-	
+	<!-- 할 일 삭제 -->
+	<delete id="todoDelete" parameterType="_int">
+		DELETE FROM TB_TODO
+		WHERE TODO_NO = #{todoNo}
 	</delete>
 	
-	<!-- 할일 제목찾기 -->
-	<select id="searchTitle"
+	
+	
+	<!-- 제목 검색 -->
+	<select id="searchTitle" 
 			parameterType="_int"
 			resultType="string">
-			
 		SELECT TODO_TITLE
-		FROM TODOLIST
-		WHERE LIST_NO = #{todoNo}
-		
+		FROM TB_TODO
+		WHERE TODO_NO = #{todoNo}
 	</select>
 	
-	<!-- 디테일 찾기 -->
-	<select id="getDetail"
-			parameterType="_int"
-			resultType="string">
-			
-		SELECT TODO_DETAIL
-		FROM TODOLIST
-		WHERE LIST_NO = #{todoNo}
-		
+	
+	<!-- 전체 할 일 개수 조회 -->
+	<select id="getTotalCount" resultType="_int">
+		SELECT COUNT(*) FROM TB_TODO
 	</select>
 	
 	
 	
-	<!-- ============================================ -->
-	<!-- listNo에 맞는 과제목록 불러오기 -->
-	<select id="selectAllSub"
-			parameterType="_int"
-			resultType="Sub">
-			
-		SELECT
-	 		SUBJECT_NO,
-	 		LIST_NO,
-	 		SUBJECT_TITLE,
-	 		SUBJECT_DETAIL,
-	 		COMPLETE
-	 	FROM SUBJECTLIST
-	 	WHERE LIST_NO = #{listNo}
-	 	ORDER BY SUBJECT_NO
-	 	
-	</select>
-	
-	<!-- 과제 불러오기 -->
-	<select id="selectSub"
-			parameterType="_int"
-			resultType="Sub">
-			
-		SELECT
-	 		SUBJECT_NO,
-	 		LIST_NO,
-	 		SUBJECT_TITLE,
-	 		SUBJECT_DETAIL,
-	 		COMPLETE
-	 	FROM SUBJECTLIST
-	 	WHERE SUBJECT_NO = #{subjectNo}
-	 	ORDER BY SUBJECT_NO
-	 	
-	</select>
-	
-	<!-- 새 과제 추가 -->
-	<insert id="insertSub"
-			parameterType="Sub">
-		INSERT INTO SUBJECTLIST
-		VALUES(
-			SEQ_SUBJECT_NO.NEXTVAL,
-			#{listNo},
-			#{subjectTitle},
-			#{subjectDetail},
-			DEFAULT)
-	</insert>
-	
-	<!-- 과제 완료여부 변경 -->
-	<update id="completeChangeSub">
-			
-		UPDATE SUBJECTLIST
-		SET COMPLETE = DECODE(COMPLETE, 'O', 'X', 'O')
-		WHERE SUBJECT_NO = #{subNo}
-		
-	</update>
-	
-	<!-- 과제 수정-->
-	<update id="updateSub"
-			parameterType="Todo">
-			
-		UPDATE SUBJECTLIST
-		SET
-			SUBJECT_TITLE = #{subjectTitle},
-			SUBJECT_DETAIL = #{subjectDetail}
-		WHERE SUBJECT_NO = #{subjectNo}
-		
-	</update>
-	
-	<!-- 과제 삭제 -->
-	<delete id="deleteSub"
-			parameterType="_int">
-	
-		DELETE
-		FROM SUBJECTLIST
-		WHERE SUBJECT_NO = #{subjectNo}
-	
-	</delete>
-	
+
 </mapper>

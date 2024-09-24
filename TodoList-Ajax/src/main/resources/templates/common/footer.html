@@ -1,0 +1,12 @@
+<!-- 
+  th:inline="javascript"
+  - 타임리프로 해석된 값의 자료형을 javascript에 맞게 자동으로 변경
+-->
+
+<script th:inline="javascript">
+  const message = /*[[${message}]]*/ "서버로 부터 전달 받은 메시지"; 
+
+  if(message != null){
+    alert(message);
+  }
+</script>

@@ -1,127 +1,21 @@
-*{
-  box-sizing: border-box;
-}
-body {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: start;
-}
-header{
-  min-width: 40%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-html{
-  width: 99%;
-  height: 99vh;
-  display: flex;
-  flex-direction: column;
-  background-color: black;
-  color: white;
-}
-main{
-  width: 100%;
-  height: 98vh;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: start;
-  padding: 5px;
-  border: 1px solid  #bdbdbd
-}
-.flexColumn{
-  display: flex;
-  flex-direction: column;
-}
-.flexRow{
-  display: flex;
-  flex-direction: row;
-}
-.flexGrow{
-  flex-grow: 1;
-}
-.flexGrow2{
-  flex-grow: 2;
-}
-.block{
-  display: block;
-}
-.inlineBlock{
-  display: inline-block;
-}
-.spaceBetween{
-  display: flex;
-  justify-content: space-between;
-}
-
-/* 좌단 */
-.leftSideSec{
-  width: 285px;
-  height: 100%;
-  border-right: 1px solid #bdbdbd;
-  padding: 5px;
-}
-.green{
-  color: green;
-}
-.side-footer{
-  border-top: 1px dashed rgb(75, 75, 75);
-}
-
-/* todoList 목록 */
-#listTable{
-  flex-grow: 1;
-  max-height: 415px;
-  overflow-y: scroll;
-}
-
-.tbodyRow div{border: 0px solid black;}
-
-#listTable .listNo{
-  width: 40px;
-  text-align: center;
-}
-#listTable .todoTitle{
-  width: 160px;
-  text-align: center;
-}
-#listTable .todoComplete{
-  width: 75px;
-  text-align: center;
-}
-#listTable .tbodyRow{
-  border-bottom: 1px solid grey;
-}
-#listTable .tbodyRow:hover{
-  border: 1px solid grey;
-}
-
-/* ----------------------------------------------------- */
-/* 우단 */
-.rightSideSec{
-width: 100%;
-height: 100%; 
-}
-textarea{
-  background-color: #ffffff63;
-  color: white;
-}
-
-/* 팝업레이어설정 */
-
 #popupLayer{
-  width: 100%;
-  height: 100%;
-  border: 2px solid rgb(111, 195, 223);
-  border-radius: 5px;
-  /* background-color: white; */
+  width: 400px;
+  height: 400px;
+  border: 3px solid pink;
+  border-radius: 15px;
+  background-color: white;
   
+  position: fixed; /* 브라우저에서 위치 고정 */
+
+  /* 브라우저 정가운데 배치 */
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
   display: flex;
-  justify-content: start;
+  flex-direction: column;
 }
 
 
@@ -129,17 +23,14 @@ textarea{
 .popup-row{
   padding: 10px;
   margin: 10px;
-  border-bottom: 1px solid rgb(111, 195, 223);
+  border-bottom: 3px solid grey;
  
   /* 위치의 상대적 기준점 */
   position : relative;
   
   width: 90%;
 }
-#todoListSec{
-  width: 310px;
-  flex-grow: 1;
-}
+
 
 /* popup layer 숨기기/보이기 */
 .popup-hidden{ display: none !important; }
@@ -179,116 +70,17 @@ textarea{
 
 .btn-container > button{ margin: 5px;}
 
-#popupTodoContent{
-  height: 170px;
-  overflow: auto; /* 길어질 시 스크롤 */
-  flex-grow: 1;
-}
 
-/* 팝업레이거 가운데 */
-.clickHr{
-  position: absolute;
-  height: 350px;
-}
-.textCenter{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.textCenter:hover{
-  cursor: pointer;
-}
-.textCenterDiv{
-  border: 1px solid rgb(111, 195, 223);
-  /* background-color: white; */
-  height: 150px;
-  writing-mode: vertical-rl;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 25px;
-  border-radius: 12px;
-  z-index: 1;
-}
 
-/* 서브리스트목록 */
-#subListSec{
-  width: 320px;
-  flex-grow: 2;
-  overflow-x: auto;
-}
-#subSection{
-  min-width: 400px;
-  flex-grow: 1;
-  height: 100%;
-  padding: 10px;
-  margin: 10px;
-  overflow-y: auto;
-}
-.subListViewer{
-  width: 100%;
-}
-.subListViewer > .subjectNum{/* subNum */
-  flex-grow: 0;
-  width: 80px;
-  text-align: center;
-  padding: 5px;
-}
-.subListViewer > .subjectTitle{/*sub제목 */
-  flex-grow: 1;
-  text-align: center;
-  padding: 5px;
-}
-.subListViewer > .subjectComplete{/* sub완료여부 */
-  flex-grow: 0;
-  width: 80px;
-  border: 0;
-  /* background-color: white; */
-  text-align: center;
-  z-index: 999;
-  user-select: none;
-}
-
-.subNum{/* subNum 상단 */
-  flex-grow: 0;
-  width: 80px;
-  text-align: center;
-  padding: 5px;
-}
-.subTitle{/*sub제목 상단 */
-  flex-grow: 1;
-  text-align: center;
-  padding: 5px;
-}
-.subComplete{/* sub완료여부 상단 */
-  flex-grow: 0;
-  width: 80px;
-  border: 0;
-  text-align: center;
-  user-select: none;
-}
-
-.subjectComplete:hover{
-  cursor: pointer;
-  background-color: grey;
-}
-
-.subjectDetail{
-  /* border-bottom: 1px dotted rgb(111, 195, 223); */
-  width: 100%;
-  padding: 5px 5px 5px 30px;
-  max-height: 44px;
-  overflow-y: auto;
-}
 /* ----------------------------------------------------- */
 
 /* 수정 팝업 레이어 */
 #updateLayer{
   width: 400px;
   height: 250px;
-  border: 3px solid rgb(111, 195, 223);
+  border: 3px solid blue;
   border-radius: 15px;
-  /* background-color: white; */
+  background-color: white;
 
   position: fixed; /* 브라우저에서 위치 고정 */
 
@@ -300,28 +92,9 @@ textarea{
   right: 0;
 
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 
 #updateTitle{ width: 300px; }
-
-.updateContent{
-  max-height: 170px;
-  overflow: auto;
-}
-
-/* ************************************************************** */
-/* 수정박스 */
-.canUpdate:hover, .canUpdate1:hover, .canUpdate2:hover{
-
-  border: 1px solid rgb(243, 133, 24);
-  cursor: pointer;
-
-}
-.updateSec{
-  min-height: 200px;
-  padding: auto;
-  padding: 5px 200px 0;
-}

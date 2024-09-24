@@ -3,6 +3,7 @@ package edu.kh.todolist.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,14 +20,29 @@ public class MemberController {
 	@Autowired
 	ChatService service;
 	
-	@PostMapping("login")
-	public String login(@ModelAttribute ChatMember member, Model model) {
+	@GetMapping("login")
+	public String login2(@ModelAttribute ChatMember member, Model model) {
 		
 		ChatMember getmember = service.selectMember(member);
-		
 		if(getmember != null) {
 			
 			model.addAttribute("loginMember", getmember);
+			
+			return "/common/chatRoom";
+		}
+		
+		
+		return "/common/main";
+	}
+	
+	@GetMapping("insert")
+	public String login1(@ModelAttribute ChatMember member, Model model) {
+		
+		int result = service.insertMember(member);
+		
+		if(result > 0) {
+			
+			model.addAttribute("loginMember", service.selectMember(member) );
 			
 			return "/common/chatRoom";
 		}

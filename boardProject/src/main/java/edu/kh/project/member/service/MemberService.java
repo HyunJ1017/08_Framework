@@ -12,4 +12,22 @@ public interface MemberService {
 	 */
 	Member login(String memberEmail, String memberPw);
 
+	/** 회원가입
+	 * @param inputMember
+	 * @return result
+	 */
+	int signUp(Member inputMember);
+
+	/** 이메일 중복검사
+	 * @param inputEmail
+	 * @return count
+	 */
+	int emailCheck(String inputEmail);
+
+	/** 닉네임 중복검사
+	 * @param inputNickname
+	 * @return count
+	 */
+	int duplication(String inputNickname);
+
 }

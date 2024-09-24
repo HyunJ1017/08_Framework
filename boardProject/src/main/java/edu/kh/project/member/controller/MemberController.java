@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -119,8 +121,72 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	/*****************************************************/
+	
+	
+	/**회원가입 페이지로 이동
+	 * @return
+	 */
+	@GetMapping("signUp")
+	public String signUp() {
+		return "member/signUp";
+	}
+	
+	
+	/** 회원가입 수행
+	 * @param inputmember : 입력값이 저장된 Member 객체(커맨드객체)
+	 * @param ra : redirect시 message를 담을 객체
+	 * @return
+	 */
+	@PostMapping("signUp")
+	public String signUp(
+			@ModelAttribute Member inputMember,
+			RedirectAttributes ra
+			) {
+		// 회원가입 서비스 호출
+		int result = service.signUp(inputMember);
+		
+		// 결과에 따른 응답 제어
+		String message = null;
+		String path = null;
+		if(result > 0) {
+			path = "/";
+			message = inputMember.getMemberNickname() + "님의 가입을 환영합니다";
+		} else {
+			path = "signUp"; //상대경로 "/member/signUp" 으로 "GET" 방식 redirecct.
+			message = "회원가입 실패";
+		}
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
+	
+	/** 입력받은 이메일의 중복검사 시행
+	 * @param inputEmail : 입력받은 이메일
+	 * @return 0 || 1, 0이면 중복 아님, 1이면 중복되는 이메일 존재 
+	 */
+	@ResponseBody
+	@GetMapping("emailCheck")
+	public int emailCheck(
+			@RequestParam("email") String inputEmail
+			) {
+		return service.emailCheck(inputEmail);
+	}
+	
+	/** 입력받은 닉네임의 중복검사 시행
+	 * @param inputNickname : 입력받은 닉네임
+	 * @return 0 || 1, 0이면 중복 아님, 1이면 중복되는 닉네임 존재
+	 */
+	@ResponseBody
+	@GetMapping("duplication")
+	public int duplication(
+			@RequestParam("nickname") String inputNickname
+			) {
+		return service.duplication(inputNickname);
+	}
+	
+	
 }
-
 
 /* Cookie란?
  * - 클라이언트 측(브라우저)에서 관리하는 데이터(파일 형식)

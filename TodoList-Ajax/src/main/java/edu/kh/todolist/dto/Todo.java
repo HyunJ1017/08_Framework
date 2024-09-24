@@ -9,17 +9,17 @@ import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
-public class Todo {
+public class Todo  {
+						
+	private int 		todoNo;
+	private String 	todoTitle;
+	private String 	todoDetail;
+	private int 		todoComplete;
+	private String 	regDate;
 	
-	private int listNo;
-	private String todoTitle;
-	private String todoDetail;
-	private char complete;
-	private String regDate;
-	private String color;
-
+	
 }
