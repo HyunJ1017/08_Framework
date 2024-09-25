@@ -35,12 +35,27 @@
 
       </section>
 
+
       <!-- JS에서 읽을 로그인 맴버의 정보 -->
       <input type="hidden" id="memberNo" th:value="${loginMember.memberNo}">
       <input type="hidden" id="loginMemberNickname" th:value="${loginMember.memberNickname}">
   </main>
 
-  <footer></footer>
+  <footer>
+    <h3>추가할 내용</h3>
+    <pre>
+  1. 앤터키 입력 감지해서 메세지 보내기
+  2. 미디어파일 첨부, 표시
+     (다운로드도 해야됨?, 누가 접속할때마다 업로드도 해주고?)
+  3. 채팅내역 삭제
+     (DB삭제할건지, PC쿠키데이터 삭제할건지)
+  4. 채팅 폰트크기 늘리고 줄이는버튼
+  5. 채팅창 제일 아래로 가는 버튼
+     (세션에 포지션걸고 위치고정)
+  6. 검색
+     (포커스?)
+    </pre>
+  </footer>
   <script src="/js/chatRoom.js"></script>
 </body>
 </html>

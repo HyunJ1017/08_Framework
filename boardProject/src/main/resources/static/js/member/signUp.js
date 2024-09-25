@@ -40,6 +40,7 @@ searchAddress.addEventListener( "click", findAddress ); // searchAddress 함수�
 /* 필수 입력 항목의 유효성 검사여부를 체크하기 위한 객체(체크리스트) */
 const checkObj = {
   "memberEmail"     : false,
+  "authKey"         : false,
   "memberPw"        : false,
   "memberPwConfirm" : false,
   "memberNickName"  : false,
@@ -381,3 +382,252 @@ memberPwConfirm.addEventListener("input", () => {
   checkObj.memberPwConfirm = false;
 
 });
+
+
+//=============================================================================================
+//=============================================================================================
+
+
+/*---------- 이메일 인증 ----------*/
+
+/*
+1. 인증번호를 작성된 이메일로 발송하기
+- 1. 작성된 이메일이 유효하기 않은 경우
+- 2. 비동기로 서버에서 작성된 이메일로 인증코드 발송(AJAX)
+- 3. 이메일 발송 메시지 출력 + 5분 타이머
+
+2. 인증 번호를 입력하고 인증하기 버튼을 클릭한 경우
+     (추가) 타이머가 00:00인 경우 클릭방지
+- 1. 인증번호 6자리가 입력이 되었는지 확인
+- 2. 입력된 이메일과 인증번호를 비동기로 서버로 전달하여
+-    Redis에 저장된 이메일(key), 인증번호(value)와 일치하는지 확인
+- 3. 일치하지 않는 경우 alert("인증번호가 일치하지 않습니다.")
+- 4. 일치하지 하는 경우 타이머 멈춤 + 메세지 출력 + checkObj true
+*/
+
+// 1. 인증번호를 작성된 이메일로 발송하기
+
+// 인증번호 받기 버튼
+const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn");
+
+// 인증 관련 메시지 출력 sapn
+const authKeyMessage = document.querySelector("#authKeyMessage");
+
+const initTime = "05:00"; // 인증 초기시간
+const initMin  = 4;       // 초기값 5분에서 1초 감소된 후 분
+const initSec  = 59;      // 초기값 5분에서 1초 감소된 후 초
+let min        = initMin; // 실제 줄어든 시간 분
+let sec        = initSec; // 실제 줄어든 시간 초
+let authTimer;            // 타이머 역할의 setInterval을 저장할 변수
+                          // 타이머를 멈추는 clearInterval 수행을 위해 필요
+
+// 인증 번호 받기 클릭시
+sendAuthKeyBtn.addEventListener("click", () => {
+
+  // 초기화
+  checkObj.authKey = false;
+  authKeyMessage.innerText = '';
+  if( authTimer != undefined ){
+    clearInterval(authTimer); // 이전 인증타이머 초기화
+  }
+
+  // 1.) 작성된 이메일이 유효하기 않은 경우
+  if(checkObj.memberEmail === false){
+    alert("유효한 이메일 작성 후 클릭하세요");
+    return;
+  }
+  // 2.) 비동기로 서버에서 작성된 이메일로 인증코드 발송(AJAX)
+  fetch("/email/sendAuthKey", {
+    method : "POST",
+    headers : {"Content-Type" : "application/json"},
+    body : memberEmail.value
+    // Post방식으로 입력된 이메일을 body에 담아 제출
+  })
+
+  .then(response => {
+    if(response.ok) return response.text();
+    throw new Error("이메일인증발송 오류" + response.status)
+  })
+
+  .then(result => {
+    console.log(result);
+  })
+
+  .catch(err => console.error(err));
+  // fetch문 종료
+
+
+  /* 메일이 비동기로 보내지는 동안 아래 JS 코드 수행 */
+
+  // 3.) 이메일 발송 메시지 출력 + 5분 타이머
+
+  alert("인증번호가 발송되었습니다.");
+
+  authKeyMessage.innerText = initTime; // 05:00 문자열 출력
+
+  authKeyMessage.classList.remove("confirm", "error"); // 검정글씨
+
+  // 1초가 지날 때 마다 함수 내부 내용이 실행되는 setInterval 작성
+  // authTimer = setInterval(() => {}, 1000);
+  authTimer = setInterval(() => {
+
+    authKeyMessage.innerText = `${addZero(min)}:${addZero(sec)}`;
+    
+    // 00분 0초 정지
+    if( min === 0 && sec === 0) {
+      checkObj.authKey = false;
+      clearInterval(authTimer); // 1초마다 동작하는 secInterval 멈춤
+      authKeyMessage.classList.add("error");  // 빨간글씨
+      authKeyMessage.classList.remove("confirm");
+    }
+
+    if( sec === 0 ){    // 출력된 초가 0인 경우(1분지남)
+      sec = 60;
+      min--;            // q분 감소
+    }
+
+    sec--;              // 1초가 지날 때 마다 xec값 1씩 감소
+
+  }, 1000);
+
+
+});
+
+/* 전달받은 숫자가 10 미만(한자리수) 인 경우 앞에 영을 붙여서 반환하는 함수 */
+function addZero(num){
+  if(num<10) return "0" + num;
+  else       return num;
+}
+
+//------------------------------------------------------------------
+
+// 2. 인증 번호를 입력하고 인증하기 버튼을 클릭한 경우
+// 1.) 인증번호 6자리가 입력이 되었는지 확인
+// 2.) 입력된 이메일과 인증번호를 비동기로 서버로 전달하여
+//     Redis에 저장된 이메일(key), 인증번호(value)와 일치하는지 확인
+// 3.) 일치하지 않는 경우 alert("인증번호가 일치하지 않습니다.")
+// 4.) 일치하지 하는 경우 타이머 멈춤 + 메세지 출력 + checkObj true
+// (추가) 타이머가 00:00인 경우 클릭방지
+
+const checkAuthKeyBtn = document.querySelector("#checkAuthKeyBtn");
+const authKey         = document.querySelector("#authKey");
+
+checkAuthKeyBtn.addEventListener("click", () => {
+  
+  // (추가) 타이머가 00:00인 경우 클릭방지
+  if(min===0 && sec===0){
+    alert("인증번호 입력 제한시간을 초과 하였습니다.");
+    return;
+  }
+  
+  // 1.) 인증번호 6자리가 입력이 되었는지 확인
+  if(authKey.value.trim().length < 6){
+    alert("인증번호가 잘못 입력 되었습니다.");
+    return;
+  }
+
+  // 2.) 입력된 이메일과 인증번호를 비동기로 서버로 전달하여
+  //     Redis에 저장된 이메일(key), 인증번호(value)와 일치하는지 확인
+  // AJAX로 여러 데이터를 서버로 전달하고 싶을 땐
+  // JSON 형태로 값을 전달함
+
+  // 서버로 전달할 데이터를 저장한 객체
+  const obj = {
+    "email" : memberEmail.value,  // 입력한 이메일
+    "authKey" : authKey.value     // 입력한 인증번호
+  };
+
+  fetch("/email/checkAuthKey",{
+    method : "POST",
+    headers : {"Content-Type":"application/json"},
+    body : JSON.stringify(obj)
+  })
+  .then(response => {
+    if(response.ok) return response.text();
+    throw new Error("인증키 체크 오류" + response.status)
+  })
+  .then(result => {
+    // console.log( result );
+
+    // 3.) 일치하지 않는 경우 alert("인증번호가 일치하지 않습니다.")
+    if(result === "false"){
+      alert("인증번호가 일치하지 않습니다.");
+      checkObj.authKey = false;
+      return;
+    }
+
+    // 4.) 일치하지 하는 경우 타이머 멈춤 + 메세지 출력 + checkObj true
+    clearInterval(authTimer);
+    authKeyMessage.innerText = '인증되었습니다.';
+    authKeyMessage.classList.add("confirm");
+    authKeyMessage.classList.remove("error");
+    checkObj.authKey = true;
+  })
+  .catch(err => console.error(err));
+
+});
+
+
+
+//=============================================================================================
+//=============================================================================================
+
+
+
+/* 회원가입 form 제출 시 전체 유효성 검사 실시 */
+
+const signUpForm = document.querySelector("#signUpForm");
+signUpForm.addEventListener("submit", e=>{
+
+  // for(let key in 객체)
+  // -> 객체의 키 값을 하나씩 꺼내서 key 변수에 저장
+
+  for(let key in checkObj){
+    if( checkObj[key] === false ){
+      let str;
+
+      switch(key){
+        case 'memberEmail'     : str = '이메일이 유효하지 않습니다.'; break;
+        case 'authKey'         : str = '이메일이 인증되지 않았습니다.'; break;
+        case 'memberPw'        : str = '비밀번호가 유효하지 않습니다.'; break;
+        case 'memberPwConfirm' : str = '비밀번호가 일치하지 않습니다.'; break;
+        case 'memberNickName'  : str = '사용할 수 없는 닉네임 입니다.'; break;
+        case 'memberTel'       : str = '전화번호가 유효하지 않습니다.'; break;
+      }
+
+      alert(str);
+
+      // 유효하지 않은 요소로 포커스 이동
+      document.getElementById(key).focus();
+
+      e.preventDefault();
+
+      return;
+    }
+  }
+
+//--------------------------------------------------------------------
+
+  /* 주소 유효성검사 */
+
+  // 모두작성 또는 모두 미작성
+  const addr = document.querySelectorAll("[name = memberAddress]")
+
+  let empty = 0;
+  let notEmpty = 0;
+
+  for(let item of addr){// 멤버주소의 우편번호, 주소, 상세주소
+    let len = item.value.trim().length;
+    if(len>0) notEmpty++;
+    else empty++;
+  }
+
+  // 둘다 3이 아닌경우 ( "모두작성 또는 모두 미작성"이 아닌경우 )
+  if( notEmpty !== 3 && empty !== 3 ){
+    alert("주소가 유효하지 않습니다.");
+    e.preventDefault();
+    return;
+  }
+  
+});
+

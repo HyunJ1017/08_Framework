@@ -7,8 +7,6 @@
 
   <!-- templates/common/common.html 조각으로 추가 -->
   <th:block th:replace="~{common/common}"></th:block>
-  <link rel="stylesheet" href="/scc/member/signup-style">
-
 </head>
 <body>
 
@@ -22,10 +20,30 @@
     <section class="content">
 
       <section class="content-1">
-        <!-- 확인, 보충 등등 그때 그때 사용 -->
+        
+        <table id="memberListTable" border="1" style="border-collapse: collapse;">
+          <thead>
+            <tr>
+              <th>회원번호</th>
+              <th>이메일</th>
+              <th>탈퇴상태</th>
+              <th>로그인</th>
+              <th>비밀번호 초기화</th>
+              <th>상태변경</th>
+            </tr>
+          </thead>
+          <tbody id="memberList">
+            <tr>
+              <th>1</th>
+              <td>user01@kh.or.kr</td>
+              <th>N</th>
+              <th> <button>로그인</button> </th>
+              <th> <button>비밀번호 초기화</button> </th>
+              <th> <button>상태 변경</button> </th>
+            </tr>
 
-        <!-- session에 loginMember 있으면 출력 -->
-        <th:block th:text="${session.loginMember}"></th:block>
+          </tbody>
+        </table>
 
 
       </section>

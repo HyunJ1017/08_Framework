@@ -39,3 +39,78 @@ document.addEventListener("DOMContentLoaded", () => {
   memberEmail.value = saveEmail;
   checkbox.checked = true;
 });
+
+
+//=================================================================================
+//=================================================================================
+
+
+/* 메인페이지 회원 목록 비동기 조회 함수 */
+
+// 표를 출력 할 Tbody 태그
+const memberList = document.querySelector("#memberList");
+
+const selectMemberList = () => {
+  
+  // 1 비동기로 모든 회원의 회원번호, 이메일, 탈퇴상태 조회하기
+  fetch("/selectMemberList")
+  .then(response => {
+    if(response.ok) return response.json();
+    throw new Error("멤버조회오류" + response.status)
+  })
+  .then(list => {
+    // console.log(memberList);
+
+    // 1.) #MemberList 기존 내용 없애기
+    memberList.innerHTML = '';
+
+    // 2.) 조회 결과인 list를 반복접근해서 html코드 넣기
+    list.forEach( member => {
+      // member = 조회된 list에서 하나씩 꺼낸 요소
+
+      // tr요소 만들기
+      const tr = document.createElement("tr");
+
+      // th에 회원 번호 세팅
+      const th1 = document.createElement("th");
+      th1.innerText = member.memberNo;
+
+      // td에 회원 이메일 세팅
+      const td2 = document.createElement("th");
+      td2.innerText = member.memberEmail;
+
+      // th에 회원 탈퇴여부 세팅
+      const th3 = document.createElement("th");
+      th3.innerText = member.memberDelFl;
+
+      // th에 버튼 든들고 login 글자 세팅
+      const th4 = document.createElement("th");
+      const loginBtn = document.createElement("button");
+      loginBtn.innerText = '로그인';
+      th4.append(loginBtn);
+
+      // th > button 만들어서 "비밀번호 초기화" 글자 세팅
+      const th5 = document.createElement("th");
+      const initBtn = document.createElement("button");
+      initBtn.innerText = "비밀번호 초기화";
+      th5.append(initBtn);
+
+      // th > button 만들어서 "탈퇴 상태 변경" 글자 세팅
+      const th6 = document.createElement("th");
+      const changeBtn = document.createElement("button");
+      initBtn.innerText = "탈퇴 상태 변경";
+      th6.append(changeBtn);
+
+      // tr에 요소추가
+      tr.append(th1, td2, th3, th4, th5, th6);
+
+      // #memberList에 tr추가
+      memberList.append(tr);
+
+    });
+
+
+  })
+  .catch(err => console.error(err));
+
+};

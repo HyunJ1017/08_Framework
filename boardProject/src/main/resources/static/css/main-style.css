@@ -451,3 +451,33 @@ label[for="headerMenuToggle"]:hover{
 .content-1 hr{
   margin: 20px 0;
 }
+
+
+/* ****************************************************** */
+
+/* 테이블 */
+
+#memberListTable tr>th:first-child{
+
+}
+
+#memberListTable tr>td:nth-child(2),
+#memberListTable tr>th:nth-child(2){
+  
+}
+
+#memberListTable tr>th:nth-child(3){
+
+}
+
+#memberListTable tr>th:nth-child(4){
+
+}
+
+#memberListTable tr>th:nth-child(5){
+
+}
+
+#memberListTable tr>th:last-child{
+
+}
