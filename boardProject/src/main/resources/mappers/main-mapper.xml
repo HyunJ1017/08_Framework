@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace = "edu.kh.project.main.mapper.MainMapper">
+<mapper namespace = "edu.kh.project.fileUpload.mapper.FileUploadMapper">
 
-	<select id="selectMemberList" resultType="Member">
-	SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_DEL_FL
-	FROM "MEMBER"
-	WHERE MEMBER_NO > 0
-	ORDER BY MEMBER_NO ASC
+	<insert id="fileInsert">
+	INSERT INTO TB_FILE_TEST
+	VALUES(
+		SEQ_FILE_NO.NEXTVAL,
+		#{fileOriginalName},
+		#{fileRename},
+		#{filePath},
+		DEFAULT)
+	</insert>
+	
+	<select id="selectFileList" resultType="FileDto">
+	SELECT
+		FILE_NO,
+		FILE_ORIGINAL_NAME,
+		FILE_RENAME,
+		FILE_PATH,
+		TO_CHAR(UPLOAD_DATE, 'YYYY-MM-DD HH24:MI:SS') UPLOAD_DATE
+	FROM TB_FILE_TEST
+	WHERE FILE_NO > 0
+	ORDER BY FILE_NO ASC
 	</select>
 	
 </mapper>

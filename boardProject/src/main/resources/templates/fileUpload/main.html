@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="#{app.name}">messages.properties 값 출력</title>
+
+  <!-- templates/common/common.html 조각으로 추가 -->
+  <th:block th:replace="~{common/common}"></th:block>
+</head>
+
+<body>
+
+  <main>
+    <!-- common/header.html 을 조각으로 추가 -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <h1>파일 업로드 테스트</h1>
+
+    <hr>
+    <pre>
+  - 파일을 제출하려는 form 태그는 무조건 method "POST"!!!!
+  - 파일을 제출하기 위해서는 enctype 은 
+      enctype = "miltipart/form-data"로 지정해야 한다
+
+  enctype 이란??
+  - 데이터를 서버로 전송할 때 데이터의 형태(인코딩)를 지정하는 속성
+
+
+  * application/x-www-form-urlencoded (기본값)
+    - URL 인코딩된 "문자열" 로 서버에 제출
+
+
+  * multipart/form-data  (무조건 POST에서만 동작)
+
+    - 제출되는 여러 데이터 타입에 맞춰서 인코딩하여 제출
+    문자열 -> String
+    숫자   -> String -> int/double(Spring이 처리)
+    파일   -> 2진 데이터
+
+  * text/plain
+    - 텍스트로 서버에 제출
+    </pre>
+    <div>
+      <h3>단일 파일 업로드(서버로 파일 제출)</h3>
+
+      <form action="test1"
+            method="post"
+            enctype="multipart/form-data">
+
+        <input type="file" name="uploadFile">
+        <button>제출하기</button>
+      </form>
+    </div>
+
+    <hr>
+
+    <h3>업로드되신 파일 목록</h3>
+
+    <table border="1" style="border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th>파일 번호</th>
+          <th>원본명</th>
+          <th>변경명</th>
+          <th>등록일</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr th:each= "f:${fileList}" th:object="${f}">
+          <th th:text="*{fileNo}">파일번호</th>
+          <td th:text="*{fileOriginalName}">원본명</td>
+          <td>
+            <a th:href="|*{filePath}*{fileRename}|" th:text="*{fileRename}" download style="color: dodgerblue;"></a>
+          </td>
+          <td th:text="*{uploadDate}">등록일</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+
+  </main>
+
+  <div style="height: 100px;"></div>
+  <!-- common/footer.html 추가 -->
+  <th:block th:replace="~{common/footer}"></th:block>
+
+
+</body>
+
+</html>
