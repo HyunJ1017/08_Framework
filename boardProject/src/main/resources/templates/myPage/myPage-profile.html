@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Page</title>
+
+  <!-- 공용 css/js 추가 -->
+  <th:block th:replace="~{common/common}"></th:block>
+
+  <!-- myPage 전용 CSS -->
+  <link rel="stylesheet" href="/css/myPage/myPage-style.css">
+</head>
+<body>
+
+  <main>
+
+    <!-- 헤더 추가 -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <section class="myPage-content">
+
+      <!-- 사이드 메뉴(왼쪽) 추가 -->
+      <th:block th:replace="~{myPage/sideMenu}"></th:block>
+
+      <!-- 마이페이지 본문(오른쪽) -->
+      <section class="myPage-main">
+        <h1 class="myPage-title">프로필</h1>
+        <span class="myPage-subject">프로필 이미지를 변경할 수 있습니다.</span>
+
+        <form action="profile" method="POST" name="myPageFrm" id="profile" enctype="multipart/form-data">
+          <div class="profile-image-area">
+
+            <img th:with="user=#{user.default.image}" 
+                 th:src="${session.loginMember.profileImg ?: user }" 
+                 id="profileImg">
+
+          </div>
+          <span id="deleteImage">x</span>
+
+          <div class="profile-btn-area">
+            <label for="imageInput">이미지 선택</label>
+
+            <input type="file" name="profileImg" id="imageInput" accept="image/*">
+            <!-- input type="file" 의 특징 겸 문제점
+            파일 선택후 취소를 누르면 이전에 선택했던 파일도 사라지고 빈칸이 남는다 
+
+            파일 타입의 input 태그는
+            value에 값(파일)이 저장되는 것이 아닌 files라고 하는 내부 속성에 저장된다
+
+            전용 html속성
+            1. multiple : 파일 선택시 여러 파일 선택이 가능하다
+            2. accept : 선택할 수 있는 파일 종류 지정
+
+            <input type="file" id="test" multiple  accept="image/*">
+            -->
+
+            <button>변경하기</button>
+          </div>
+
+          <div class="myPage-row">
+            <label>이메일</label>
+            <span th:text="${session.loginMember.memberEmail}"></span>
+          </div>
+
+          <div class="myPage-row">
+            <label>가입일</label>
+            <span th:text="${session.loginMember.enrollDate}"></span>
+          </div>
+
+        </form>
+
+
+      </section>
+
+    </section>
+
+  </main>
+
+  <!-- 푸터 추가 -->
+  <th:block th:replace="~{common/footer}"></th:block>
+  
+  <script th:inline="javascript">
+    // script 태그가 분리되어 있어도 먼저 작성된 변수, 함수는 뒷쪽에 작성된 스크립트 태그에서 사용 할 수 있다
+    
+    // th:inline="javascript"
+    // Java 데이터를 JS 타입에 맞게 자동 변환
+    
+    // messages.properties의 값을 얻어와 JS 전역변수로 선언
+    const userDefaultImage = /*[[#{user.default.image}]]*/ "기본이미지";
+    
+    // 로그인 된 회원의 프로필 이미지
+    // -> 기본 이미지인 경우 null
+    const loginMemberProfileImg = /*[[${session.loginMember.profileImg}]]*/  "회원 프로필 이미지";
+
+  </script>
+
+  <script src="/js/myPage/myPage.js"></script>
+</body>
+</html>

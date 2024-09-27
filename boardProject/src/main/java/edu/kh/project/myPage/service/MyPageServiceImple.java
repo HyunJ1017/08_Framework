@@ -1,13 +1,21 @@
 package edu.kh.project.myPage.service;
 
+import java.io.File;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import edu.kh.project.common.exception.FileUploadFailException;
+import edu.kh.project.common.util.FileUtil;
 import edu.kh.project.member.dto.Member;
 import edu.kh.project.myPage.mapper.MyPageMapper;
 
+@PropertySource("classpath:/config.properties")
 @Transactional	// 서비스 내 매서드 수행 중 UnCheckedException 발생 시 rollback 수행, 아니면 메서드 종료시 commit 수행
 @Service
 public class MyPageServiceImple implements MyPageService{
@@ -17,6 +25,12 @@ public class MyPageServiceImple implements MyPageService{
 	
 	@Autowired // 의존성주입 DI
 	private BCryptPasswordEncoder encoder;
+	
+	@Value("${my.profile.web-path}")
+	private String profileWebPath; // 웹 접근 경로
+	
+	@Value("${my.profile.folder-path}")
+	private String profileFolderPath; // 이미지 저장경로
 
 	/**
 	 *  회원 정보 수정
@@ -87,6 +101,52 @@ public class MyPageServiceImple implements MyPageService{
 		
 		// 2) 회원 탈퇴 Mapper 호출
 		return mapper.secession( loginMember.getMemberNo() );
+	}
+	
+	//로그인한 회원의 프로필 이미지 수정
+	@Override
+	public String profile(MultipartFile profileImg, int memberNo) {
+		
+		// 1) 이미지 확인
+		if(profileImg.isEmpty()) {
+			
+			// 제출된 파일이 없음 == X버튼을 눌러 기본이미지로 변경
+			// == DB에 저장된 이미지 경로가 NULL
+			int result = mapper.profile(null, memberNo);
+			return null;
+		}
+		
+		// 2) 파일 명 변경
+		String rename = FileUtil.rename(profileImg.getOriginalFilename());
+		
+		// 3) DB update 준비 준비 : 웹접근경로 + 변경된 파일명
+		String url = profileWebPath + rename;
+		
+		// 4) DB update
+		int result = mapper.profile(url, memberNo);
+		
+		// 5) 결과처리
+		if(result == 0) return null;
+		
+		try {
+			// 폴더 없으면 생성
+			File folder = new File(profileFolderPath);
+			if(!folder.exists()) {
+				// 폴더 없으면 폴더경로 생성
+				folder.mkdirs();
+			}
+			
+			// 업로드되어 임시저장된 이미지를 지정된 경로로 옮기기
+			profileImg.transferTo(new File(profileFolderPath + rename));
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new FileUploadFailException("프로필 이미지 수정 실패");
+		}
+		
+		
+		return profileWebPath + rename;
 	}
 
 }

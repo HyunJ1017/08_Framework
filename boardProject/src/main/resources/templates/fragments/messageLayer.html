@@ -1,0 +1,54 @@
+
+<div  id="popupLayer" class="display-hidden"
+      style="border: 3px solid rgb(255, 151, 32);
+             border-radius: 12px;
+             width: 300px;
+             height: 90px;
+             background-color: white;
+             box-shadow: 3px 3px 3px;
+             padding: 10px;
+             display: flex;
+             flex-direction: column;
+             position: fixed;
+             margin: auto;
+             top: 0;
+             right: 0;
+             bottom: 0;
+             left: 0;
+             z-index: 1002; ">
+
+  <div style="display: flex; flex-direction: row; justify-content: space-around;">
+    <div style="text-align: center; width: 50%;">Message Alert</div>
+    <div style="text-align: right; width: 35%;">
+      <i id="popupLayerClose"
+         class="fa-solid fa-xmark fa-bounce"
+         style="color: #74C0FC;"
+         onmouseover="this.style.cursor='pointer';">
+      </i>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; justify-content: center; flex-grow: 1;">
+    <div id="messageDiv" style="padding: 20px 5px 5px;">알림내용</div>
+  </div>
+</div>
+
+<script src="https://kit.fontawesome.com/8695e357e4.js" crossorigin="anonymous"></script>
+<script>
+  const messageDiv = document.querySelector("#messageDiv");
+  const popupLayer = document.querySelector("#popupLayer");
+
+  document.querySelector("#popupLayerClose").addEventListener("click",()=>{
+    popupLayer.classList.add("display-hidden");
+  });
+</script>
+
+<!-- 
+html 하단에 (footer에 넣어서 씀)
+<th:block th:replace="~{fragments/messageLayer}"></th:block>
+
+js에 붙여쓰시어요
+
+사용할곳에
+messageDiv.innerText = "메시지 내용 입력";
+popupLayer.classList.remove("display-hidden");
+ -->

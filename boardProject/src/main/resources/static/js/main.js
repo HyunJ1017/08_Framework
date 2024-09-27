@@ -1,3 +1,4 @@
+
 // 쿠키에 저장된 여러 값 중 key가 일치하는 value 반환하기
 function getCookie(key){
 
@@ -138,9 +139,11 @@ const selectMemberList = () => {
             })
             .then(zeroOrOne => {
               if(zeroOrOne > 0){
-                alert(" alert 비밀번호가 초기화 되었습니다.");
+                messageDiv.innerText = "비밀번호가 초기화 되었습니다.";
+                popupLayer.classList.remove("display-hidden");
               } else {
-                alert(" alert 비밀번호 초기화에 실패하였습니다.");
+                messageDiv.innerText = "비밀번호 초기화에 실패하였습니다.";
+                popupLayer.classList.remove("display-hidden");
               }
             })
             .catch(errorMessage => console.error(errorMessage));
@@ -171,8 +174,13 @@ const selectMemberList = () => {
           .then(result => {
             if(result > 0){
               selectMemberList();
+              messageDiv.innerText = "회원 탈퇴여부 변경 성공";
+              popupLayer.classList.remove("display-hidden");
+
             } else {
-              alert("회원 탈퇴여부 변경 실패");
+              messageDiv.innerText = "회원 탈퇴여부 변경 실패";
+              popupLayer.classList.remove("display-hidden");
+
             }
           })
           .catch(errorMessage => console.error(errorMessage));

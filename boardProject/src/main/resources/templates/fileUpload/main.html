@@ -5,6 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title th:text="#{app.name}">messages.properties 값 출력</title>
+  <style>
+    main{  padding: 20px; }
+    hr{  margin: 40px 0;  }
+  </style>
 
   <!-- templates/common/common.html 조각으로 추가 -->
   <th:block th:replace="~{common/common}"></th:block>
@@ -56,6 +60,39 @@
 
     <hr>
 
+    <h3>단일 파일 업로드 + 일반 데이터</h3>
+    <form action="/fileUpload/test2"
+          method="post"
+          enctype="multipart/form-data">
+      <input type="file" name="uploadFile">
+      <br>
+      서버에저장되는파일이름지정
+      <input type="text" name="fileName">
+      <button>제출하기</button>
+    </form>
+<!-- 
+  1. 파일 선택 O, 이름작성 O
+  -> 정상제출
+
+  2. 파일 선택 O, 이름작성 X
+  -> 이름 ""
+
+  3. 파일 선택 X, 이름작성 O    
+  -> 파일명 "", 파일사이즈 -1
+
+  4. 파일 선택 X, 이름작성 X
+  -> 파일명 "", 파일사이즈 -1 / -> 이름 ""
+-->
+    <hr>
+
+    <h3>단일 파일 업로드 + 사용자 정의 예외를 이용한 예외처리</h3>
+
+    <form action="test3" method="post" enctype="multipart/form-data">
+      <input type="file" name="uploadFile">
+      <button>제출하기</button>
+    </form>
+    <hr>
+
     <h3>업로드되신 파일 목록</h3>
 
     <table border="1" style="border-collapse: collapse;">
@@ -73,7 +110,10 @@
           <th th:text="*{fileNo}">파일번호</th>
           <td th:text="*{fileOriginalName}">원본명</td>
           <td>
-            <a th:href="|*{filePath}*{fileRename}|" th:text="*{fileRename}" download style="color: dodgerblue;"></a>
+            <!-- 다운로드 속성
+             download 속성 : 브라우저에 열리지 않고 다운로드 진행
+             다운로드 = "파일명" : 다운로드 되는 파일의 이름지정 -->
+            <a th:href="|*{filePath}*{fileRename}|" th:text="*{fileRename}" download="*{fileOriginalName}" style="color: dodgerblue;"></a>
           </td>
           <td th:text="*{uploadDate}">등록일</td>
         </tr>

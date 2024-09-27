@@ -12,9 +12,13 @@
   </article>
 </footer>
 
+<th:block th:replace="~{fragments/messageLayer}"></th:block>
+<th:block th:replace= "~{fragments/confirmLayer}"></th:block>
 
 <script th:inline="javascript">
   const message =  /*[[${message}]]*/ "전달 받은 message";
-
-  if(message != null) alert(message);
+  if(message != null) {
+    document.querySelector("#messageDiv").innerText = message;
+    document.querySelector("#popupLayer").classList.remove("display-hidden");
+  }
 </script>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>연습용낙서장</title>
+  <link rel="stylesheet" href="코드확인.css">
+</head>
+<body>
+  <button id="someActionButton" style="padding: 10px 20px;">삭제</button>
+  <div id="confirmPopupLayer" class="display-hidden"
+    style="border: 3px solid rgb(255, 151, 32);
+           border-radius: 12px;
+           width: 300px;
+           height: 200px;
+           background-color: white;
+           box-shadow: 3px 3px 3px;
+           padding: 10px;
+           display: flex;
+           flex-direction: column;
+           position: fixed;
+           margin: auto;
+           top: 0;
+           right: 0;
+           bottom: 0;
+           left: 0;
+           z-index: 1002;">
+  <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
+    <div style="text-align: center; width: 70%; font-weight: bold;">Confirm</div>
+    <div style="text-align: right;">
+      <i id="confirmPopupLayerClose"
+         class="fa-solid fa-xmark"
+         style="color: #74C0FC; cursor: pointer;">
+      </i>
+    </div>
+  </div>
+  <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
+    <div id="confirmMessage" style="padding: 20px; text-align: center;">정말로 이 작업을 수행하시겠습니까?</div>
+  </div>
+  <div style="display: flex; justify-content: space-evenly;">
+    <button id="confirmYes" style="padding: 10px 20px; background-color: green; color: white; border: none; border-radius: 5px; cursor: pointer;">
+      확인
+    </button>
+    <button id="confirmNo" style="padding: 10px 20px; background-color: red; color: white; border: none; border-radius: 5px; cursor: pointer;">
+      취소
+    </button>
+  </div>
+</div>
+
+<script src="https://kit.fontawesome.com/8695e357e4.js" crossorigin="anonymous"></script>
+
+<script>
+  // Promise를 이용한 Confirm Popup 함수
+  function showConfirmPopup(message) {
+    return new Promise((resolve, reject) => {
+      const confirmPopup = document.querySelector("#confirmPopupLayer");
+      const confirmMessage = document.querySelector("#confirmMessage");
+      const confirmYes = document.querySelector("#confirmYes");
+      const confirmNo = document.querySelector("#confirmNo");
+      const confirmClose = document.querySelector("#confirmPopupLayerClose");
+
+      // 메시지 설정
+      confirmMessage.innerText = message;
+      confirmPopup.classList.remove("display-hidden");
+
+      // 확인 버튼 클릭 시 resolve 호출
+      confirmYes.addEventListener("click", () => {
+        confirmPopup.classList.add("display-hidden");
+        resolve(true);  // '확인'을 눌렀을 때 true 반환
+      }, { once: true });
+
+      // 취소 버튼 또는 닫기 버튼 클릭 시 reject 호출
+      confirmNo.addEventListener("click", () => {
+        confirmPopup.classList.add("display-hidden");
+        reject(false);  // '취소'를 눌렀을 때 false 반환
+      }, { once: true });
+
+      confirmClose.addEventListener("click", () => {
+        confirmPopup.classList.add("display-hidden");
+        reject(false);  // '닫기'를 눌렀을 때도 false 반환
+      }, { once: true });
+    });
+  }
+</script>
+
+
+<script src="코드확인.js"></script>
+</body>
+</html>

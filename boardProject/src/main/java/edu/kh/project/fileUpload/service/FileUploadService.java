@@ -22,4 +22,19 @@ public interface FileUploadService {
 	 */
 	List<FileDto> selectFileList();
 
+	/** 파일 이름을 입력받아 파일 업로드 하기
+	 * @param uploadFile : 임시저장되어있는 파일
+	 * @param fileName : 입력받은 파일 이름
+	 * @return
+	 * @throws IOException 
+	 * @throws IllegalStateException 
+	 */
+	String test2(MultipartFile uploadFile, String fileName) throws IllegalStateException, IOException;
+
+	/** 단일 파일 업로드 + 사용자 정의 예외를 이용한 예외처리
+	 * @param uploadFile
+	 * @return
+	 */
+	String test3(MultipartFile uploadFile);
+
 }

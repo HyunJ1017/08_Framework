@@ -56,12 +56,44 @@ public class FileUploadController {
 	 */
 	@PostMapping("test1")
 	public String test1(
-			@RequestParam("uploadFile") MultipartFile uploadFile) throws IllegalStateException, IOException {
+			@RequestParam("uploadFile") MultipartFile uploadFile // 여기까지는 임시저장 파일임, config.properties에 설정해둔 경로에 저장함
+			) throws IllegalStateException, IOException {
 		
 		String filePath = service.test1(uploadFile);
 		
 		log.debug("업로드 된 파일 경로 : {}", filePath);
 		
+		return "redirect:main";
+	}
+	
+	/** 파일 이름을 입력받아 업로드하기
+	 * @param uploadFile : 업로드되어 임시저장된 파일을 참조하는 객체
+	 * @param fileName : 원본 이름으로 지정될 파일명
+	 * @return
+	 * @throws IOException 
+	 * @throws IllegalStateException 
+	 */
+	@PostMapping("test2")
+	public String test2(
+			@RequestParam("uploadFile") MultipartFile uploadFile, //=> 업로드되어 임시저장된 파일을 참조하는 객체
+			@RequestParam("fileName") String fileName) throws IllegalStateException, IOException {
+		
+		String filePath = service.test2(uploadFile, fileName);
+		
+		log.debug("업로드 된 파일 경로 : {}", filePath);
+		
+		return "redirect:main";
+	}
+	
+	
+	/** 단일 파일 업로드 + 사용자 정의 예외를 이용한 예외처리
+	 * @param uploadFile
+	 * @return
+	 */
+	@PostMapping("test3")
+	public String test3(@RequestParam("uploadFile") MultipartFile uploadFile) {
+		String filePath = service.test3(uploadFile);
+		log.debug("업로드 된 파일 경로 : {}", filePath);
 		return "redirect:main";
 	}
 
