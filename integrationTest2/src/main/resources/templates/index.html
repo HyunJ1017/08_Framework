@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>회원 목록 조회</title>
+</head>
+
+<body>
+
+	<h1>회원 목록 조회 버튼 클릭 시 비동기로 목록 조회/출력</h1>
+	
+	<h1 style="color:red">무조건 KH 계정으로 진행할 것!!</h1>
+	
+	<h3 style="color:green">문제점은 index.html, Controller, DTO에만 있음</h3>
+	
+	<pre>
+[KH 계정에 MEMBER 테이블 생성]
+
+DROP TABLE "MEMBER";
+
+CREATE TABLE "MEMBER" (
+    MEMBER_NO NUMBER PRIMARY KEY,
+    NAME VARCHAR(100) NOT NULL,
+    ADDRESS VARCHAR(50) NOT NULL,
+    AGE NUMBER
+);
+
+CREATE SEQUENCE SEQ_MEMBER_NO;
+
+INSERT INTO MEMBER VALUES (SEQ_MEMBER_NO.NEXTVAL, '유저일', '서울시 강남구', 20);
+INSERT INTO MEMBER VALUES (SEQ_MEMBER_NO.NEXTVAL, '유저이', '서울시 강북구', 35);
+INSERT INTO MEMBER VALUES (SEQ_MEMBER_NO.NEXTVAL, '유저삼', '서울시 성동구', 40);
+INSERT INTO MEMBER VALUES (SEQ_MEMBER_NO.NEXTVAL, '유저사', '서울시 종로구', 18);
+INSERT INTO MEMBER VALUES (SEQ_MEMBER_NO.NEXTVAL, '유저오', '서울시 성북구', 32);
+COMMIT;		
+	</pre>
+	
+	
+	<button type="button" id="selectMemberListBtn">회원 목록 조회</button>
+
+	<section id="memberListSection"></section>
+
+
+
+</body>
+
+<script>
+	document.getElementById("selectMemberListBtn").addEventListener("click", function () {
+
+		fetch("/member/selectAllList")
+			.then(response => {
+				if(response.ok) return response.json();
+				throw new Error("error :" + respose.status);
+			})
+			.then(data => {
+				console.log(data);
+				let memberListSection = document.getElementById("memberListSection");
+				memberListSection.innerHTML = "";
+
+				if (data.length === 0) {
+					memberListSection.innerHTML = "<h1>등록된 회원이 없습니다</h1>";
+				} else {
+					const ul = document.createElement("ul");
+
+
+					data.forEach( member => {
+						var li = document.createElement("li");
+						li.textContent = member.name;
+						ul.appendChild(li);
+					});
+
+					memberListSection.appendChild(ul);
+				}
+			})
+			.catch(error => console.error(error));
+	});
+</script>
+
+</html>

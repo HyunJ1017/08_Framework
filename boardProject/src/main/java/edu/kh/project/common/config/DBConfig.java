@@ -96,15 +96,15 @@ public class DBConfig {
 		return new DataSourceTransactionManager(dataSource);
 	}
 	
-//common 필터 추가
-	@Bean
- public FilterRegistrationBean<CommonFilter> loggingFilter() {
+  //common 필터 추가
+  @Bean
+  public FilterRegistrationBean<CommonFilter> loggingFilter() {
      FilterRegistrationBean<CommonFilter> registrationBean = new FilterRegistrationBean<>();
      
      registrationBean.setFilter(new CommonFilter());
      registrationBean.addUrlPatterns("/*");  // 필터를 적용할 URL 패턴 설정
      
      return registrationBean;
- }
+  }
 
 }
