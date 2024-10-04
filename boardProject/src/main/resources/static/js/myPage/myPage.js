@@ -423,7 +423,6 @@ if(imageInput != null){// 프로필 변경 화면인 경우
     // 선택된 파일이 다 익식되었을때
     reader.addEventListener("load", e => {
 
-      profileImg.src=e.target.result;
       // 파일리더의 결과( (주소처럼생긴)문자열 )의 결과(주소)를 참조주소값에 대입
 
     })

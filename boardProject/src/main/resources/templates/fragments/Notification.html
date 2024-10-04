@@ -1,0 +1,124 @@
+
+<div  id="alertBox" class="display-hidden"
+      style="border: 3px solid rgb(255, 151, 32);
+             border-radius: 12px;
+             width: 300px;
+             height: 90px;
+             background-color: white;
+             box-shadow: 3px 3px 3px;
+             padding: 10px;
+             display: flex;
+             flex-direction: column;
+             position: fixed;
+             margin: auto;
+             top: 0;
+             right: 0;
+             bottom: 0;
+             left: 0;
+             z-index: 1002; ">
+  <!-- 
+  알림위치 position으로 수정
+  css에 작성할 스타일 코드
+  -->
+
+  <div style="display: flex; flex-direction: row; justify-content: space-around;">
+    <div style="text-align: center; width: 50%;">알림창 입니다</div>
+    <div style="text-align: right; width: 35%;">
+      <i id="popupLayerClose"
+         class="fa-solid fa-xmark fa-bounce"
+         style="color: #74C0FC;"
+         onmouseover="this.style.cursor='pointer';">
+      </i><!-- X버튼 입니다. -->
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; justify-content: center; flex-grow: 1;" id="alertDetailBox">
+    <!-- 알림 메세지 띄울 칸 -->
+  </div>
+</div>
+
+<script src="https://kit.fontawesome.com/8695e357e4.js" crossorigin="anonymous"></script>
+
+
+<script th:inline="javascript">
+  
+  /* 페이지 로딩시 로그인한 알람 불러오기 */
+  document.addEventListener("DOMContentLoaded", ()=>{
+    
+    // 이 코드는 html파일에 들어가야 합니다
+    const loginMemberNo = /*[[${session.loginMember.memberNo}]]*/ "memberNo";
+
+    const alertDetailBox = document.querySelector("#alertDetailBox");
+    
+    
+    // 비동기로 회원 알림이 있는지 확인
+    // 요청주소 수정해야 합니다 ******************
+    fetch("/member/getNotification?memberNo="+loginMemberNo)
+    .then(res=>{if(res.ok)return res.json();throw new Error("알림메세지불러오기오류"+res.status)})
+    .then(alertList=>{
+
+      // 없으면 리턴
+      if(alertList === null) return;
+
+      // 알림 메세지 초기화
+      alertDetailBox.innerHTML='';
+      // 알림 갯수 변수
+      let count = 0;
+
+      // 알림 메세지 세팅
+      alertList.forEach(noti=>{
+
+        // 알림을 보낸 모임이름
+        const groupName = noti.groupName;
+        // 알림내용, 길면 length써서 길이 줄여야 합니다.
+        const alertDetail = noti.alertDetail;
+
+
+        const div = document.createElement("div");
+        // 알림 메세지가 가질 클레스
+        div.classList.add("alerts");
+        
+        const divName = document.createElement("div");
+        divName.innerText=groupName;
+        // 메세지의 모임이름칸이 가질 클레스
+        divName.classList.add("divName");
+        div.append(divName);
+        
+        const divDetail = document.createElement("div");
+        divDetail.innerText=alertDetail;
+        // 메세지의 내용이 가질 클레스
+        divDetail.classList.add("divDetail");
+        div.append(divDetail);
+
+        alertDetailBox.append(div);
+
+        // 알림갯수 증가
+        count ++;
+      });
+
+      /* 
+
+      ** 추가할 코드 입니다 ******************
+      
+      알림 아이콘에 count 입력
+      알림 아이콘 색상 변경
+      
+      */
+     
+    })
+    .catch(e=>console.error(e));
+    
+  });
+  
+  /* X버튼 클릭시 닫기 */
+  document.querySelector("#popupLayerClose").addEventListener("click",()=>{
+    popupLayer.classList.add("display-hidden");
+  });
+
+  /* 
+  
+  ** 추가할 코드 입니다 ******************
+  알림 아이콘에 클릭시 alertBox 의 display-hidden 클래스 삭제
+  
+  */
+
+</script>

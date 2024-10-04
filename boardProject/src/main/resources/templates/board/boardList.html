@@ -90,7 +90,9 @@
 
       <div class="btn-area">
         <!-- 로그인 상태일 때만 글쓰기 버튼 노출 -->
-        <button id="insertBtn">글쓰기</button>
+        <!-- thymeleaf 특징 : session에 해당 객체가 있으면 true 없으면(null) false -->
+        <button th:if= "${session.loginMember}"
+         id="insertBtn">글쓰기</button>
       </div>
 
 
