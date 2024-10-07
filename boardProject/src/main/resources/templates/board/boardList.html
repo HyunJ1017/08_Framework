@@ -57,14 +57,15 @@
                 <td th:text="*{rnum}">게시글 번호</td>
                 <td>
                   <!-- 썸네일 추가 예정 -->
+                  <img th:if="*{thumbnail}"
+                       th:src="*{thumbnail}"
+                       class="list-thumbnail">
 
                   <!-- 상세조회 요청주소 /board/{boardCode}/{boardNo} -->
                   <!-- (boardCode=1) 수정해야함  -->
                   <a th:href="@{/board/{boardCode}/{boardNo} (boardCode=1, boardNo=*{boardNo})}"
                     th:text="*{boardTitle}">게시글 제목</a>
-                  <th:block th:if="*{commentCount} != 0">
-                    <th:block th:text="|[*{commentCount}]|">
-                    </th:block>
+                  <th:block th:if="*{commentCount} != 0" th:text="|[*{commentCount}]|">
                   </th:block> <!-- 댓글 수 -->
                 </td>
 

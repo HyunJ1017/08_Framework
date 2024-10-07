@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.board.dto.Board;
 import edu.kh.project.board.dto.Pagination;
@@ -31,7 +32,7 @@ public class BoardController {
 	 *             (필수 아님, 없으면 1)
 	 * @return
 	 */
-	@GetMapping("{boardCode}")
+	@GetMapping("{boardCode:[0-9]+}")
 	public String selectBoardList(
 			@PathVariable("boardCode") int boardCode,
 			@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
@@ -56,8 +57,46 @@ public class BoardController {
 		return "board/boardList";
 	}
 	
-	
-	
+	/** 게시글 상세 조회
+	 * @param boardCode : 게시판 종류
+	 * @param boardNo   : 게시글 번호
+	 * @param model     : forward 시 request scope 값 전달 객체
+	 * @param ra				: redirect시 request scope 값 전달 객체
+	 * @return
+	 */
+	@GetMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}")
+	public String boardDetail(
+			@PathVariable("boardCode") int boardCode,
+			@PathVariable("boardNo") int boardNo,
+			Model model,
+			RedirectAttributes ra
+			) {
+		
+		// 1. sql 수행에 필요한 파라미터들 Map으로 묶기
+		Map<String, Integer> map
+			= Map.of("boardCode", boardCode,
+							 "boardNo", boardNo);
+		
+		// 2) 서비스 호출 후 결과 반환받기
+		Board board = service.selectDetail(map);
+		
+		model.addAttribute("board", board);
+		
+		// 게시판 이미지를 출력하기위한 이미지리스트의 이미지 시작번호(썸네일 구분)
+		int start = 0;
+		
+		// 조회된 이미지 목록이 있을 경우
+		if ( board.getImageList().isEmpty() == false) {
+			// 썸네일이 있을 경우
+			if(board.getThumbnail() != null) {
+				start = 1;
+			}
+		}
+		
+		model.addAttribute("start", start);
+		
+		return "board/boardDetail";
+	}
 	
 	
 	

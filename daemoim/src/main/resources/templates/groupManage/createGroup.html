@@ -1,0 +1,150 @@
+<!-- 
+페이지 로딩시 받아와야 할 정보
+
+1. 비로그인 회원 리턴 => java에서  처리
+2. 카테고리 목록
+3. 페이지 로딩시 카테고리 리스트 받아오기
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <!-- 팀 css 결정  전 임시 스타일 -->
+  <style>
+    main{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    section{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      width: 600px;
+    }
+    .red{color: red;}
+    .green{color: green;}
+    .grey{color: grey;}
+    .display-none{display: none !important;}
+    .hoverPoint:hover{
+      cursor: pointer;
+      border: 1px solid black;
+      background-color: #989898;
+      border-radius: 4px; }
+  </style>
+
+</head>
+<body>
+  
+  <header>해더 들어갈 자리</header>
+
+  <main>
+
+    <!-- 생설할 모임 정보 입력 -->
+    <section>
+
+      <form action="/groupManage/createGroup" method="POST" id="submitGroupCreate" enctype="multipart/form-data">
+        
+        <hr>
+        <!-- 모임 이름 -->
+        <label for="groupName">모임 이름</label>
+        <br>
+        <input type="text" name="groupName" id="groupName" placeholder="모임 이름">
+        <br>
+        <div>
+          <span id="groupNameMessage">500byte 이내의 이름을 입력해주세요</span>
+        </div>
+        
+        <hr>
+        <!-- 모임 소개 -->
+        <label for="groupIntroduce">모임 소개</label>
+        <br>
+        <textarea type="text" name="groupIntroduce" id="groupIntroduce" placeholder="모임 소개 글"></textarea>
+        <br>
+        <div>
+          <span id="groupIntroduceMessage">4000byte 이내의 소개를 입력해주세요</span>
+        </div>
+
+        <hr>
+        <!-- 모임 이미지 필수인가요? -->
+        <img th:src="#{group.default.image}" alt="이미지표시 없음" id="inputImg">
+        <br>
+        <label class="hoverPoint" for="imgInput">이미지 선택</label>
+        <!-- 선택취소버튼, 모임이미자가 필수라면 삭제 -->
+        <div class="hoverPoint" id="deleteImg">선택 취소</div>
+        <br>
+        <input type="file" name="groupImg" id="imgInput" accept="image/*" style="display: none;">
+        <div id="imgName">선택된 이미지 파일명.jpg</div>
+        
+        <hr>
+        <!-- 모임 카테고리 -->
+        <section>
+          <div>카테고리 선택</div>
+          <div>필수선택</div>
+          <!-- 페이지 로딩시 카테고리 목록 받아오기 -->
+          <div>
+            <th:block th:each="category : ${categoryArr}" th:object="${category}">
+              <label th:for= "*{categoryNo}" th:text="*{categoryName}"></label>
+              <input type="radio" th:id= "*{categoryNo}" name="categoryNo" th:value="*{categoryNo}">
+            </th:block>
+          </div>
+          <!-- 첫 카테고리 선택시 하위 카테고리 리스트 받아오기 -->
+          <div id="categoryListView"></div>
+        </section>
+
+        <hr>
+
+        <!-- 모임 참여제한기능 -->
+
+        <label for="limitAge">나이제한</label>
+        <input type="checkbox" id="limit-age">
+        <!-- 체크시 나이입력제한 section 표시 -->
+        <section class="display-none" id="limit-ageSec">
+          <input type="number" name="floorAge">
+          <span id="floorAgeText" class="grey">세 이상</span>
+          <br>
+          <input type="number" name="roofAge">
+          <span id="roofAgeText" class="grey">세 이하</span>
+          <div id="limit-ageMessage">최소나이와 최대나이 중 필요한 나이를 입력 하세요</div>
+        </section>
+
+        <br>
+        <label for="limitGender">성별</label>
+        <input type="checkbox" id="limit-gender">
+        <!-- 체크시 나이입력제한 section 표시 -->
+        <section class="display-none" id="limit-genderSec">
+          <label for="gender-m">모두</label>
+          <input type="radio" name="gender" id="gender-all" value="0" checked>
+          <br>
+          <label for="gender-m">남성만</label>
+          <input type="radio" name="gender" id="gender-m" value="1">
+          <br>
+          <label for="gender-w">여성만</label>
+          <input type="radio" name="gender" id="gender-w" value="2">
+        </section>
+        
+        <hr>
+        <!-- 완료 버튼 -->
+        <button>생성하기</button>
+      </form>
+      
+
+    </section>
+
+  </main>
+
+  <footer>푸터 들어갈 자리</footer>
+
+  <script th:inline="javascript">
+    // 기본이미지 호출용, 모임 이미지가 필수라면 삭제
+    const groupDefaultImage = /*[[#{group.default.image}]]*/ "모임 기본 이미지";
+  </script>
+
+  <script src="/js/groupManage/createGroup.js"></script>
+
+</body>
+</html>

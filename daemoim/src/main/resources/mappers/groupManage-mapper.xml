@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.kh.daemoim.groupManage.mapper.GroupManageMapper">
+
+  <!-- 모임이름 중복검사 -->
+  <select id="groupNameCheck" resultType="_int">
+  SELECT COUNT(*)
+  FROM "GROUP"
+  WHERE GROUP_NAME = #{inputName}
+  AND GROUP_NO > 0
+  </select>
+  
+  <!-- 카테고리 리스트 검색 -->
+  <select id="getCategoryList" resultType="ManageCategory">
+  	SELECT
+  		CATEGORY_LIST_NO,
+  		CATEGORY_LIST_NAME,
+  		CATEGORY_NO
+  	FROM
+  		"CATEGORY_LIST"
+  	WHERE
+  		CATEGORY_NO = #{categoryNo}
+  	AND	CATEGORY_LIST_NO > 0
+  </select>
+  
+  <!-- 카테고리 검색 -->
+  <select id="getCategoryArr" resultType="ManageCategory">
+  	SELECT
+  		CATEGORY_NO,
+  		CATEGORY_NAME,
+  		CATEGORY_IMG
+  	FROM "CATEGORY"
+  	WHERE CATEGORY_NO > 0
+  </select>
+  
+  <!-- 그룹 생성 -->
+  <insert id="createGroup"
+  			parameterType="GroupManageDto"
+  			useGeneratedKeys="true">
+  		
+  		<!-- 동적 SQL을 이용해 GROUP_NO 생성 -->
+  		<selectKey order="BEFORE"
+					resultType="_int"
+					keyProperty="groupNo">
+			SELECT SEQ_GROUP_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO "GROUP"
+		VALUES (
+			#{groupNo},
+			#{groupName},
+			DEFAULT, DEFAULT,
+			#{groupIntroduce},
+			#{categoryNo},
+			#{categoryListNo},
+			#{memberNo},
+			#{groupMainImg},
+			NULL
+			)
+		
+  </insert>
+  
+  
+
+</mapper>

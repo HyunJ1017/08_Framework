@@ -16,12 +16,13 @@
 </head>
 
 <body>
+  [[${board}]]
   <main>
     <th:block th:replace="~{common/header}"></th:block>
 
-    <section class="board-detail" th:object="${board}"> a
+    <section class="board-detail" th:object="${board}">
       <!-- 제목 -->
-      <h1 class="board-title"> 게시글 제목 </h1>
+      <h1 class="board-title" th:text="*{boardTitle}"> 게시글 제목 </h1>
 
       <!-- 프로필 + 닉네임 + 작성일 + 조회수 -->
       <div class="board-header">
@@ -29,13 +30,14 @@
 
           <!-- 프로필 이미지 -->
           <!-- 프로필 이미지가 없을 경우 기본 이미지 출력 -->
-          <img src="/images/user.png">
-
+          <img th:unless="*{profileImg}" th:src="#{user.default.image}">
+          
           <!-- 프로필 이미지가 있을 경우 출력 (예정)-->
+          <img th:if="*{profileImg}" th:src="*{profileImg}">
 
 
 
-          <span>작성자 닉네임</span>
+          <span th:text="*{memberNickname}">작성자 닉네임</span>
 
 
           <!-- 좋아요 하트 -->
@@ -45,44 +47,56 @@
             <i class="fa-heart fa-regular" id="boardLike"></i>
 
             <!-- 좋아요 개수 -->
-            <span>0</span>
+            <span th:text="*{likeCount}">0</span>
           </span>
 
         </div>
 
         <div class="board-info">
-          <p> <span>작성일</span> 2023년 10월 26일 10:11:12 </p>
+          <p> <span>작성일</span> <th:block th:text="*{boardWriteDate}"></th:block> </p>
 
           <!-- 수정한 게시글인 경우 -->
-          <p> <span>마지막 수정일</span> 2023년 10월 26일 10:11:12 </ㅔ>
+          <p th:if= "*{boardUpdateDate}"> <span>마지막 수정일</span> <th:block th:text="*{boardUpdateDate}"></th:block> </p>
 
-          <p> <span>조회수</span> 0 </p>
+          <p> <span>조회수</span> <th:block th:text="*{readCount}"></th:block> </p>
         </div>
       </div>
 
 
 
       <!-- ====================== 이미지가 있을 경우 출력하는 구문 (예정) ====================== -->
-      <!--  <h5>썸네일</h5>
-            <div class="img-box">
-                <div class="boardImg thumbnail">
-                    <img src=#">                     
-                    <a href="#">다운로드</a>         
-                </div>
+      <th:block th:if= "${ #lists.size(board.imageList) > 0 }">
+        
+        <th:block th:if= "*{thumbnail}">
+          <h5>썸네일</h5>
+          <div class="img-box">
+            <div class="boardImg thumbnail">
+              <img th:src="*{thumbnail}">
+              <a th:href="*{thumbnail}" th:download="*{imageList[0].imgOriginalName}">다운로드</a>
             </div>
-            
-            
-            <h5>업로드 이미지</h5>
+          </div>
+        </th:block>
+        
+        
+        <th:block th:if= "${ #lists.size(board.imageList) > start }">
+          <h5>업로드 이미지</h5>
+
+          <th:block th:each= "i:${ #numbers.sequence(start, #lists.size(board.imageList) - 1 ) }">
             <div class="img-box">
-                <div class="boardImg">
-                    <img src="#">   
-                    <a href="#">다운로드</a>                
-                </div>
-            </div> -->
+              <div class="boardImg"
+                   th:with=" img = ${board.imageList[i]} ">
+                <img th:src="|${img.imgPath}${img.imgRename}|">
+                <a th:href="|${img.imgPath}${img.imgRename}|" th:download="${img.imgOriginalName}">다운로드</a>
+              </div>
+            </div>
+          </th:block>
+
+        </th:block>
+      </th:block>
       <!-- ====================== 이미지가 있을 경우 출력하는 구문 (예정) ====================== -->
 
       <!-- 내용 -->
-      <div class="board-content">내용</div>
+      <div class="board-content" th:text="*{boardContent}">내용</div>
 
 
 
@@ -90,8 +104,10 @@
       <div class="board-btn-area">
 
         <!-- 로그인한 회원과 게시글 작성자 번호가 같은 경우-->
-        <button id="updateBtn">수정</button>
-        <button id="deleteBtn">삭제</button>
+        <th:block th:if= "${session.loginMember?.memberNo} == ${board.memberNo}">
+          <button id="updateBtn">수정</button>
+          <button id="deleteBtn">삭제</button>
+        </th:block>
 
         <button id="goToListBtn">목록으로</button>
       </div>
@@ -100,13 +116,16 @@
 
 
     <!-- 댓글 영역-->
-    <!-- <th:block th:replace="~{board/comment}"></th:block> -->
+    <th:block th:replace="~{board/comment}"></th:block>
 
   </main>
 
 
   <th:block th:replace="~{common/footer}"></th:block>
 
+  <script th:inline="javascript">
+    const boardCode = /*[[${board.boardCode}]]*/ "보드코드입니다";
+  </script>
 
   <script src="/js/board/boardDetail.js"></script>
   <script src="/js/board/comment.js"></script>

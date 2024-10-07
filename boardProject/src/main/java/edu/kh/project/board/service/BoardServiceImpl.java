@@ -63,4 +63,22 @@ public class BoardServiceImpl implements BoardService {
 		
 		return map;
 	}
+	
+	// 게시글 상세 조회
+	@Override
+	public Board selectDetail(Map<String, Integer> map) {
+		
+		/* boardNo처럼 하나의 값을 이용해 여러번 SELECT를 수행하는 경우
+		 * 
+		 * 
+		 * 
+		 * 1. 하나의 서비스 메서드에서 여러 MAPPER METHOD 호출하기
+		 * constroller -> service -> mapper -> service -> mapper -> servide -> mapper -> service -> controller
+		 * 
+		 * 2. MyBatis에서 제공하는 <resultMap>, <collection> 이용하기
+		 * constroller -> service -> mapper*3 -> service -> controller
+		 */
+		
+		return mapper.selectDetail(map);
+	}
 }

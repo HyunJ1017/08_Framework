@@ -5,7 +5,7 @@
     <ul id="commentList">
 
       <!-- 대댓글인 경우 child-comment 클래스 추가 -->
-      <li class="comment-row" th:classappend="${comment.parentNo} != 0 ? child-comment"
+      <li class="comment-row" th:classappend="${comment.parentCommentNo} != 0 ? child-comment"
         th:each="comment : ${board.commentList}" th:object="${comment}">
         <p class="comment-writer">
           <!-- 프로필 이미지 없을 경우 -->
