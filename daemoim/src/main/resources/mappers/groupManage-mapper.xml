@@ -60,6 +60,34 @@
 		
   </insert>
   
-  
+  <!-- 그룹 조회 -->
+  <select id="selectGroup" resultType="GroupManageDto">
+  	SELECT
+  		GROUP_NO,
+  		GROUP_NAME,
+  		GROUP_DATE,
+  		GROUP_DEL_FL,
+  		GROUP_INTRODUCE,
+  		CATEGORY_NO,
+  		CATEGORY_LIST_NO,
+  		MEMBER_NO,
+  		GROUP_MAIN_IMG,
+  		GROUP_HEADER_IMG
+  	FROM "GROUP"
+  	WHERE GROUP_NO = #{groupNo}
+  </select>
+<!-- 
+groupNo
+groupName
+groupDate
+groupDelFl
+groupIntroduce
+categoryNo
+categoryListNo
+memberNo
+groupMainImg
+groupHeaderIm
+ -->
+
 
 </mapper>

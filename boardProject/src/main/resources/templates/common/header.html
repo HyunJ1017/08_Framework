@@ -80,14 +80,12 @@
 <!-- navigator -->
 <nav>
   <ul>
-    <li>
-      <a href="/board/1"><i class="fa-solid fa-newspaper"></i> 공지사항</a>
-    </li>
-    <li>
-      <a href="/board/2"><i class="fa-solid fa-list"></i> 자유 게시판</a>
-    </li>
-    <li>
-      <a href="/board/3"><i class="fa-solid fa-lightbulb"></i> 정보 게시판</a>
+    <li th:each= "boardType:${application.boardTypeList}" th:object="${boardType}">
+      <a th:href="@{/board/{boardCode} (boardCode = *{boardCode})}"
+         th:classappend="*{boardName} == ${boardName} ? current-board : ''">
+        <i class="fa-solid fa-newspaper"></i>
+        <th:block th:text="*{boardName}"></th:block>
+      </a>
     </li>
     <li>
       <a href="/fileUpload/main"><i class="fa-solid fa-image"></i> 업로드 연습</a>

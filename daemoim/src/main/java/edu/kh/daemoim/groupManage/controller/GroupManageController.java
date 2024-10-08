@@ -37,7 +37,6 @@ public class GroupManageController {
 		model.addAttribute("categoryArr", categoryArr);
 		
 		// 비로그인 회원 메인화면으로 리다이랙트하는 구문 추가
-		// 카테고리, 카테고리리스트 모델에 추가
 		return "groupManage/createGroup";
 	}
 	
@@ -77,13 +76,32 @@ public class GroupManageController {
 		// 모임이름, 소개, 카테고리넘버, 카테고리리스트넘버
 
 		// 세션에서 로그인한 멤버의 멤버넘를 받아와 input그룹에 저장
-		inputGroup.setMemberNo(7);
+		inputGroup.setMemberNo(1);
 		
 		System.out.println(inputGroup.toString());
 		int result = service.createGroup(inputGroup, groupImg);
 		
-		
+		if(result == 0) {
+			
+		}
 		return null;
+	}
+	
+	/** 모임 관리- 상세정보수정 페이지로 이동
+	 * @return
+	 */
+	@GetMapping("/{groupNo}/manageGroup")
+	public String manageGroup(
+			@PathVariable("groupNo") int groupNo,
+			Model model) {
+		
+		// 모임정보 불러오기
+		GroupManageDto group = service.selectGroup(groupNo);
+		
+		// 전달받은 모임정보를 전달하기위해 세팅
+		model.addAttribute("group", group);
+		
+		return "groupManage/manageGroup";
 	}
 
 }

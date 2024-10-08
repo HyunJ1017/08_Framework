@@ -81,4 +81,49 @@ public class BoardServiceImpl implements BoardService {
 		
 		return mapper.selectDetail(map);
 	}
+	
+	// 조회수 증가
+	@Override
+	public int updateReadCount(int boardNo) {
+		return mapper.updateReadCount(boardNo);
+	}
+	
+	// 게시글 좋아요
+	@Override
+	public Map<String, Object> boardLike(int boardNo, int memberNo) {
+		
+		// 1. 좋아요 누른적 있나 검사
+		int result = mapper.checkBoardLike(boardNo, memberNo);
+		
+		// result == 1 : 누른적 있음
+		// result == 0 : 누른적 없음
+
+		// 2. 좋아요 여부에 따라 INSERT / DELETE 메퍼 호출
+		int result2 = 0;
+		if(result == 0) {
+			result2 = mapper.insertBoardLike(boardNo, memberNo);
+		} else {
+			result2 = mapper.deleteBoardLike(boardNo, memberNo);
+		}
+		
+		// INSERT / DELETE 성공시 해당 게시글의 좋아요 갯수 조회
+		int count = 0;
+		if(result2 > 0) count = mapper.getLikeCount(boardNo);
+		else return null;
+		
+		// 4. 좋아요 결과를 Map에 저장해서 반환
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("count", count);	// 좋아요 갯수
+		if(result == 0) map.put("check", "insert");
+		else            map.put("check", "delete");
+		
+		return map;
+	}
+	
+	// 게시판종류조회
+	@Override
+	public List<Map<String, String>> selectBoardTypeList() {
+		return mapper.selectBoardTypeList();
+	}
 }

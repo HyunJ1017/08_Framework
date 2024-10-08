@@ -141,6 +141,7 @@ const inputPreview = (img) => {
     inputImg.src=e.target.result;
     // 파일리더의 결과( (주소처럼생긴)문자열 )의 결과(주소)를 참조주소값에 대입
 
+    imgName.innerText = img.name;
   })
 };
 
@@ -148,8 +149,21 @@ const inputPreview = (img) => {
 imgInput.addEventListener("change", e => {
   const img = e.target.files[0];
 
+  // 이미지 유효성 검사
+  let flag = false;
+
+  // 업로드한 이미지 크기 확인
+  if(img?.size > 1024*1024*1){
+    alert("10MB 이하의 이미지를 선택해 주세요");
+    flag = true;
+  }
+
   // input 태그를 취소한 경우
   if(img === undefined){
+    flag = true;
+  }
+
+  if(flag){
 
     // 선택한적 없이 취소한 경우
     if(lastInputImg === null) return;
@@ -163,7 +177,7 @@ imgInput.addEventListener("change", e => {
     imgInput.files = dataTransfer.files;
 
     // 이전 선택된 파일로 미리보기 되돌리기(없어도 되긴 함)
-    updatePreview(lastInputImg);
+    inputPreview(lastInputImg);
 
     // 선택된 파일이 없으면 돌아가고, 있으면 미리보기함수를 호출
     return;
@@ -201,6 +215,7 @@ deleteImg.addEventListener("click", () => {
 
 const categoryInputArr = document.querySelectorAll('[name="categoryNo"]');
 const categoryListView = document.querySelector("#categoryListView");
+const categoryText = document.querySelector("#categoryText");
 
 for(let category of categoryInputArr){
 
@@ -221,7 +236,8 @@ for(let category of categoryInputArr){
 
       if(categoryList.length === 0) return;
 
-      categoryListView.innerHTML='<div>카테고리 리스트 선택</div>';
+      categoryText.innerHTML='<div>카테고리 리스트 선택</div>';
+      categoryListView.innerHTML='';
 
       categoryList.forEach( e => {
         const divbox = document.createElement("div");
@@ -254,7 +270,7 @@ for(let category of categoryInputArr){
 
 
 /* 가입제한 */
-
+/* 
 // 나이 체크버튼
 const limitAgeCheck = document.querySelector("#limit-age");
 const limitAgeSec = document.querySelector("#limit-ageSec");
@@ -313,7 +329,7 @@ limitGenderCheck.addEventListener("click", () => {
 
 // 성별제한 체크시 성별선택창 보여주기
 
-/* 나이제한 입력시
+// 나이제한 입력시
 
 공통 :
 입력시 '세 이상', '세 이하' 글씨가 검정색으로 변하게
@@ -326,7 +342,7 @@ limitGenderCheck.addEventListener("click", () => {
 최대나이에 입력시
 1. 최대나이가 최소나이보다 작으면 오류
 2. 최대나이에 입력한 값이 없을때 최소나이도 없다면 오류
-*/
+//
 
 
 // 최소나이 입력시
@@ -426,7 +442,7 @@ roofAgeInput.addEventListener("input", ()=>{
   
 });
 
-
+ */
 /********************************************************************** */
 /********************************************************************** */
 
@@ -469,3 +485,10 @@ submitGroupCreate.addEventListener("submit", e => {
   }
 
 });
+
+/********************************************************************** */
+/********************************************************************** */
+
+document.querySelector("#comeback").addEventListener("click", () => {
+  location.href = "/";
+})

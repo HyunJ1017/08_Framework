@@ -26,11 +26,17 @@ public interface GroupManageService {
 	 */
 	List<ManageCategory> getCategoryArr();
 
-	/** 그룹 생성
+	/** 모임 생성
 	 * @param inputGroup : 생성할 그룹 정보
-	 * @param groupImg : 그룹 대표이미지 정보
+	 * @param groupImg : 모임 대표이미지 정보
 	 * @return : 성공시 1, 실패시 0
 	 */
 	int createGroup(GroupManageDto inputGroup, MultipartFile groupImg);
+
+	/** 모임정보 불러오기
+	 * @param groupNo : 입력받은 모임번호
+	 * @return
+	 */
+	GroupManageDto selectGroup(int groupNo);
 
 }

@@ -1,0 +1,19 @@
+*{box-sizing: border-box;}
+
+main{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.sideSec{
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 50px;
+}
+.mainSec{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}

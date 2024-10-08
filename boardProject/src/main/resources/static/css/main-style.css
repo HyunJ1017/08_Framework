@@ -505,3 +505,10 @@ label[for="headerMenuToggle"]:hover{
 .display-hidden{
   display: none !important;
 }
+
+
+/* 현재 보고있는 게시판 */
+.current-board{ 
+  background-color: var(--main-color); 
+  color: white;
+} 

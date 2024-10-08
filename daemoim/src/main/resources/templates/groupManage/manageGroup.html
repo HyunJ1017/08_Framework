@@ -1,0 +1,189 @@
+<!-- 
+페이지 로딩시 받아와야 할 정보
+
+1. 비로그인 회원 리턴 => java에서  처리
+2. 카테고리 목록
+3. 페이지 로딩시 카테고리 리스트 받아오기
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>모임 상세정보 수정</title>
+
+  <link rel="stylesheet" href="/css/groupManage/manageGroup.css">
+
+</head>
+<body>
+  
+  <header>해더 들어갈 자리</header>
+
+  <main>
+
+    <!-- 
+    [필요한 기능]
+
+    ** 수정할 내용들
+    - 모임명
+    - 모임소개
+    - 대표사진
+    - 상단사진
+    - 활동사진
+    - 공지사항 - 게시판에서
+    - 게시판 - 게시판에서
+    - 댓글 - 댓글에서
+    - 알림
+    
+    ** 사이드바
+    - 모임 및 회원정보 관리
+    ㄴ 모임 상세정보 수정
+    ㄴ 회원정보 수정
+    -->
+    <section class="sideSec">
+
+      <h4>모임 및 회원정보 관리</h4>
+
+      <ul>
+        <li>모임 상세정보 수정</li>
+        <li>회원정보 수정</li>
+      </ul>
+
+    </section>
+    <section class="mainSec">
+
+        
+        <form action="#" method="POST" enctype="multipart/form-data" th:object="${group}">
+
+          <!-- ********** 모임 이름 ********** -->
+          <label for="groupName">
+            <i class="fa-solid fa-gear" style="color: #ff0000;"></i>
+            모임 이름
+          </label>
+          <section class="createContent">
+            <input type="text" name="groupName" id="groupName" th:value="*{groupName}">
+            <br>
+            <div>
+              <span id="groupNameMessage">500byte 이내의 이름을 입력해주세요</span>
+            </div>
+          </section>
+          
+          <!-- ********** 모임 소개 ********** -->
+          <label for="groupIntroduce">
+            <i class="fa-solid fa-gear" style="color: #ff0000;"></i>
+            모임 소개
+          </label>
+          <section class="createContent">
+            <textarea type="text" cols="50" rows="5" name="groupIntroduce" id="groupIntroduce" th:value="*{groupIntroduce}"></textarea>
+            <br>
+            <div>
+              <span id="groupIntroduceMessage">4000byte 이내의 소개를 입력해주세요</span>
+            </div>
+          </section>
+  
+          <!-- ********** 모임 이미지 ********** -->
+          <div class="title">
+            <i class="fa-solid fa-gear"></i>
+            모임 대표 이미지
+          </div>
+          <section class="createContent">
+    
+            <section id="imageSec">
+    
+              <section id="imageSec-left">
+                <img th:src="#{group.default.image}" alt="이미지표시 없음" id="inputImg">
+              </section>
+    
+              <section id="imageSec-right">
+                <label class="hoverPoint" for="imgInput">
+                  이미지 선택
+                </label>
+                <!-- 선택취소버튼, 모임이미자가 필수라면 삭제 -->
+                <div class="hoverPoint divInline" id="deleteImg">선택 취소</div>
+                <br>
+                <input type="file" name="groupImg" id="imgInput" accept="image/*" style="display: none;">
+                <div id="imgName">선택된 이미지 파일명.jpg</div>
+    
+              </section>
+            </section>
+          </section>
+          
+          <!-- ********** 상단     사진 ********** -->
+          <div class="title">
+            <i class="fa-solid fa-gear"></i>
+            상단사진
+          </div>
+          <section class="createContent">
+    
+            <section id="imageSec">
+    
+              <section id="imageSec-left">
+                <img th:src="#{group.default.image}" alt="이미지표시 없음" id="inputImg">
+              </section>
+    
+              <section id="imageSec-right">
+                <label class="hoverPoint" for="imgInput">
+                  이미지 선택
+                </label>
+                <!-- 선택취소버튼, 모임이미자가 필수라면 삭제 -->
+                <div class="hoverPoint divInline" id="deleteImg">선택 취소</div>
+                <br>
+                <input type="file" name="groupImg" id="imgInput" accept="image/*" style="display: none;">
+                <div id="imgName">선택된 이미지 파일명.jpg</div>
+    
+              </section>
+            </section>
+          </section>
+          <!-- ********** 활동     사진 ********** -->
+          <div class="title">
+            <i class="fa-solid fa-gear"></i>
+            활동사진
+          </div>
+          <section class="createContent">
+    
+          </section>
+          <!-- ********** 모임 카테고리 ********** -->
+          <div class="divInline title">
+            <i class="fa-solid fa-gear" style="color: #ff0000;"></i>
+            카테고리 선택
+          </div>
+          <section class="createContent">
+            <pre>
+    현제 카테고리를 보여주고
+    수정, 추가, 선택, @#$$%ㅆㅉㄸ
+
+            </pre>
+          </section>
+  
+  
+          <!-- 완료 버튼 -->
+          <i class="fa-solid fa-gear" style="color: #ff0000;"></i>
+          <div class="divInline">: 필수입력정보입니다.</div>
+          
+          <div id="btnDiv">
+            <button>생성하기</button>
+            <button type="button" id="comeback">돌아가기</button>
+          </div>
+
+        </form>
+      
+
+    </section>
+
+    <section class="sideSec">
+      <h5>우측영역입니다</h5>
+
+    </section>
+  </main>
+
+  <footer>푸터 들어갈 자리</footer>
+
+  <script th:inline="javascript">
+    // 기본이미지 호출용, 모임 이미지가 필수라면 삭제
+    const groupDefaultImage = /*[[#{group.default.image}]]*/ "모임 기본 이미지";
+  </script>
+
+  <script src="/js/groupManage/manageGroup.js"></script>
+  <script src="https://kit.fontawesome.com/8695e357e4.js" crossorigin="anonymous"></script>
+</body>
+</html>

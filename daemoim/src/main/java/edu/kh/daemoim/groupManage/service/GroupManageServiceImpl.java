@@ -83,5 +83,12 @@ public class GroupManageServiceImpl implements GroupManageService {
 		}
 		return result;
 	}
+	
+	// 모임정보 불러오기
+	@Override
+	public GroupManageDto selectGroup(int groupNo) {
+		
+		return mapper.selectGroup(groupNo);
+	}
 
 }

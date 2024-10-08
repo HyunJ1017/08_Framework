@@ -1,0 +1,101 @@
+*{
+  box-sizing: border-box;
+}
+main{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.red{color: red;}
+.green{color: green;}
+.grey{color: grey;}
+.display-none{display: none !important;}
+
+/* 버튼 */
+.hoverPoint{
+  font-size: 0.8em;
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #989898;
+  border-radius: 3px;
+  background-color: rgb(243, 243, 243);
+}
+.hoverPoint:hover{
+  cursor: pointer;
+  border: 1px solid black;
+  background-color: #989898;
+  border-radius: 4px;
+}
+
+/* main */
+.mainSec{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  width: 600px;
+
+}
+.mainSec > form {
+  width: 100%;
+}
+form label, .title{
+  margin: 0 0 15px;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.divInline{
+  display: inline;
+  margin: 5px;
+}
+.createContent{
+  width: 580px;
+  border-radius: 5px;
+  padding: 30px;
+  margin: 10px;
+  background-color: #f0f0f0;
+}
+#btnDiv>button{
+  width: 150px;
+  height: 50px;
+}
+#btnDiv{
+  margin: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+
+/* 대표이미지 */
+#imageSec{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+#imageSec div{
+  margin: 10px;
+}
+#inputImg{
+  max-width: 295px;
+  max-height: 295px;
+}
+#imgName{
+  text-align: right;
+}
+
+/* 카테고리 리스트 표시 */
+#categoryListView{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.categoryListView > div{
+  width: 150px;
+  height: 50px;
+  text-align: center;
+  /* display: flex;
+  flex-direction: row;
+  justify-content: center; */
+}
