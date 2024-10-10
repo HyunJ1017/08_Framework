@@ -90,9 +90,6 @@
       </div>
 
 
-      <!-- 기존 이미지가 있다가 삭제된 이미지의 순서를 기록-->
-      <input type="hidden" name="deleteList" value="">
-
       <!-- 수정 성공 시 주소(쿼리스트링) 유지용도 -->
       <input type="hidden" name="cp" th:value="${param.cp}">
     </form>
@@ -112,7 +109,10 @@
     const previewList = document.querySelectorAll('img.preview');
 
     for (let img of imageList) {
-      previewList[img.imageOrder].src = img.imagePath + img.imageReName;
+      previewList[img.imgOrder].src = img.imgPath + img.imgRename;
+
+      // js에서 선언한 이미지의 순서(order)를 기록할 배열
+      orderList.push(img.imgOrder);
     }
 
   </script>

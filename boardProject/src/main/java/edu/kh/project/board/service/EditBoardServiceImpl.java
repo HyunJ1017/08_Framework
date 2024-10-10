@@ -131,5 +131,101 @@ public class EditBoardServiceImpl implements EditBoardService {
 		
 		return boardNo;
 	}
+	
+	// 게시글 삭제
+	@Override
+	public int boardDelete(Board board) {
+		return mapper.boardDelete(board);
+	}
+	
+	// 게시글 수정
+	@Override
+	public int boardUpdate(Board inputBoard, List<MultipartFile> images, String deleteOrderList) {
+		/* 
+		 1. 게시글 부분(제목, 내용) 수정
+		 2. 기존에 존재했던 이미지 중 deleteOrderList에 존재하는 순서의 이미지 DELETE
+		 3. 업로드된 이미지가 있을 경우 UPDATE 또는 INSERT
+		    + transferTo()
+		 */ 
+		
+		// 1. 게시글 부분(제목, 내용) 수정
+		int result = mapper.boardUpdate(inputBoard);
+		
+		if(result == 0) return 0; // 수정 실패
+		
+		// 2. 기존에 존재했던 이미지 중 deleteOrderList에 존재하는 순서의 이미지 DELETE
+		// deleteOrderList에 작성된게 있다면
+		if(deleteOrderList != null && deleteOrderList.equals("") == false) {
+			
+			result = mapper.deleteImg(deleteOrderList, inputBoard.getBoardNo());
+		}
+		
+		// 삭제된 행이 없을경우 -> SQL 실패
+		// -> 예외를 발생시켜 전체 롤백
+		if(result == 0) {
+			throw new RuntimeException("이미지 삭제 실패");
+			// 사용자 정의 예외로 바꾸면 더 좋음
+		}
+		
+		
+		// 3. 업로드된 이미지가 있을 경우 UPDATE 또는 INSERT + transferTo()
+		
+		// 실제 업로드된 이미지만 모으기
+		List<BoardImg> uploadList = new ArrayList<>();
+		
+		for(int i=0 ; i < images.size(); i++) {
+			
+			// i번째 요소에 업로드된 파일이 없으면 다음으로
+			if(images.get(i).isEmpty()) continue;
+			
+			String originalName = images.get(i).getOriginalFilename();
+			String rename = FileUtil.rename(originalName);
+			
+			// 데이터 전달용 DTO 생성
+			BoardImg img = BoardImg.builder()
+					.imgOriginalName(originalName)
+					.imgRename(rename)
+					.imgPath(webPath)
+					.boardNo(inputBoard.getBoardNo())
+					.imgOrder(i)
+					.uploadFile(images.get(i))
+					.build();
+			
+			// 1행 update
+			// oracle은 각각의 인스턴스에 다중 업데이트 안됨 -> 하나씩 진행
+			result = mapper.updateImg(img);
+			
+			// 수정이 실패한 경우 : 기존 이미지가 없음 == 새로운 이미지다
+			if(result == 0) {
+				result = mapper.insertImg(img);
+			}
+			
+			// 수정, 삭제가 모두 실패한 경우
+			if(result == 0) {
+				throw new RuntimeException("이미지 업로드 실패");
+			}
+			
+			uploadList.add(img); // 업로드된 파일 리스트에 img 추가
+			
+		} // for end
+		
+		
+		// 새로운 이미지가 없는 경우
+		if(uploadList.isEmpty()) return result;
+		
+		
+		try {
+			for(BoardImg img : uploadList) {
+				img.getUploadFile().transferTo(new File(folderPath + img.getImgRename()));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new FileUploadFailException();
+		}
+		
+		
+		return result;
+	}
 
 }

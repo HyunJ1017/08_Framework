@@ -24,6 +24,9 @@ public class GroupManageDto {
 	private int    memberNo;
 	private String groupMainImg;		// 모임 대표이미지 요청경로 + 이름
 	private String groupHeaderImg;	// 모임 상단이미지 요청경로 + 이름
+
+	private String categoryName;
+	private String categoryListName;
 	
 	
 }

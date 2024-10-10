@@ -56,7 +56,7 @@ public class GroupManageServiceImpl implements GroupManageService {
 		String groupMainRename = null;
 		
 		if(groupImg.isEmpty()) {
-			inputGroup.setGroupMainImg("NULL");
+			inputGroup.setGroupMainImg("");
 		} else {
 			// 파일 리네임
 			groupMainRename = FileUtil.rename( groupImg.getOriginalFilename() );

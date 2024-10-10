@@ -152,7 +152,7 @@
 	 
 	<!-- 특정 게시글의 이미지를 order 순서로 조회 -->
 	<select id="selectImageList" resultType="BoardImg">
-	  	SELECT * 
+	  	SELECT *
 	  	FROM BOARD_IMG
 	  	WHERE BOARD_NO = #{boardNo}
 	  	ORDER BY IMG_ORDER ASC

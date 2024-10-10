@@ -96,5 +96,78 @@
   		</foreach>
   		
   	</insert>
+  	
+  	<!-- 게시글 삭제 -->
+  	<update id="boardDelete" parameterType="Board">
+  		UPDATE "BOARD"
+  		SET BOARD_DEL_FL = 'Y'
+  		WHERE
+  			BOARD_NO = #{boardNo}
+  		AND MEMBER_NO = #{memberNo}
+  	</update>
+  	
+  	<!-- 게시글 부분만 수정(제목/내용) -->
+  	<update id="boardUpdate" parameterType="Board">
+  		UPDATE
+  			"BOARD"
+  		SET
+  			BOARD_TITLE = #{boardTitle},
+  			BOARD_CONTENT = #{boardContent}
+  		WHERE
+  			BOARD_CODE = #{boardCode}
+  		AND BOARD_NO = #{boardNo}
+  		AND MEMBER_NO = #{memberNo}
+  	</update>
+  	
+  	
+  	<!-- 
+  		[마이바티스 #, $ 의 의미]
+  		
+  		# (PreparedStatement)
+  		- {} 내 값을 SQL에 맞는 리터럴 표기법으로 변경해서 대입
+  		 ex)    (int)     10  ->  10     (number)
+  		 	 (String) "apple" -> 'apple' (char)
+  		 	 
+  		$ (Statement)
+  		- {} 내 값을 SQL에 있는 그대로 대입
+  		 ex)    (int)     10  ->  10
+  		 	 (String) "apple" ->  apple
+  		
+  		* SQL Injection 발생 할 수 있기 때문에 권장하지는 않음
+  		  -> 해당 SQL은 <forEach> 태그로 변경하면 좋음
+  	 -->
+  	
+  	<!-- 기존에 존재하던 이미지 DB에서 삭제 -->
+  	<delete id="deleteImg">
+  		DELETE FROM "BOARD_IMG"
+  		WHERE
+  			BOARD_NO = #{boardNo}
+  		AND IMG_ORDER IN (${orders})
+  	
+  	</delete>
+  	
+  	<!-- 이미지 1행 업데이트 -->
+  	<update id="updateImg">
+  		UPDATE "BOARD_IMG"
+  		SET
+  			IMG_ORIGINAL_NAME = #{imgOriginalName},
+  			IMG_RENAME = #{imgRename}
+  		WHERE
+  			BOARD_NO = #{boardNo}
+  		AND IMG_ORDER = #{imgOrder}
+  	</update>
+  	
+  	<!-- 이미지 1행 삽입 -->
+  	<insert id="insertImg">
+  		INSERT INTO "BOARD_IMG"
+  		VALUES(
+  			SEQ_IMG_NO.NEXTVAL,
+  			#{imgPath},
+  			#{imgOriginalName},
+  			#{imgRename},
+  			#{imgOrder},
+  			#{boardNo}
+  			)
+  	</insert>
 
 </mapper>

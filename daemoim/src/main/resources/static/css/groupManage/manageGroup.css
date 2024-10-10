@@ -58,10 +58,16 @@
   flex-direction: row;
   justify-content: center;
 }
-#btnDiv > button{
-  width: 140px;
+#btnDiv > div{ /* 하단 수정, 돌아가기버튼 */
+  width: 500px;
   height: 40px;
   margin: 10px;
+  border-radius: 8px;
+  background-color: rgb(30, 30, 30);
+  color: rgb(215, 215, 215);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .title{
   margin: 50px 0 20px 0;
@@ -73,10 +79,13 @@
   justify-content: space-evenly;
 }
 #imageSec > section{
-  height: 270px;
+  height: 360px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+#imageSec > section > div:last-child{
+  height: 65px;
 }
 #inputImgView{
   max-width: 120px;
@@ -166,6 +175,15 @@
 }
 
 /* 카테고리 */
+.categoryTitleSpan{
+  display: block;
+  margin: 10px 0 10px;
+}
+.categoryNameSpan{
+  display: block;
+  font-weight: bold;
+  margin: 10px 0 20px;
+}
 .categoryRadio, .categoryListRadio{/* 라디오 버튼을 숨김 */
   display: none;
 }
