@@ -104,7 +104,8 @@
 
 
 /* 답글 */
-.commentInsertContent{
+/* .commentInsertContent{ */
+.child-comment-content{
 	width: 100%;
     height: 90px;
     resize: none;

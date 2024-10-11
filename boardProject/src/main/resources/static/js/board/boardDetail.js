@@ -121,3 +121,11 @@ updateBtn?.addEventListener("click", () => {
 })
 
 
+// ============================================================================
+// ============================================================================
+
+/* 돌아가기버튼클릭시 */
+const goToListBtn = document.querySelector("#goToListBtn");
+goToListBtn.addEventListener("click", ()=>{
+  location.href = "/board/" + boardCode;
+});

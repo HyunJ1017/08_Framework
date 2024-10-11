@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.board.dto.Board;
+import edu.kh.project.board.dto.Comment;
 import edu.kh.project.board.dto.Pagination;
 import edu.kh.project.board.service.BoardService;
 import edu.kh.project.member.dto.Member;
@@ -246,5 +247,45 @@ public class BoardController {
 		return service.boardLike(boardNo, loginMember.getMemberNo());
 	}
 	
+	/** 댓글목록 불러오기
+	 * @param boardNo	: 전달받은 게시글 번호
+	 * @param model		: forward 시 RequestScope 전달객체
+	 * @return : commentList
+	 */
+	/* @ResponseBody  : "board/comment" 문자열이 그대로 반환됨!!! */
+	@GetMapping("commentList")
+	public String selectCommentList(
+			@RequestParam("boardNo") int boardNo,
+			Model model){
+		List<Comment> commentList =  service.selectCommentList(boardNo);
+		// html 문서에서 board.comentList 를 사용중이기 때문에 Board DTO에 데이터 세팅
+		Board board = Board.builder().commentList(commentList).build();
+		model.addAttribute("board", board);
+		
+		// comment.html에 작성된 thymeleaf 코드를 해석해서
+		// 완전한 HTML 코드로 변환 후
+		// 요청한 곳으로 응답( fetch() API 코드로 html 코드가 반환)
+		// return "board/comment";
+		
+		// comment.html 중 comment-list 조각(fragment)만 해석 (Thymeleaf 코드)
+		return "board/comment :: comment-list";
+	}
 	
 }
+
+/* [비동기 통신(Ajax)의 응답]
+ * 
+ * - 요청 -> 응답 (데이터)
+ * 
+ * * forward
+ * - 요청위임
+ * - 요청에대한 응답 화면(html)생성을 
+ *   템플릿 엔진(jsp, Thymeleaf)이 대신 수행
+ *   
+ * - 동기식 X, ( 동기식 > forward )
+ * 	 템플릿 엔진을 이용해서 html 코드를 쉽게 생성
+ * 
+ * * @ResponseBody
+ * - 컨트롤러에서 반환되는 값을 응답본문에 그대로 반환
+ *  	(탬플릿 엔진을 이용해서 html코드를 만들지 않고 그대로 전달!)
+ */

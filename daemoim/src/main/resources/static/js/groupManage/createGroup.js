@@ -114,7 +114,7 @@ groupIntroduce.addEventListener("input", ()=>{
 /* 모임 이미지 */
 
 // 미리보기 이미지 표시할 곳
-const inputImg = document.querySelector("#inputImg");
+const inputImgPreview = document.querySelector("#inputImg");
 // 이미지 선택
 const imgInput = document.querySelector("#imgInput");
 // 이미지 선택시 선택파일의 이름을 표시
@@ -138,7 +138,7 @@ const inputPreview = (img) => {
   // 선택된 파일이 다 인식되었을때
   reader.addEventListener("load", e => {
 
-    inputImg.src=e.target.result;
+    inputImgPreview.src=e.target.result;
     // 파일리더의 결과( (주소처럼생긴)문자열 )의 결과(주소)를 참조주소값에 대입
 
     imgName.innerText = img.name;
@@ -166,7 +166,10 @@ imgInput.addEventListener("change", e => {
   if(flag){
 
     // 선택한적 없이 취소한 경우
-    if(lastInputImg === null) return;
+    if(lastInputImg === null) {
+      returnImig(); // 입력이미지 삭제
+      return;
+    }
 
     const dataTransfer = new DataTransfer();
     dataTransfer.items.add(lastInputImg);
@@ -188,20 +191,22 @@ imgInput.addEventListener("change", e => {
 });
 
 // 선택취소버튼 클릭시
-// 모임 이미지가 필수라면 삭제
 const deleteImg = document.querySelector("#deleteImg");
 deleteImg.addEventListener("click", () => {
+
+  returnImig(); // 이미지 삭제함수
+});
+
+const returnImig = () => {
   // 미리보기를 기본이미지로 변경
+  // inputImg : 전역변수선언 해둠
   // updatePreview(groupDefaultImage);
-  inputImg.src=groupDefaultImage;
+  inputImgPreview.src=groupDefaultImage; 
 
   // input태그와 마지막 선택된 파일을 저장하는 lastValidFile에 저장된 값을 모두 삭제
   imgInput.value = ''; // 기본이미지는 없으면 기본이 뜨니까 파일 저장해 줄 필요 없음
   lastInputImg = null;
-
-});
-
-
+}
 
 /********************************************************************** */
 /********************************************************************** */

@@ -297,8 +297,61 @@ groupIntroduce.addEventListener("input", ()=>{
 java가서만 따로따로 받으면되지 검사 자체는 뭉뚱그려서 검사해도 되지않나...
 */
 
-// 이미지 인푸태그 2개
-const groupImgInput = document.querySelector("#groupImgInput");
-const groupHeaderImgInput = document.querySelector("#groupHeaderImgInput");
+// 이미지 인풋태그
+const inputImageArr = document.querySelectorAll('[name="inputImg"]');
 
-const checkImgFile = () => {};
+// 이미지 미리보기 창
+const imgPreview = document.querySelectorAll(".inputImgPreview");
+
+// 백업용 이미지
+const lastImg = [undefined, undefined];
+
+
+/* input에 이미지가 변한경우 */
+for(let i=0; i < inputImageArr.length ; i++){
+
+  inputImageArr[i].addEventListener("change", e=>{
+    const file = e.target.files[0];
+    alert("-1");
+
+    if(file.size > 1 * 1024 * 1024 * 1 ){
+      alert("10MB이하의 파일만 선택해 주세요");
+      return;
+    }
+    alert("2");
+    imgPreviewFuntion(file, i); // 미리보기 함수 호출
+  })
+
+}
+
+const imgPreviewFuntion = (file, order) => {
+  alert("3");
+  lastImg[order] = file;
+
+  // 파일선택 취소시
+  if(file === undefined){
+    // 백업이미지 없으면 반환
+    alert("4");
+    if(lastImg[order] === undefined){
+      return;
+    }
+
+    alert("5");
+    const transfer = new DataTransfer();
+    transfer.items.add(lastImg[order]);
+
+    inputImageArr[order].files = transfer.files;
+  }
+
+  alert("6");
+  // 입력받은 파일을 미리보기창에 url형태로 전달
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.addEventListener("load", e => {
+    alert("7");
+    imgPreview[order].src=e.target.result;
+    if(order === 1){
+      imgPreview[2].src=e.target.result;
+    }
+  })
+}

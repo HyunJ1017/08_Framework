@@ -19,7 +19,17 @@
 
 <body>
 
-  <header>해더 들어갈 자리</header>
+  <header style="height: 148.5px;
+                 background-color: white;
+                 border: 3px dotted grey;
+                 color: blue;
+                 display: flex;
+                 justify-content: center;
+                 align-items: center;
+                 position: sticky;
+                 top:0">
+    <div>해더 들어갈 자리</div>
+  </header>
 
   <main class="row-between">
 
@@ -44,12 +54,14 @@
     -->
     <section class="sideSec">
 
-      <h4>모임 및 회원정보 관리</h4>
-
-      <ul id="linkList">
-        <li>모임 상세정보 수정</li>
-        <li>회원정보 수정</li>
-      </ul>
+      <div class="sideStiky" id="sideLinkList">
+        <h4>모임 및 회원정보 관리</h4>
+  
+        <ul id="linkList">
+          <li>모임 상세정보 수정</li>
+          <li>회원정보 수정</li>
+        </ul>
+      </div>
 
     </section>
     <section class="mainSec">
@@ -111,10 +123,14 @@
             <div class="serviceIntroduce">
               <span>모임에 대한 이미지들을 변경할 수 있습니다.</span>
             </div>
-            <section>
+            <table>
               <tr>
                 <td>모임 대표 이미지</td>
                 <td>- 모임 검색시 노출되는 사각형모양의 대표이미지 입니다</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>- 비율 : 1 x 1</td>
               </tr>
               <tr>
                 <td>모임 상단 이미지</td>
@@ -124,7 +140,7 @@
                 <td>모임 활동사진</td>
                 <td>- 모임 메인화면에서 보여주는 활동사진 입니다</td>
               </tr>
-            </section>
+            </table>
 
           </section>
           <section id="imageSec">
@@ -135,17 +151,18 @@
                 <i class="fa-solid fa-gear"></i>
                 모임 대표 이미지
                 <br>
-                <img th:src="#{group.default.image}" alt="이미지표시 없음" id="inputImgView">
+                <img th:with="group=#{group.default.image}" class="inputImgPreview"
+                     th:src="${groupMainImg ?: group }" alt="이미지표시 없음" id="inputImgPreview1">
               </div>
 
               <div>
-                <div id="imgName" class="inputName" th:text="*{groupMainImg} ? *{groupMainImg} : 기본이미지 ">선택된 이미지 파일명.jpg</div>
-                <label class="hoverPoint" for="groupImgInput">
+                <div id="imgName1" class="inputName" th:text="*{groupMainImg} ? *{groupMainImg} : 기본이미지 ">선택된 이미지 파일명.jpg</div>
+                <label class="hoverPoint" for="inputImg1">
                   이미지 선택
                 </label>
                 <div class="hoverPoint divInline" id="deleteImg">선택 취소</div>
                 <br>
-                <input type="file" name="groupImg" id="groupImgInput" accept="image/*" style="display: none;">
+                <input type="file" name="inputImg" id="inputImg1" accept="image/*" style="display: none;">
               </div>
 
             </section>
@@ -156,19 +173,20 @@
                 <i class="fa-solid fa-gear"></i>
                 모임 상단 이미지
                 <div style="display: flex; flex-direction: column; align-items: center;">
-                  <img th:src="#{group.default.image}" alt="이미지표시 없음" id="groupHeaderImgView" style="display: block;">
+                  <img th:with="groupHeader=#{group.default.image}" class="inputImgPreview"
+                       th:src="${groupHeaderImg ?: groupHeader }" alt="이미지표시 없음" id="inputImgPreview2">
                 </div>
               </div>
 
 
               <div>
-                <div id="groupHeaderImgName" class="inputName"  th:text="*{groupMainImg} ? *{groupMainImg} : 기본이미지 ">선택된 이미지 파일명.jpg</div>
-                <label class="hoverPoint" for="groupHeaderImgInput">
+                <div id="imgName2" class="inputName"  th:text="*{groupMainImg} ? *{groupMainImg} : 기본이미지 ">선택된 이미지 파일명.jpg</div>
+                <label class="hoverPoint" for="inputImg2">
                 이미지 선택
                 </label>
-                <div class="hoverPoint divInline" id="deleteImg">선택 취소</div>
+                <div class="hoverPoint divInline" id="deleteImg2">선택 취소</div>
                 <br>
-                <input type="file" name="groupHeaderImg" id="groupHeaderImgInput" accept="image/*" style="display: none;">
+                <input type="file" name="inputImg" id="inputImg2" accept="image/*" style="display: none;">
               </div>
 
             </section>
@@ -205,7 +223,8 @@
             <div class="preViewer">
 
               <div style="display: flex; flex-direction: column; align-items: center;">
-                <img th:src="#{group.default.image}" alt="이미지표시 없음" id="groupHeaderImgView2" style="display: block;">
+                <img th:with="groupHeader=#{group.default.image}" class="inputImgPreview"
+                     th:src="${groupHeaderImg ?: groupHeader }" alt="이미지표시 없음" id="inputImgPreview3" style="display: block;">
               </div>
               <div id="preViewIntroduce" th:text="*{groupIntroduce}">
                 소개글
@@ -326,8 +345,12 @@
 
     </section>
 
+    
     <section class="sideSec">
-      <h5>우측영역입니다</h5>
+      <div class="sideStiky">
+        <h5>우측영역입니다</h5>
+
+      </div>
 
     </section>
   </main>
@@ -337,6 +360,7 @@
   <script th:inline="javascript">
     // 기본이미지 호출용, 모임 이미지가 필수라면 삭제
     const groupDefaultImage = /*[[#{group.default.image}]]*/ "모임 기본 이미지";
+    const groupOriginalMainImg = /*[[${group.groupMainImg}]]*/ "변경전 모임 대표이미지";
     const beforeCategoryListNo = /*[[${group.categoryListNo}]]*/ "변경전 카테고리 리스트 번호";
   </script>
 

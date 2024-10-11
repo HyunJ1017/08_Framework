@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import edu.kh.project.board.dto.Board;
+import edu.kh.project.board.dto.Comment;
 
 @Mapper
 public interface BoardMapper {
@@ -44,5 +45,8 @@ public interface BoardMapper {
 
 	// 게시판 종류 조회
 	List<Map<String, String>> selectBoardTypeList();
+
+	// 댓글 목록 조회
+	List<Comment> selectCommentList(int boardNo);
 
 }
