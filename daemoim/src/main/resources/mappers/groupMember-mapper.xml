@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.kh.daemoim.groupManage.mapper.GroupMemberMapper">
+
+	<!-- 모임 회원수 조회 -->
+	<select id="getMemberCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM "MEMBER_GROUP"
+		WHERE GROUP_NO = #{groupNo}
+		AND MEMBER_GROUP_DEL_FL = 'N'
+	</select>
+	
+	<!-- 전체멤버 상세조회 -->
+	<select id="getMembers" resultType="GroupMemberManageDto">
+		SELECT
+			M.MEMBER_NO,
+			MEMBER_ID,
+			MEMBER_PW,
+			MEMBER_EMAIL,
+			MEMBER_NICKNAME,
+			MEMBER_TEL,
+			MEMBER_DEL_FL,
+			TO_CHAR(ENROLL_DATE, 'YYYY"년"MM"월"DD"일"') "ENROLL_DATE",
+			AUTHORITY,
+			MEMBER_IMG,
+			TO_CHAR(MEMBER_GROUP_ENROLL_DATE, 'YYYY"년"MM"월"DD"일"') "MEMBER_GROUP_ENROLL_DATE",
+			MEMBER_GROUP_BAN,
+			MEMBER_GROUP_DEL_FL
+		FROM MEMBER_GROUP MG
+		JOIN "MEMBER" M ON (MG.MEMBER_NO = M.MEMBER_NO)
+		WHERE MEMBER_DEL_FL = 'N'
+		AND MG.GROUP_NO = #{groupNo}
+		AND MG.MEMBER_GROUP_DEL_FL = 'N'
+		ORDER BY AUTHORITY DESC, MEMBER_GROUP_ENROLL_DATE ASC
+	</select>
+
+
+</mapper>

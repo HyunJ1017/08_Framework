@@ -212,6 +212,7 @@
 		WHERE BOARD_NO = #{boardNo}
 	</select>
 	
+	<!-- 게시판 이름 조회 -->
 	<select id="selectBoardTypeList" resultType="map">
 		SELECT
 			BOARD_CODE "boardCode",
@@ -221,4 +222,120 @@
 		ORDER BY BOARD_CODE ASC
 	</select>
 	
+	
+	
+	<!-- 동적 SQL : choose, when, otherwise
+		- if ~ else if ~ else 와 같은 기능을 수행하는 태그
+		- <choose> : <when> <otherwise>를 감싸는 태그
+		- <when> : if, else if를 나타내는 태그
+		- <otherwise> : else를 나타내는 태그
+	 -->
+	<select id="getSearchCount" resultType="_int">
+		
+		SELECT COUNT(*)
+		FROM "BOARD"
+		<if test='key == "w"'>
+			JOIN "MEMBER" USING("MEMBER_NO")
+		</if>
+		WHERE BOARD_CODE = #{boardCode}
+		AND BOARD_DEL_FL = 'N'
+		
+		<choose>
+			<!-- 제목 검색인 경우 -->
+			<when test='key == "t"'>
+				AND BOARD_TITLE LIKE '%' || #{query} || '%'
+			</when>
+			
+			<!-- 내용 검색인 경우 -->
+			<when test='key == "c"'>
+				AND BOARD_CONTENT LIKE '%' || #{query} || '%'
+			</when>
+			
+			<!-- 제목 + 내용 검색인 경우 -->
+			<when test='key == "tc"'>
+				AND (BOARD_TITLE LIKE '%' || #{query} || '%'
+					 OR
+					 BOARD_CONTENT LIKE '%' || #{query} || '%')
+			</when>
+			
+			<!-- 작성자 검색인 경우 -->
+			<when test='key == "w"'>
+				AND MEMBER_NICKNAME LIKE '%' || #{query} || '%'
+			</when>
+		</choose>
+		
+	</select>
+	
+	
+	<!-- 검색 목록 조회 -->
+	<select id="selectSearchList" resultType="Board">
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY BOARD_NO ASC) "RNUM",
+			BOARD_NO,
+			BOARD_TITLE,
+			READ_COUNT,
+			MEMBER_NICKNAME,
+			
+			(SELECT COUNT(*)
+				FROM "COMMENT" C
+				WHERE C.BOARD_NO = B.BOARD_NO
+				AND C.COMMENT_DEL_FL = 'N') AS "COMMENT_COUNT",
+				
+			(SELECT COUNT(*)
+				FROM BOARD_LIKE L
+				WHERE L.BOARD_NO = B.BOARD_NO) AS "LIKE_COUNT",
+			<![CDATA[	
+			CASE
+				WHEN CURRENT_DATE - BOARD_WRITE_DATE < 1/24/60
+				THEN FLOOR( (CURRENT_DATE - BOARD_WRITE_DATE) *60 *60 *24 ) || '초 전'
+				
+				WHEN CURRENT_DATE - BOARD_WRITE_DATE < 1/24
+				THEN FLOOR( (CURRENT_DATE - BOARD_WRITE_DATE) *60 *24 ) || '분 전'
+				
+				WHEN CURRENT_DATE - BOARD_WRITE_DATE < 1
+				THEN FLOOR( (CURRENT_DATE - BOARD_WRITE_DATE) *24 ) || '시간 전'
+				
+				ELSE TO_CHAR(BOARD_WRITE_DATE, 'YYYY-MM-DD')
+				
+			END AS "BOARD_WRITE_DATE"
+			]]>
+			,
+			(SELECT IMG_PATH || IMG_RENAME FROM "BOARD_IMG" I
+			 WHERE IMG_ORDER = 0
+			 AND I.BOARD_NO = B.BOARD_NO) AS "THUMBNAIL"
+			
+		FROM
+			"BOARD" B
+		JOIN
+			"MEMBER" M ON (B.MEMBER_NO = M.MEMBER_NO)
+		WHERE
+			BOARD_DEL_FL = 'N'
+		AND
+			BOARD_CODE = #{boardCode}
+		<choose>
+			<!-- 제목 검색인 경우 -->
+			<when test='key == "t"'>
+				AND BOARD_TITLE LIKE '%' || #{query} || '%'
+			</when>
+			
+			<!-- 내용 검색인 경우 -->
+			<when test='key == "c"'>
+				AND BOARD_CONTENT LIKE '%' || #{query} || '%'
+			</when>
+			
+			<!-- 제목 + 내용 검색인 경우 -->
+			<when test='key == "tc"'>
+				AND (BOARD_TITLE LIKE '%' || #{query} || '%'
+					 OR
+					 BOARD_CONTENT LIKE '%' || #{query} || '%')
+			</when>
+			
+			<!-- 작성자 검색인 경우 -->
+			<when test='key == "w"'>
+				AND MEMBER_NICKNAME LIKE '%' || #{query} || '%'
+			</when>
+		</choose>
+		ORDER BY RNUM DESC
+	</select>
+		
 </mapper>

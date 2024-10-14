@@ -298,13 +298,13 @@ java가서만 따로따로 받으면되지 검사 자체는 뭉뚱그려서 검�
 */
 
 // 이미지 인풋태그
-const inputImageArr = document.querySelectorAll('[name="inputImg"]');
+const inputImageArr = document.getElementsByName("inputImg");
 
 // 이미지 미리보기 창
 const imgPreview = document.querySelectorAll(".inputImgPreview");
 
 // 백업용 이미지
-const lastImg = [undefined, undefined];
+const lastImg = [null, null];
 
 
 /* input에 이미지가 변한경우 */
@@ -312,44 +312,41 @@ for(let i=0; i < inputImageArr.length ; i++){
 
   inputImageArr[i].addEventListener("change", e=>{
     const file = e.target.files[0];
-    alert("-1");
+    
+    if(file === undefined){
+      if(lastImg[i] === null) return;
 
-    if(file.size > 1 * 1024 * 1024 * 1 ){
-      alert("10MB이하의 파일만 선택해 주세요");
+      const transfer = new DataTransfer();
+      transfer.items.add(lastImg[i]);
+      inputImageArr[i].files = transfer.files;
+
       return;
     }
-    alert("2");
+
+    if(file.size > 1*1024*1024*1){
+      alert("너무큰데");
+      const transfer = new DataTransfer();
+      transfer.items.add(lastImg[i]);
+      inputImageArr[i].files = transfer.files;
+      return;
+    }
+
     imgPreviewFuntion(file, i); // 미리보기 함수 호출
   })
 
 }
 
 const imgPreviewFuntion = (file, order) => {
-  alert("3");
+
   lastImg[order] = file;
-
-  // 파일선택 취소시
-  if(file === undefined){
-    // 백업이미지 없으면 반환
-    alert("4");
-    if(lastImg[order] === undefined){
-      return;
-    }
-
-    alert("5");
-    const transfer = new DataTransfer();
-    transfer.items.add(lastImg[order]);
-
-    inputImageArr[order].files = transfer.files;
-  }
-
-  alert("6");
+  
   // 입력받은 파일을 미리보기창에 url형태로 전달
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.addEventListener("load", e => {
-    alert("7");
+    
     imgPreview[order].src=e.target.result;
+    // 메인상단이미지는 미리보기 화면도 바꿈
     if(order === 1){
       imgPreview[2].src=e.target.result;
     }

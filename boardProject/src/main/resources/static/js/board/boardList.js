@@ -33,29 +33,75 @@ pageNoList?.forEach( (item, index) => {
 
     // 클릭된 버튼이 <<, <, >, >> 인 경우
     // console.log(item.innerText);
-    const pathName = location.pathname;
+
+    // const -> let 으로 변경
+
+    let pathName = location.pathname;
     switch(item.innerText){
       case '<<' :
-        location.href = pathName + "?cp=1";
+        pathName +=  "?cp=1";
         break;
 
       case  '<' :
-        location.href = pathName + "?cp=" + pagination.prevPage;
+        pathName +=  "?cp=" + pagination.prevPage;
         break;
 
       case  '>' :
-        location.href = pathName + "?cp=" + pagination.nextPage;
+        pathName +=  "?cp=" + pagination.nextPage;
         break;
 
       case '>>' :
-        location.href = pathName + "?cp=" + pagination.maxPage;
+        pathName +=  "?cp=" + pagination.maxPage;
         break;
 
-      default : location.href = pathName + "?cp=" + item.innerText;
+      default : pathName +=  "?cp=" + item.innerText;
+    } // switch end
+
+    /* 검색화면중 이동인 경우 pathname 뒤에 쿼리스트링 추가 */
+  
+    // URLSearchParams : 쿼리스트링으 관리하는 객체
+    // - 쿼리스트링 생성, 기존 쿼리스트링을 K:V 형태로 분할 관리
+    const params = new URLSearchParams(location.search);
+    const key   = params.get("key");   // K:V중 k 가 " key "인 요소의 값
+    const query = params.get("query"); // K:V중 k 가 "query"인 요소의 값
+  
+    if(key !== null){ // 검색인 경우
+  
+      pathName += `&key=${key}&query=${query}`;
+  
+    } // if end
+  
+    location.href = pathName;
+  }); // event end
+
+}); // for end
+
+//------------------------------------------------------
+
+/* 쿼리스트링에 검색기록이 있을경우 화면에 똑같이 선택/출력하기 */
+
+// 즉시 실행 함수
+// - 변수명 중복 문제 해결 + 약간의 속도적 우위를 가지는 함수
+//(()=>{})()
+(()=>{
+  
+  // 쿼리스트링 모두 얻어와 관리하는 객체
+  const params = new URLSearchParams(location.search);
+  const key = params.get("key");
+  const query = params.get("query");
+  if(key === null) return;
+  // 검색어 화면에 출력하기
+  document.querySelector("#searchQuery").value = query;
+  // 검색조건 선택하기
+  const options = document.querySelectorAll("#searchKey > option");
+  options.forEach( op => {
+    if(op.value === key){
+      op.selected = true;
     }
   });
+})();
 
-})
+
 
 //------------------------------------------------------
 

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>카테고리목록</title>
+	</head>
+	<body>
+		
+		<table>
+			<thead>
+				<tr>
+					<th>카테고리 번호</th>
+					<th>카테고리 이름</th>					
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr th:each="category : ${application.categoryList}">
+					<td>[[${category.CATEGORY_NO}]]</td>
+					<td>[[${category.CATEGORY_NAME}]]</td>
+					<span th:text="${category}"></span>
+				</tr>
+			</tbody>
+		</table>	
+	</body>
+
+</html>

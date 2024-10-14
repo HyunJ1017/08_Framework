@@ -36,7 +36,7 @@
 .mainSec{
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: center;
 }
 .divInline{
   display: inline;
@@ -226,7 +226,7 @@ input[type="radio"]:checked + label { /* 라벨이 꼭 뒤에잇어야함 */
   top: 155px; /* 해더높이 + 간격 */
 }
 #sideLinkList{
-  background-color: orange;
+  background-color: rgb(255, 211, 160);
   border-radius: 7px;
   padding: 10px;
   height: 240px;
@@ -239,4 +239,49 @@ input[type="radio"]:checked + label { /* 라벨이 꼭 뒤에잇어야함 */
 #sideLinkList ul{
   margin-inline-start: 0px;
   padding-inline-start: 15px;
+}
+
+/* 표 */
+#memberManageTable{
+  border-collapse: collapse;
+}
+#memberManageTable th{height: 30px;}
+#tableTr > th:first-child{ min-width: 90px;}    /* 아이디 */
+#tableTr > th:nth-child(2){ min-width: 90px;}   /* 프로필사진 */
+#tableTr > th:nth-child(3){ min-width: 90px;}   /* 닉네임 */
+#tableTr > th:nth-child(4){ min-width: 140px;}  /* 가입일 */
+#tableTr > th:nth-child(5){ min-width: 70px;}   /* 탈퇴여부 */
+#tableTr > th:nth-child(6){ min-width: 40px;}   /* 권한 */
+#tableTr > th:nth-child(7){ min-width: 40px;}   /* 벤 */
+#tableTr > th:nth-child(8){ min-width: 50px;}   /* 권한1 */
+#tableTr > th:last-child{ min-width: 50px;}     /* 권한2 */
+tr>td {
+  text-align: center;
+  height: 26px;
+}
+#memberManageTable tbody tr:nth-of-type(2n){
+  background-color: #e9e8e8;
+}
+#memberManageTable thead th:hover{
+  background-color: #ffdfdf;
+  cursor: pointer;
+}
+#memberManageTable tbody tr:hover{
+  background-color: #cfcfcf;
+}
+#memberManageTable tr td:nth-of-type(3):hover{
+  cursor: pointer;
+}
+.pagination-area{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.pagination{
+  display: flex;
+  justify-content: center;
+}
+.pagination li{
+  list-style: none;
+  margin: 10px;
 }

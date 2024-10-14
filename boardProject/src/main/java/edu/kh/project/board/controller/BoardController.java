@@ -44,27 +44,41 @@ public class BoardController {
 	 * @param model : forward시 데이터 전달하는 용도의 객체
 	 * @param cp : 현재 조회하려는 목록의 페이지 번호
 	 *             (필수 아님, 없으면 1)
+	 * @param paramMap : request에 담겨잇는 모든 key vlaue를 담은 객체
 	 * @return
 	 */
 	@GetMapping("{boardCode:[0-9]+}")
 	public String selectBoardList(
 			@PathVariable("boardCode") int boardCode,
 			@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
-			Model model) {
+			Model model,
+			@RequestParam Map<String, Object> paramMap) {
 		
-		// 서비스 호출 후 결과 반환
-		// 목록 조회인데 Map 으로 반환 받는 이유
-		// - 서비스에서 여러 결과를 묶어서 받아와야 해서
-		// -- 메서드는 결과를 1개만 반환할 수 있음
-		Map<String, Object> map = service.selectBoardList(boardCode, cp);
+		log.debug("paramMap : {}", paramMap);
+		
+		Map<String, Object> map = null;
+		
+		// 검색이 아닌경우 일반 목록 조회
+		if(paramMap.get("key") == null) {
+			// 서비스 호출 후 결과 반환
+			// 목록 조회인데 Map 으로 반환 받는 이유
+			// - 서비스에서 여러 결과를 묶어서 받아와야 해서
+			// -- 메서드는 결과를 1개만 반환할 수 있음
+			map = service.selectBoardList(boardCode, cp);
+		
+		} else {// 검색한경우
+			
+			map = service.selectSearchList(boardCode, cp, paramMap);
+			
+		} // if end
 		
 		// map에 묶여있는 값 풀어놓기
 		List<Board> boardList = (List<Board>) map.get("boardList");
 		Pagination pagination = (Pagination) map.get("pagination");
 		
 		// 정상 조회되었는지 log 확인
-//		for(Board b : boardList) log.debug(b.toString());
-//		log.debug(pagination.toString());
+		// for(Board b : boardList) log.debug(b.toString());
+		// log.debug(pagination.toString());
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("pagination", pagination);
 		
@@ -203,7 +217,8 @@ public class BoardController {
 				long diff = (midnight.getTime() - date.getTime() ) / 1000;
 				
 				// 쿠키 수명 설정
-				c.setMaxAge((int)diff);
+				// c.setMaxAge((int)diff);
+				 c.setMaxAge( 12 );
 				
 				// 응답객체에 쿠키를 추가해서 응답시 클라이언트에게 전달할수 있게 세팅
 				resp.addCookie(c);
