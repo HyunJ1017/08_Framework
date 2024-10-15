@@ -29,4 +29,9 @@ public class GroupMemberManageDto {
 	private String memberGroupEnrollDate;	// 모임 가입일
 	private String memberGroupBan;				// 벤?
 	private String memberGroupDelFl;			// 모임탈퇴여부
+	
+	// "MEMBER_GROUP" 테이블 필드
+	private int    groupNo;
+	private char   inviteDelFl;
+	private String inviteReqTime;
 }

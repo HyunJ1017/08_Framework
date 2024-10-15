@@ -70,3 +70,24 @@ if(document.querySelector("#findAddressBtn") !== null){ ... }
 객체?.속성
 => ? : 안전 탐색 연산자
 			객체가 null 또는 undefined가 아니면 수행
+
+/===========================================================/
+
+예외처리
+- 예외가 발생하면 프로그램이 정지하는데
+  프로그램의 비정상 종료를 막기 위해 예외처리를 실행함
+
+- throws : 메서드에서 발생한 예외를 호출부로 던짐
+- try-catch : try 안에서 예외를 catch에서 잡아서 처리
+
+* 기본적으로 SPRING에서 발생하는 대부분의 예외를
+	한번에 처리하여 에러페이지로 넘어가게 하는 Error Controller를 제공함
+
+[목표]
+ 1. 예외 처리 범위를 확장
+  - Controller 범위	(@ExceptionHandler)
+  -      전역				(@ControllerAdvice + ErrorController상속)
+
+ 2. 예외처리 페이지 변경
+  - 별도의 설정 없이 templates/error/응답코드.html 파일만 있어도
+	  스프링에 내장된 ErrorControoler가 발생하는 응답코드와 같은 html 파일로 foward함

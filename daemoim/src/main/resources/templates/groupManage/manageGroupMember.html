@@ -20,34 +20,35 @@
 <div>해더 들어갈 자리</div>
 </header>
 
-  <main class="row-between">
+  <main class="space-around">
 
-    <section class="sideSec">
+    <section id="sideSec1">
       <div class="sideStiky" id="sideLinkList">
         <h4>모임 및 회원정보 관리</h4>
   
         <ul id="linkList">
-          <li><a href="#">모임 상세정보 수정</a></li>
-          <li><a href="#">회원관리 페이지</a></li>
-          <li>회원 관리</li>
-          <li>가입 신청 확인</li>
+          <li><a th:href="@{/groupManage/{groupNo}/manageGroup(groupNo=${group.groupNo})}">모임 상세정보 수정</a></li>
+          <li><a th:href="@{/groupMemberManage/{groupNo}/memberManage(groupNo=${group.groupNo})}">회원관리 페이지</a></li>
         </ul>
       </div>
     </section>
 
 
     <section class="mainSec">
-      <h1>회원 관리 <th:block th:text="${memberAllCount}"></th:block>명</h1>
+      <h1><th:block th:text="${group.groupName}"></th:block> 가입신청 관리 <th:block th:text="${memberAllCount}"></th:block>명</h1>
       <table border="1" id="memberManageTable">
         <thead>
           <tr id="tableTr">
-            <th>아이디</th>
+            <!-- 
+            오름차순 1아이디 2닉네임 3가입일 4탈퇴여부 5 벤
+            내림차순 -1아이디 -2닉네임 -3가입일 -4탈퇴여부 5벤
+            -->
+            <th class="orderBtn">아이디</th>
             <th>프로필사진</th>
-            <th>닉네임</th>
-            <th>가입일</th>
-            <th>탈퇴여부</th>
-            <th>권한</th>
-            <th>벤</th>
+            <th class="orderBtn">닉네임</th>
+            <th class="orderBtn">가입일</th>
+            <th class="orderBtn">탈퇴여부</th>
+            <th class="orderBtn">벤</th>
             <th>권한1</th>
             <th>권한2</th>
           </tr>
@@ -61,10 +62,13 @@
               <td th:text="*{memberNickname}"></td>
               <td th:text="*{memberGroupEnrollDate}"></td>
               <td th:text="*{memberGroupDelFl}"></td>
-              <td th:text="*{authority}"></td>
               <td th:text="*{memberGroupBan}"></td>
-              <td></td>
-              <td></td>
+              <td>
+                <th:block th:unless= "*{memberNo} == ${group.memberNo}"><button>강퇴</button></th:block>
+              </td>
+              <td>
+                <th:block th:unless= "*{memberNo} == ${group.memberNo}"><button>권한 위임</button></th:block>
+              </td>
             </tr>
           </th:block>
 
@@ -75,6 +79,7 @@
 
         <ul class="pagination" th:object="${pagination}">
 
+          <!-- 페이지 변경 foward -->
           <!-- 이제 10페이지 넘어가면 페이지 넘기는 버튼이 나올예정 -->
           <th:block th:if= "*{maxPage > pageSize}">
             <!-- 첫 페이지로 이동 -->
@@ -111,10 +116,19 @@
     </section>
 
 
-    <section class="sideSec">
-
+    <section id="sideSec2">
+      <a th:href="@{/groupMemberManage/{groupNo}/memberManage(groupNo=${group.groupNo})}">전체회원</a>
+      <a th:href="@{/groupMemberManage/{groupNo}/inviteManage(groupNo=${group.groupNo})}">가입신청</a>
     </section>
+
   </main>
   
+  <script th:inline="javascript">
+    const pagination = /*[[${pagination}]]*/ "페이지네이션 객체"
+
+
+
+  </script>
+  <script src="/js/groupManage/manageGroupMember.js"></script>
 </body>
 </html>

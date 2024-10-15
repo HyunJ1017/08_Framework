@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모임배경사진</title>
+    <!-- jQuery 및 jQuery UI를 위한 CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="/css/board/boardList.css">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>모임배경사진</h1>
+    </div>
+
+    <!-- Main content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Post 1 -->
+            <div class="post" id="first">
+                <div class="profile">
+                    <img src="profile1.jpg" alt="프로필">
+                    <div>
+                        <strong>첫째 게시</strong><br>
+                        <span class="description">게시글 제목</span>
+                    </div>
+                </div>
+                <div class="comments">
+                    ♥ (댓글수)
+                </div>
+            </div>
+            <!-- Post 2 -->
+            <div class="post" id="second">
+                <div class="profile">
+                    <img src="profile2.jpg" alt="프로필">
+                    <div>
+                        <strong>첫째 게시</strong><br>
+                        <span class="description">게시글 제목</span>
+                    </div>
+                </div>
+                <div class="comments">
+                    ♥ (댓글수)
+                </div>
+            </div>
+            <!-- Post 3 -->
+            <div class="post" id="third">
+                <div class="profile">
+                    <img src="profile3.jpg" alt="프로필">
+                    <div>
+                        <strong>첫째 게시</strong><br>
+                        <span class="description">게시글 제목</span>
+                    </div>
+                </div>
+                <div class="comments">
+                    ♥ (댓글수)
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-box">
+                <h3>일정</h3>
+                <p>
+                    <a th:href="@{boardSchedule}">상세보기</a>
+                </p>
+            </div>
+            <div class="sidebar-box">
+                <h3>캘린더</h3>
+                <div id="calendar"></div>
+            </div>
+            <div class="btn-write">
+                글 작성하기
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/board/boardList.js"></script>
+</body>
+</html>

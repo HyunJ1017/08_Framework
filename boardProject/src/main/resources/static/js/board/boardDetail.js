@@ -124,8 +124,34 @@ updateBtn?.addEventListener("click", () => {
 // ============================================================================
 // ============================================================================
 
-/* 돌아가기버튼클릭시 */
+/* 돌아가기버튼클릭시
+
+- /board/{boardCode}
+
+- {boardCode}가 일치하는 게시글 + 삭제되지 않은 게시글 중
+  현재 게시글이 몇번째 게시글인지 구해서 돌아가야 되는 cp값 구하기
+
+*/
 const goToListBtn = document.querySelector("#goToListBtn");
 goToListBtn.addEventListener("click", ()=>{
-  location.href = "/board/" + boardCode;
+
+  // 한 페이지에 보여주는 최대 게시글 갯수
+  const limit = 10;
+
+  const params = new URLSearchParams(location.search);
+
+  let url 
+    = location.pathname + "/gotoList?limit=" + limit;
+
+
+  if( params.get("key") !== null ){
+    // 검색인 경우
+    url += `&key=${params.get("key")}&query=${params.get("query")}`;
+  }
+  location.href = url;
+  // /board/{boardCode}/{boardNo}/gotoList?limit=10
+  // /board/{boardCode}/{boardNo}/gotoList?limit=10&key=t&query=123
+  // location.search : 쿼리스트링 반환
+  // URLSearchParams : 쿼리스트링 관리해주는 객체
+  // new URLSearchParams(location.search).get("key")
 });

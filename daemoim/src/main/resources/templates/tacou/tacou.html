@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입</title>
+  <link rel="stylesheet" href="/css/tacou/tacou.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="signup-title">회원가입</h1>
+    <form id="tacouAgree" action="/signup" method="POST">
+        <div class="terms">
+            <h2 class="terms-title">이용약관</h2>
+            <iframe class="terms-iframe" src="/tacou/tacou1" width="65%" height="200px"></iframe><br>
+            <label class="terms-label">
+                <input type="checkbox" class="agree" required name="essential1">
+                이용약관에 동의합니다.
+            </label>
+
+            <h2 class="terms-title">개인정보 처리방침</h2>
+            <iframe class="terms-iframe" src="/tacou/tacou2" width="65%" height="200px" name="essential2"></iframe><br>
+            <label class="terms-label">
+                <input type="checkbox" class="agree" required>
+                개인정보 처리방침에 동의합니다.
+            </label>
+
+            <h2 class="terms-title">위치기반서비스이용약관</h2>
+            <iframe class="terms-iframe" src="/tacou/tacou3" width="65%" height="200px"></iframe><br>
+            <label class="terms-label">
+                <input type="checkbox" class="agree" required name="essential3">
+                서비스 이용 규칙에 동의합니다.
+            </label>
+            <br>
+            <button type="button" id="goSignup" class="signup-button">다음</button>
+        </div>
+    </form>
+  </div>
+  <script src="/js/tacou/tacou.js"></script>
+</body>
+</html>

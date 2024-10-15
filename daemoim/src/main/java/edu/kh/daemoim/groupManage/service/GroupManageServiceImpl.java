@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,14 +18,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional
 @Service
+@PropertySource("classpath:/config.properties")
 public class GroupManageServiceImpl implements GroupManageService {
 	
 	private final GroupManageMapper mapper;
 	
-	@Value("${deamoim.groupMain.web-path}")
+	@Value("${daemoim.groupMain.web-path}")
 	private String webPath;
 	
-	@Value("${deamoim.groupMain.folder-path}")
+	@Value("${daemoim.groupMain.folder-path}")
 	private String folderPath;
 
 	// 모임이름 중복검사
@@ -68,6 +70,10 @@ public class GroupManageServiceImpl implements GroupManageService {
 		int result = mapper.createGroup(inputGroup);
 		
 		if(result == 0) return 0;
+		
+		// 모임장 그룹 가입시키기
+		result = mapper.insertGroupLeader(inputGroup);
+		
 		
 		if(groupImg.isEmpty() == false) {
 			// 파일저장

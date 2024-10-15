@@ -28,15 +28,18 @@
 }
 
 /* 메인 */
-.row-between{
+.space-around{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 .mainSec{
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.mainSec > h1{
+  margin: 15px 0 20px 0;
 }
 .divInline{
   display: inline;
@@ -213,20 +216,31 @@ input[type="radio"]:checked + label { /* 라벨이 꼭 뒤에잇어야함 */
 
 
 /* 사이드바 */
-.sideSec{
-  width: 200px;
+#sideSec1{
+  width: 250px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
+  white-space: nowrap;
+  /* overflow: hidden; */
+}
+#sideSec2{
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   white-space: nowrap;
   /* overflow: hidden; */
 }
 .sideStiky{
   position: sticky;
-  top: 155px; /* 해더높이 + 간격 */
+  top: 185px; /* 해더높이 + 간격 */
 }
 #sideLinkList{
-  background-color: rgb(255, 211, 160);
+  background-color: #e6e6e6;
+  width: 200px;
   border-radius: 7px;
   padding: 10px;
   height: 240px;
@@ -240,12 +254,26 @@ input[type="radio"]:checked + label { /* 라벨이 꼭 뒤에잇어야함 */
   margin-inline-start: 0px;
   padding-inline-start: 15px;
 }
+#sideSec2 a{
+  padding: 15px;
+  margin: 10px;
+  width: 120px;
+  height: 50px;
+  background-color: rgb(230, 230, 230);
+  border: 1px solid black;
+  border-radius: 5px;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+}
+
 
 /* 표 */
 #memberManageTable{
   border-collapse: collapse;
 }
-#memberManageTable th{height: 30px;}
+tr th{height: 40px; background-color: #A0937D;}
 #tableTr > th:first-child{ min-width: 90px;}    /* 아이디 */
 #tableTr > th:nth-child(2){ min-width: 90px;}   /* 프로필사진 */
 #tableTr > th:nth-child(3){ min-width: 90px;}   /* 닉네임 */
@@ -255,19 +283,19 @@ input[type="radio"]:checked + label { /* 라벨이 꼭 뒤에잇어야함 */
 #tableTr > th:nth-child(7){ min-width: 40px;}   /* 벤 */
 #tableTr > th:nth-child(8){ min-width: 50px;}   /* 권한1 */
 #tableTr > th:last-child{ min-width: 50px;}     /* 권한2 */
-tr>td {
-  text-align: center;
-  height: 26px;
-}
-#memberManageTable tbody tr:nth-of-type(2n){
-  background-color: #e9e8e8;
-}
-#memberManageTable thead th:hover{
-  background-color: #ffdfdf;
+.orderBtn:hover{
+  background-color: #a18e6e;
   cursor: pointer;
 }
-#memberManageTable tbody tr:hover{
-  background-color: #cfcfcf;
+tr>td {
+  text-align: center;
+  height: 36px;
+}
+tbody tr:nth-of-type(2n){
+  background-color: #ececec;
+}
+tbody tr:hover{
+  background-color: #dfdfdf;
 }
 #memberManageTable tr td:nth-of-type(3):hover{
   cursor: pointer;

@@ -55,4 +55,7 @@ public interface BoardMapper {
 	// 검색 목록을 조회
 	List<Board> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
 
+	// 현재 게시글 페이지번호 조회
+	int getCurrentPage(Map<String, Object> paramMap);
+
 }

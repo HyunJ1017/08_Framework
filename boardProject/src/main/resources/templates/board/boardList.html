@@ -63,8 +63,21 @@
 
                   <!-- 상세조회 요청주소 /board/{boardCode}/{boardNo} -->
                   <!-- (boardCode=1) 수정해야함  -->
-                  <a th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo})}"
-                    th:text="*{boardTitle}">게시글 제목</a>
+                  <!-- 검색이 아닌경우 -->
+                  <a th:unless="${param.key}"
+                     th:href="@{/board/{boardCode}/{boardNo}
+                              (boardCode=${boardCode},
+                               boardNo=*{boardNo})}"
+                     th:text="*{boardTitle}">게시글 제목</a>
+                  <!-- 검색인 경우 -->
+                  <a th:if="${param.key}"
+                     th:href="@{/board/{boardCode}/{boardNo}
+                              (boardCode=${boardCode},
+                               boardNo=*{boardNo},
+                               key=${param.key},
+                               query=${param.query}
+                               )}"
+                     th:text="*{boardTitle}">게시글 제목</a>
                   <th:block th:if="*{commentCount} != 0" th:text="|[*{commentCount}]|">
                   </th:block> <!-- 댓글 수 -->
                 </td>

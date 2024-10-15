@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원가입관리</title>
+  <link rel="stylesheet" href="/css/groupManage/manageGroup.css">
+</head>
+<body>
+
+  <header style="height: 148.5px;
+  background-color: white;
+  border: 3px dotted grey;
+  color: blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top:0">
+<div>해더 들어갈 자리</div>
+</header>
+
+  <main class="space-around">
+
+    <section id="sideSec1">
+      <div class="sideStiky" id="sideLinkList">
+        <h4>모임 및 회원정보 관리</h4>
+  
+        <ul id="linkList">
+          <li><a th:href="@{/groupManage/{groupNo}/manageGroup(groupNo=${group.groupNo})}">모임 상세정보 수정</a></li>
+          <li><a th:href="@{/groupMemberManage/{groupNo}/memberManage(groupNo=${group.groupNo})}">회원관리 페이지</a></li>
+        </ul>
+      </div>
+    </section>
+
+
+    <section class="mainSec">
+      <h1><th:block th:text="${group.groupName}"></th:block> 회원 가입 관리 <th:block th:text="${memberAllCount}"></th:block>명</h1>
+      <table border="1" id="memberManageTable">
+        <thead>
+          <tr id="tableTr">
+            <!-- 
+            오름차순 1아이디 2닉네임 3가입일 4탈퇴여부 5 벤
+            내림차순 -1아이디 -2닉네임 -3가입일 -4탈퇴여부 5벤
+            -->
+            <th class="orderBtn">아이디</th>
+            <th>프로필사진</th>
+            <th class="orderBtn">닉네임</th>
+            <th class="orderBtn">신청일</th>
+            <th>권한1</th>
+            <th>권한2</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <th:block th:if= "${memberList}" th:each= "member:${memberList}" th:object="${member}">
+            <tr>
+              <td th:text="*{memberId}"></td>
+              <td th:text="*{memberImg}"></td>
+              <td th:text="*{memberNickname}"></td>
+              <td th:text="*{inviteReqTime}"></td>
+              <td>
+                <th:block th:unless= "*{memberNo} == ${group.memberNo}"><button>승인</button></th:block>
+              </td>
+              <td>
+                <th:block th:unless= "*{memberNo} == ${group.memberNo}"><button>거절</button></th:block>
+              </td>
+            </tr>
+          </th:block>
+
+          <th:block th:if= "${#lists.isEmpty(memberList)}">
+            <tr>
+              <td colspan="6">가입신청인원이 없습니다.</td>
+            </tr>
+          </th:block>
+
+        </tbody>
+      </table>
+
+      <div class="pagination-area">
+
+        <ul class="pagination" th:object="${pagination}">
+
+          <!-- 페이지 변경 foward -->
+          <!-- 이제 10페이지 넘어가면 페이지 넘기는 버튼이 나올예정 -->
+          <th:block th:if= "*{maxPage > pageSize}">
+            <!-- 첫 페이지로 이동 -->
+            <li><a href="#">&lt;&lt;</a></li>
+  
+            <!-- 이전 목록 마지막 번호로 이동 -->
+            <li><a href="#">&lt;</a></li>
+          </th:block>
+
+          <!-- 특정 페이지로 이동 -->
+          <th:block th:each= "i:*{#numbers.sequence(startPage, endPage)}">
+
+            <!-- 현재 보고있는 페이지 -->
+            <li th:if= "${i} == *{currentPage}">
+              <a class="current" th:text="${i}">현재페이지</a>
+            </li>
+  
+            <!-- 보고있지 않은 페이지 -->
+            <li th:unless= "${i} == *{currentPage}">
+              <a href="#" th:text="${i}">이동할 수 있는 페이지</a>
+            </li>
+
+          </th:block>
+
+          <th:block  th:if= "*{maxPage > pageSize}">
+            <!-- 다음 목록 시작 번호로 이동 -->
+            <li><a href="#">&gt;</a></li>
+  
+            <!-- 끝 페이지로 이동 -->
+            <li><a href="#">&gt;&gt;</a></li>
+          </th:block>
+        </ul>
+      </div>
+    </section>
+
+
+    <section id="sideSec2">
+      <a th:href="@{/groupMemberManage/{groupNo}/memberManage(groupNo=${group.groupNo})}">전체회원</a>
+      <a th:href="@{/groupMemberManage/{groupNo}/memberManage(groupNo=${group.groupNo})}">가입신청</a>
+    </section>
+
+  </main>
+  
+  <script th:inline="javascript">
+    const pagination = /*[[${pagination}]]*/ "페이지네이션 객체"
+
+
+
+  </script>
+  <script src="/js/groupManage/manageGroupMember.js"></script>
+</body>
+</html>

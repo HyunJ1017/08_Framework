@@ -1,6 +1,7 @@
 package edu.kh.daemoim.groupManage.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
@@ -14,7 +15,11 @@ public interface GroupMemberMapper {
 	int getMemberCount(int groupNo);
 
 	// 모임멤버 상세조회
-	List<GroupMemberManageDto> getMembers(int groupNo, RowBounds rowBounds);
+	List<GroupMemberManageDto> getMembers(Map<String, Object> paramMap, RowBounds rowBounds);
+
+	// 가입신청멤버 조회
+	int getInviteCount(int groupNo);
+	List<GroupMemberManageDto> getInviteMembers(Map<String, Object> paramMap, RowBounds rowBounds);
 
 
 }

@@ -338,4 +338,42 @@
 		ORDER BY RNUM DESC
 	</select>
 		
+	<!-- 현제 게시글 페이지 얻어오기 -->
+	<select id="getCurrentPage" resultType="_int">
+		SELECT CEIL(RNUM/#{limit}) CP
+		FROM
+			(SELECT 
+				ROW_NUMBER() OVER(ORDER BY BOARD_NO DESC) RNUM
+				,BOARD_NO
+			FROM "BOARD"
+			<if test='key == "w"'>
+				JOIN "MEMBER" USING("MEMBER_NO")
+			</if>
+			WHERE BOARD_CODE = #{boardCode}
+			AND   BOARD_DEL_FL = 'N'
+			<choose>
+				<!-- 제목 검색인 경우 -->
+				<when test='key == "t"'>
+					AND BOARD_TITLE LIKE '%' || #{query} || '%'
+				</when>
+				
+				<!-- 내용 검색인 경우 -->
+				<when test='key == "c"'>
+					AND BOARD_CONTENT LIKE '%' || #{query} || '%'
+				</when>
+				
+				<!-- 제목 + 내용 검색인 경우 -->
+				<when test='key == "tc"'>
+					AND (BOARD_TITLE LIKE '%' || #{query} || '%'
+						 OR
+						 BOARD_CONTENT LIKE '%' || #{query} || '%')
+				</when>
+				
+				<!-- 작성자 검색인 경우 -->
+				<when test='key == "w"'>
+					AND MEMBER_NICKNAME LIKE '%' || #{query} || '%'
+				</when>
+			</choose> )
+		WHERE BOARD_NO = #{boardNo}
+	</select>
 </mapper>

@@ -31,7 +31,7 @@
     <div>해더 들어갈 자리</div>
   </header>
 
-  <main class="row-between">
+  <main class="space-around">
 
     <!-- 
     [필요한 기능]
@@ -52,13 +52,13 @@
     ㄴ 모임 상세정보 수정
     ㄴ 회원정보 수정
     -->
-    <section class="sideSec">
+    <section id="sideSec1">
 
       <div class="sideStiky" id="sideLinkList">
         <h4>모임 및 회원정보 관리</h4>
   
         <ul id="linkList">
-          <li>모임 상세정보 수정</li>
+          <li><a th:href="@{/groupManage/{groupNo}/manageGroup(groupNo=${group.groupNo})}">모임 상세정보 수정</a></li>
           <li><a th:href="@{/groupMemberManage/{groupNo}/memberManage(groupNo=${group.groupNo})}">회원관리 페이지</a></li>
         </ul>
       </div>
@@ -66,7 +66,8 @@
     </section>
     <section class="mainSec">
 
-
+      <h1>모임정보 상세수정</h1>
+      
       <form action="#" method="POST" enctype="multipart/form-data" th:object="${group}">
 
 
@@ -230,7 +231,7 @@
                 소개글
               </div>
 
-              <div class="row-between">
+              <div class="space-around">
 
                 <div class="preViewDiv" id="preViewDiv1">
                   <i class="fa-solid fa-bars"></i>공지사항
@@ -346,7 +347,7 @@
     </section>
 
     
-    <section class="sideSec">
+    <section id="sideSec2">
       <div class="sideStiky">
         <h5>우측영역입니다</h5>
 

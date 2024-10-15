@@ -22,8 +22,12 @@ public interface GroupManageMapper {
 	// 모임 생성
 	int createGroup(GroupManageDto inputGroup);
 
+	// 모임장 그룹에 넣기
+	int insertGroupLeader(GroupManageDto inputGroup);
+	
 	// 그룹 조회
 	GroupManageDto selectGroup(int groupNo);
+
 
 
 }

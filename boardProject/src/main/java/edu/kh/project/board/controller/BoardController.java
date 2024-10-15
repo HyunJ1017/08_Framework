@@ -1,5 +1,7 @@
 package edu.kh.project.board.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -10,6 +12,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -284,6 +287,61 @@ public class BoardController {
 		
 		// comment.html 중 comment-list 조각(fragment)만 해석 (Thymeleaf 코드)
 		return "board/comment :: comment-list";
+	}
+	
+	/** 돌아가기 버튼 클릭시 게시글 목록에서 게시글이 있는페이지로 이동
+	 * @param boardCode	: 게시판 번호
+	 * @param boardNo		: 찾아야 할 게시글 번호
+	 * @param paramMap	: 요청 파라미터가 모두 담긴 맵
+	 * @return : request Scope에 cp값을 담은 redirect
+	 * @throws UnsupportedEncodingException 
+	 */
+	@GetMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}/gotoList")
+	public String gotoList(
+			@PathVariable("boardCode") int boardCode,
+			@PathVariable("boardNo") int boardNo,
+			@RequestParam Map<String, Object> paramMap) throws UnsupportedEncodingException {
+		
+		paramMap.put("boardCode",boardCode);
+		paramMap.put("boardNo",boardNo);
+		// 현제 게시글이 속해있는 페이지 번호 조회하는 서비스 
+		int cp = service.getCurrentPage(paramMap);
+		
+		String url = "redirect:/board/" + boardCode + "?cp=" + cp;
+		
+		// 한글 인코딩 해결
+		// paramMap.get("query").toString() : Map에서 꺼낸게 Object여서 String 문자열로 변환
+		// URLEncoder.encode( 문자열 , 문자인코딩)
+		// "UTF-8" 형태의 문자열을  URL이 인실할 수 있는 형태 (application/x-www-form-urlencoded)로 변환
+
+		if(paramMap.get("key") != null) {
+			String query = URLEncoder.encode( paramMap.get("query").toString() , "UTF-8");
+			url += "&key=" + paramMap.get("key") + "&query=" + query;
+			// 한글이 인코딩이 안됨 ㅜㅜ
+		}
+		
+		return url;
+	}
+	
+	
+	
+	
+	// @ExceptionHandler(예외클래스.class)
+	// -> 해당 예외 발생시 아래 작성된 매서드가 수행되게 하는 어노테이션
+	
+	// - Class  레벨 : 클래스에서 발생하는 예외를 다 잡아서 처리
+	//   -> 동작하려는 컨트롤러 클래스에 작성
+	// - Global 레벨 : 프로젝트 전체에서 발생하는 예외를 잡아서 처리
+	//   -> @ControllerAdvice 가 작성된 클래스에 작성
+	/** BoardController에서 발생하는 예외를 한번에 잡아서 처리하는 메서드 (클래스 레벨)
+	 * @return
+	 */
+	//@ExceptionHandler(Exception.class)
+	public String boardExceptionHandler(Exception e, Model model) {
+		model.addAttribute("e", e);
+		model.addAttribute("errorMessage", "게시글 관련 오류 발생");
+		
+		return "error/500";
 	}
 	
 }

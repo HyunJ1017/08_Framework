@@ -53,4 +53,12 @@ public interface BoardService {
 	 */
 	Map<String, Object> selectSearchList(int boardCode, int cp, Map<String, Object> paramMap);
 
+	/** 게시글이 존재하는 페이지를 조회
+	 * @param boardCode
+	 * @param boardNo
+	 * @param limit
+	 * @return
+	 */
+	int getCurrentPage(Map<String, Object> paramMap);
+
 }

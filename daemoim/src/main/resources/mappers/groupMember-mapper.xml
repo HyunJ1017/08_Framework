@@ -31,8 +31,69 @@
 		WHERE MEMBER_DEL_FL = 'N'
 		AND MG.GROUP_NO = #{groupNo}
 		AND MG.MEMBER_GROUP_DEL_FL = 'N'
-		ORDER BY AUTHORITY DESC, MEMBER_GROUP_ENROLL_DATE ASC
+		<choose>
+			<when test="order== 1">
+				ORDER BY MEMBER_ID ASC
+			</when>
+			<when test="order==-1">
+				ORDER BY MEMBER_ID DESC
+			</when>
+			
+			<when test="order== 2">
+				ORDER BY MEMBER_NICKNAME ASC
+			</when>
+			<when test="order==-2">
+				ORDER BY MEMBER_NICKNAME DESC
+			</when>
+			
+			<when test="order== 3">
+				ORDER BY MEMBER_GROUP_ENROLL_DATE ASC
+			</when>
+			<when test="order==-3">
+				ORDER BY MEMBER_GROUP_ENROLL_DATE DESC
+			</when>
+			
+			<when test="order== 4">
+				ORDER BY MEMBER_DEL_FL ASC
+			</when>
+			<when test="order==-4">
+				ORDER BY MEMBER_DEL_FL DESC
+			</when>
+			
+			<when test="order== 5">
+				ORDER BY MEMBER_GROUP_BAN ASC
+			</when>
+			<when test="order==-5">
+				ORDER BY MEMBER_GROUP_BAN DESC
+			</when>
+			
+			<otherwise>
+				ORDER BY AUTHORITY DESC, MEMBER_GROUP_ENROLL_DATE ASC
+			</otherwise>
+		</choose>
 	</select>
-
+	
+	<!-- 가입신청 수 확인 -->
+	<select id="getInviteCount">
+		SELECT COUNT(*) FROM "INVITE" WHERE GROUP_NO = #{groupNo}
+	</select>
+	
+	<!-- 가입신청목록 확인 -->
+	<select id="getInviteMembers">
+		SELECT
+			I.MEMBER_NO,
+			GROUP_NO,
+			INVITE_DEL_FL,
+			TO_CHAR(INVITE_REQ_TIME, 'YYYY"년"MM"월"DD"일"') "INVITE_REQ_TIME",
+			MEMBER_ID,
+			MEMBER_IMG,
+			MEMBER_NICKNAME
+		FROM
+			"INVITE" I
+		JOIN "MEMBER" M ON(I.MEMBER_NO = M.MEMBER_NO)
+		WHERE
+			GROUP_NO = #{groupNo}
+		AND INVITE_DEL_FL = 'N'
+	</select>
 
 </mapper>
