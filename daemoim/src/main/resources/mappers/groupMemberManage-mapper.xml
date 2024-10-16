@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.kh.daemoim.groupManage.mapper.GroupMemberManageMapper">
+
+	<!-- 회원 강퇴 -->
+	<update id="deleteMember">
+		UPDATE "MEMBER_GROUP"
+		SET MEMBER_GROUP_BAN = 'Y',
+			MEMBER_GROUP_DEL_FL = 'N'
+		WHERE
+			MEMBER_NO = #{memberNo}
+		AND GROUP_NO = #{groupNo}
+	</update>
+  
+	<!-- 모임장 번호 확인 -->
+	<select id="getLeaderNo" resultType="_int">
+		SELECT MEMBER_NO
+		FROM "GROUP"
+		WHERE GROUP_NO = #{groupNo}
+	</select>
+	
+	<!-- 회원 닉네임 검색 -->
+	<select id="selectMemberNickname" resultType="string">
+		SELECT MEMBER_NICKNAME
+		FROM "MEMBER"
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+
+</mapper>

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import edu.kh.daemoim.groupManage.dto.GroupManageDto;
 import edu.kh.daemoim.groupManage.dto.GroupMemberManageDto;
 
 @Mapper
@@ -20,6 +21,9 @@ public interface GroupMemberMapper {
 	// 가입신청멤버 조회
 	int getInviteCount(int groupNo);
 	List<GroupMemberManageDto> getInviteMembers(Map<String, Object> paramMap, RowBounds rowBounds);
+
+	// 모임리더바꾸기
+	int changeLeader(GroupManageDto newGroup);
 
 
 }

@@ -91,3 +91,47 @@ if(document.querySelector("#findAddressBtn") !== null){ ... }
  2. 예외처리 페이지 변경
   - 별도의 설정 없이 templates/error/응답코드.html 파일만 있어도
 	  스프링에 내장된 ErrorControoler가 발생하는 응답코드와 같은 html 파일로 foward함
+
+/===========================================================/
+@Component // Bean 등록(@Controller, @Service의 부모 어노테이션)
+/===========================================================/
+
+Filter
+  - 필터 입니다
+  - Client <-> Dispatcher Servlet 사이에서 일합니다.
+  - 요청 응답 시 걸러내거나 추가할 수 있는 객체
+
+  [필터 생성 및 적용 방법]
+
+  1. jakarta.servlet.Filter 인터페이스를 상속받은 클래스 생성
+  2. 상속 후 doFilter() 메서드 오버라이딩
+  3. FilterConfig 클래스에 생성한 필터 클래스를 등록
+
+  1. 로그인이 안되어있으면 동작하지 못하는요청을 필터 처리
+
+Interceptor
+- 인터셉터 입니다
+- Dispatcher Servlet <-> troller
+- Dispatcher Servlet <- View Resolver 사이에서 일합니다
+
+AOP
+- AOP 입니다
+- Controller <-> service <-> dao <-> DB
+- 관점 지향 프로그래밍
+
+- @Transactional : Controller <- Service (후처리 Advice)
+- @ControllerAdvice 에러처리할때 사용함
+
+Advice : 중간에 끼워넣을 코드 (실제로 동작 코드를 의미하는 Advice)
+작성한 Advice가 실제로 적용된 메소드인 Pointcut
+
+* 공통되는 부분을 따로 빼내어 작성하는 메소드를 Advice라고 이야기 하며, 
+Advice를 적용될 수 있는 모든 관점(시점, 메소드)을 JoinPoint, 
+JoinPoint 중 실제 Advice를 적용할 부분을 Pointcut
+그리고 그 시점에 공통 코드를 끼워 넣는 작업을 Weaving 이라고 말한다.
+
+작성한 Advice가 실제로 적용된 메소드인 Pointcut을 합친 개념으로
+부가기능(로깅, 보안, 트랜잭션 등)을 나타내는 공통 관심사에 대한 추상적인 명칭.
+(여러 객체에 공통으로 적용되는 부가기능을 작성한 클래스 나타냄)
+AOP 개념을 적용하면 핵심기능 코드 사이에 끼어있는 부가기능을 독립적인 요소로 구분해 낼 수 있고,
+이렇게 구분된 부가기능 Aspect는 런타임 시에 필요한 위치에 동적으로 참여하게 할 수 있다

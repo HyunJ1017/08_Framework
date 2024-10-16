@@ -84,7 +84,7 @@ public class GroupManageController {
 		if(result == 0) {
 			
 		}
-		return null;
+		return "redirect:/";
 	}
 	
 	/** 모임 관리- 상세정보수정 페이지로 이동

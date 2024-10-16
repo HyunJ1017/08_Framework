@@ -45,9 +45,17 @@ dependencies {
 	// Spring - Redis 통신이 가능하게 함
 	// https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis
 	implementation 'org.springframework.data:spring-data-redis:3.3.4'
+
 	// Lettuce : Redis 클라이언트 라이브러리, Redis를 사용할 수 있는 Java 코드 제공
 	// https://mvnrepository.com/artifact/io.lettuce/lettuce-core
-	implementation 'io.lettuce:lettuce-core:6.4.0.RELEASE' 
+	implementation 'io.lettuce:lettuce-core:6.4.0.RELEASE'
+	
+	
+	// Spring AOP + AspectJ
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	
+	
 }
 
 tasks.named('test') {

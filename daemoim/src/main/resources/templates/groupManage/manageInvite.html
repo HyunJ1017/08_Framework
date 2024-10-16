@@ -8,30 +8,14 @@
 </head>
 <body>
 
-  <header style="height: 148.5px;
-  background-color: white;
-  border: 3px dotted grey;
-  color: blue;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: sticky;
-  top:0">
-<div>해더 들어갈 자리</div>
-</header>
+  <!-- 해더 -->
+  <th:block th:replace= "~{common/header}" ></th:block>
+  
 
   <main class="space-around">
 
-    <section id="sideSec1">
-      <div class="sideStiky" id="sideLinkList">
-        <h4>모임 및 회원정보 관리</h4>
-  
-        <ul id="linkList">
-          <li><a th:href="@{/groupManage/{groupNo}/manageGroup(groupNo=${group.groupNo})}">모임 상세정보 수정</a></li>
-          <li><a th:href="@{/groupMemberManage/{groupNo}/memberManage(groupNo=${group.groupNo})}">회원관리 페이지</a></li>
-        </ul>
-      </div>
-    </section>
+    <!-- 사이드메뉴 -->
+    <th:block th:replace= "~{groupManage/manageGroup :: th-lfSide }" ></th:block>
 
 
     <section class="mainSec">
@@ -119,18 +103,20 @@
 
 
     <section id="sideSec2">
-      <a th:href="@{/groupMemberManage/{groupNo}/memberManage(groupNo=${group.groupNo})}">전체회원</a>
-      <a th:href="@{/groupMemberManage/{groupNo}/memberManage(groupNo=${group.groupNo})}">가입신청</a>
     </section>
 
   </main>
   
+  <!-- 푸터 -->
+  <th:block th:replace= "~{common/footer}" ></th:block>
+  <th:block th:replace= "~{common/common}" ></th:block>
+
   <script th:inline="javascript">
     const pagination = /*[[${pagination}]]*/ "페이지네이션 객체"
 
 
 
   </script>
-  <script src="/js/groupManage/manageGroupMember.js"></script>
+  <script src="#"></script>
 </body>
 </html>

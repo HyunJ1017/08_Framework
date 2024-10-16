@@ -483,11 +483,13 @@ submitGroupCreate.addEventListener("submit", e => {
     e.preventDefault();
     return;
   }
-  if(!createConfirm.groupLimitAge ){
+/*   if(!createConfirm.groupLimitAge ){
     alert("옳바른 나이제한을 입력해 주세요.");
     e.preventDefault();
     return;
-  }
+  } */
+
+  alert("모임이 생성되었습니다.");
 
 });
 

@@ -78,18 +78,15 @@
   	FROM "GROUP" G
   	WHERE GROUP_NO = #{groupNo}
   </select>
-<!-- 
-groupNo
-groupName
-groupDate
-groupDelFl
-groupIntroduce
-categoryNo
-categoryListNo
-memberNo
-groupMainImg
-groupHeaderIm
- -->
+
+	<!-- 모임 회원 등록1 모임장 등록하기 -->
+	<insert id="insertGroupLeader">
+		INSERT INTO "MEMBER_GROUP"
+		VALUES(
+			#{memberNo},
+			#{groupNo},
+			DEFAULT, DEFAULT, DEFAULT)
+	</insert>
 
 
 </mapper>

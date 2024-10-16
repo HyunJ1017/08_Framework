@@ -2,6 +2,8 @@ package edu.kh.daemoim.groupManage.service;
 
 import java.util.Map;
 
+import edu.kh.daemoim.groupManage.dto.GroupManageDto;
+
 
 public interface GroupMemberService {
 
@@ -16,6 +18,12 @@ public interface GroupMemberService {
 	 * @return map
 	 */
 	Map<String, Object> getInviteList(Map<String, Object> paramMap);
+
+	/** 그룹리더바꾸기
+	 * @param newGroup
+	 * @return
+	 */
+	int changeLeader(GroupManageDto newGroup);
 
 
 }

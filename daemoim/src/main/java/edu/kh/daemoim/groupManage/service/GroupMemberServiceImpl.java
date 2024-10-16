@@ -8,6 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.kh.daemoim.groupManage.dto.GroupManageDto;
 import edu.kh.daemoim.groupManage.dto.GroupMemberManageDto;
 import edu.kh.daemoim.groupManage.dto.ManagePagination;
 import edu.kh.daemoim.groupManage.mapper.GroupMemberMapper;
@@ -73,6 +74,12 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 		
 			
 		return map;
+	}
+	
+	// 그룹 리더 바꾸기
+	@Override
+	public int changeLeader(GroupManageDto newGroup) {
+		return mapper.changeLeader(newGroup);
 	}
 	
 }

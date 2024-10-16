@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -26,7 +28,7 @@ public class GroupMemberController {
 	private final GroupMemberService service;
 	private final GroupManageService groupService;
 	
-	/** 모임관리페이지로 이동
+	/** 모임 멤버관리페이지로 이동
 	 * @param groupNo : 모임번호
 	 * @param model : 모임에 가입된 회원들을 담을 객체
 	 * @return
@@ -83,4 +85,29 @@ public class GroupMemberController {
 		
 		return "groupManage/manageInvite";
 	}
+	
+	@PostMapping("changeLeader")
+	public String changeLeader(
+			@RequestParam("nextLeader") int memberNo,
+			@RequestHeader("referer") String referer) {
+		
+		int gourpNo = Integer.parseInt( referer.split("/")[4] );
+		// http://localhost/groupMemberManage/1/memberManage
+		
+		GroupManageDto newGroup = GroupManageDto.builder().groupNo(gourpNo).memberNo(memberNo).build();
+		
+		int result = service.changeLeader(newGroup);
+		
+		String path = "redirect:/";
+		if(result < 1) {
+			path += "groupMemberManage/" + gourpNo + "/memberManage";
+		} else {
+			/* 모임 메인화면으로 */
+			System.out.println("성공한건가?");
+		}
+		
+		return path;
+	}
+	
+	
 }

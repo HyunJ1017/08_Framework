@@ -1,13 +1,5 @@
-<!-- 
-페이지 로딩시 받아와야 할 정보
-
-1. 비로그인 회원 리턴 => java에서  처리
-2. 카테고리 목록
-3. 페이지 로딩시 카테고리 리스트 받아오기
--->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,20 +8,10 @@
   <link rel="stylesheet" href="/css/groupManage/manageGroup.css">
 
 </head>
-
 <body>
 
-  <header style="height: 148.5px;
-                 background-color: white;
-                 border: 3px dotted grey;
-                 color: blue;
-                 display: flex;
-                 justify-content: center;
-                 align-items: center;
-                 position: sticky;
-                 top:0">
-    <div>해더 들어갈 자리</div>
-  </header>
+  <!-- 해더 -->
+  <th:block th:replace= "~{common/header}" ></th:block>
 
   <main class="space-around">
 
@@ -52,19 +34,18 @@
     ㄴ 모임 상세정보 수정
     ㄴ 회원정보 수정
     -->
-    <section id="sideSec1">
-
+    <section id="sideSec1" th:fragment= "th-lfSide">
       <div class="sideStiky" id="sideLinkList">
         <h4>모임 및 회원정보 관리</h4>
   
-        <ul id="linkList">
-          <li><a th:href="@{/groupManage/{groupNo}/manageGroup(groupNo=${group.groupNo})}">모임 상세정보 수정</a></li>
-          <li><a th:href="@{/groupMemberManage/{groupNo}/memberManage(groupNo=${group.groupNo})}">회원관리 페이지</a></li>
-        </ul>
+        <a th:href="@{/groupManage/{groupNo}/manageGroup(groupNo=${group.groupNo})}">모임 상세정보 수정</a>
+        <a th:href="@{/groupMemberManage/{groupNo}/memberManage(groupNo=${group.groupNo})}">전체 회원 관리</a>
+        <a th:href="@{/groupMemberManage/{groupNo}/inviteManage(groupNo=${group.groupNo})}">가입 신청 확인</a>
+        <a th:href="@{/groupMemberManage/{groupNo}/inviteManage(groupNo=${group.groupNo})}">신고 회원 관리</a>
       </div>
-
     </section>
-    <section class="mainSec">
+
+    <section  class="mainSec">
 
       <h1>모임정보 상세수정</h1>
       
@@ -356,7 +337,9 @@
     </section>
   </main>
 
-  <footer>푸터 들어갈 자리</footer>
+  <!-- 푸터 -->
+  <th:block th:replace= "~{common/footer}" ></th:block>
+  <th:block th:replace= "~{common/common}" ></th:block>
 
   <script th:inline="javascript">
     // 기본이미지 호출용, 모임 이미지가 필수라면 삭제
@@ -367,6 +350,6 @@
 
   <script src="/js/groupManage/manageGroup.js"></script>
   <script src="https://kit.fontawesome.com/8695e357e4.js" crossorigin="anonymous"></script>
-</body>
 
+</body>
 </html>

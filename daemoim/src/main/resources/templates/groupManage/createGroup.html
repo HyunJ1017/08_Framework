@@ -1,10 +1,3 @@
-<!-- 
-페이지 로딩시 받아와야 할 정보
-
-1. 비로그인 회원 리턴 => java에서  처리
-2. 카테고리 목록
-3. 페이지 로딩시 카테고리 리스트 받아오기
--->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -17,12 +10,16 @@
 </head>
 <body>
   
-  <header>해더 들어갈 자리</header>
+  <!-- 해더 -->
+  <th:block th:replace= "~{common/header}" ></th:block>
+
+
 
   <main>
 
     <!-- 생성할 모임 정보 입력 -->
     <section class="mainSec">
+      <h1>모임 만들기</h1>
 
       <form action="/groupManage/createGroup" method="POST" id="submitGroupCreate" enctype="multipart/form-data">
         
@@ -143,7 +140,9 @@
 
   </main>
 
-  <footer>푸터 들어갈 자리</footer>
+  <!-- 푸터 -->
+  <th:block th:replace= "~{common/footer}" ></th:block>
+  <th:block th:replace= "~{common/common}" ></th:block>
 
   <script th:inline="javascript">
     // 기본이미지 호출용, 모임 이미지가 필수라면 삭제
