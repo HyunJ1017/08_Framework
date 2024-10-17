@@ -38,6 +38,25 @@
 
   <!-- 해더 우측 섹션 -->
   <section>
+    <!-- 알림 영역 -->
+    <div class="notification-container" th:if="${session.loginMember}">
+
+      <!-- 알림 버튼 -->
+      <button class="notification-btn fa-solid fa-bell" style="color: #FFD43B;" id="my-element">
+
+        <!-- 알림 개수 표시 -->
+        <div class="notification-count-area"></div>
+      </button>
+
+      <!-- 알림 목록 -->
+      <ul class="notification-list">
+
+      </ul>
+      
+    </div>
+
+
+
 
     <!-- 우측 상단 로그인 / 드롭다운 메뉴 -->
      <div class="header-top-menu"><!-- 클래스명은 "-", ID는 카멜표기법 -->

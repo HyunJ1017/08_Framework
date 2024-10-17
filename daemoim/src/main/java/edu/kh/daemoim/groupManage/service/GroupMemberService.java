@@ -25,5 +25,11 @@ public interface GroupMemberService {
 	 */
 	int changeLeader(GroupManageDto newGroup);
 
+	/** 차단회원 관리페이지
+	 * @param groupNo
+	 * @return
+	 */
+	Map<String, Object> gotobanManage(Map<String, Object> paramMap);
+
 
 }

@@ -6,7 +6,7 @@
 	<update id="deleteMember">
 		UPDATE "MEMBER_GROUP"
 		SET MEMBER_GROUP_BAN = 'Y',
-			MEMBER_GROUP_DEL_FL = 'N'
+			MEMBER_GROUP_DEL_FL = 'Y'
 		WHERE
 			MEMBER_NO = #{memberNo}
 		AND GROUP_NO = #{groupNo}

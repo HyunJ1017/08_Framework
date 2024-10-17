@@ -105,5 +105,65 @@
 		SET MEMBER_NO = #{memberNo}
 		WHERE GROUP_NO = #{groupNo}
 	</update>
+	
+	<!-- 차단멤버수 조회 -->
+	<select id="getBanCount">
+		SELECT COUNT(*)
+		FROM "MEMBER_GROUP"
+		WHERE GROUP_NO = #{groupNo}
+		AND MEMBER_GROUP_DEL_FL = 'N'
+		AND MEMBER_GROUP_BAN = 'Y'
+	</select>
+	
+	<!-- 차단멤버리스트 조회 -->
+	<select id="getBans" resultType="GroupMemberManageDto">
+		SELECT
+			M.MEMBER_NO,
+			MEMBER_ID,
+			MEMBER_PW,
+			MEMBER_EMAIL,
+			MEMBER_NICKNAME,
+			MEMBER_TEL,
+			MEMBER_DEL_FL,
+			TO_CHAR(ENROLL_DATE, 'YYYY"년"MM"월"DD"일"') "ENROLL_DATE",
+			AUTHORITY,
+			MEMBER_IMG,
+			TO_CHAR(MEMBER_GROUP_ENROLL_DATE, 'YYYY"년"MM"월"DD"일"') "MEMBER_GROUP_ENROLL_DATE",
+			MEMBER_GROUP_BAN,
+			MEMBER_GROUP_DEL_FL
+		FROM MEMBER_GROUP MG
+		JOIN "MEMBER" M ON (MG.MEMBER_NO = M.MEMBER_NO)
+		WHERE
+			MEMBER_DEL_FL = 'N'
+		AND MG.GROUP_NO = #{groupNo}
+		AND MG.MEMBER_GROUP_BAN = 'Y'
+		AND MG.MEMBER_GROUP_DEL_FL = 'N'
+		<choose>
+			<when test="order== 1">
+				ORDER BY MEMBER_ID ASC
+			</when>
+			<when test="order==-1">
+				ORDER BY MEMBER_ID DESC
+			</when>
+			
+			<when test="order== 2">
+				ORDER BY MEMBER_NICKNAME ASC
+			</when>
+			<when test="order==-2">
+				ORDER BY MEMBER_NICKNAME DESC
+			</when>
+			
+			<when test="order== 3">
+				ORDER BY MEMBER_GROUP_ENROLL_DATE ASC
+			</when>
+			<when test="order==-3">
+				ORDER BY MEMBER_GROUP_ENROLL_DATE DESC
+			</when>
+			
+			<otherwise>
+				ORDER BY AUTHORITY DESC, MEMBER_GROUP_ENROLL_DATE ASC
+			</otherwise>
+		</choose>
+	</select>
 
 </mapper>

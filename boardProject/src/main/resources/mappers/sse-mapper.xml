@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace = "edu.kh.project.sse.mapper.SseMapper">
+	
+	<!-- 
+		useGeneratedKeys="true"
+		- SQL에서 생성된 key값을 자바에서도 사용할수 있게 하는 속성
+		
+		- 원리 : 전달받은 파라미터(얕은 복사로 인해 주소만 복사된)에 생성된 키값을 세팅, java에서도 사용 가능하게함
+	 -->
+	
+	<!-- 알림 삽입 -->
+	<insert id="insertNotification" parameterType="Notification" useGeneratedKeys="true">
+		
+		<selectKey order="BEFORE"
+				   resultType="_int"
+				   keyProperty="notificationNo">
+				   
+			SELECT SEQ_NOTI_NO.NEXTVAL FROM DUAL
+		
+		</selectKey>
+	
+		INSERT INTO "NOTIFICATION" (
+			NOTIFICATION_NO,
+			NOTIFICATION_CONTENT,
+			NOTIFICATION_URL,
+			SEND_MEMBER_NO,
+			RECEIVE_MEMBER_NO)
+		VALUES (
+			#{notificationNo},
+			#{notificationContent},
+			#{notificationUrl},
+			#{sendMemberNo},
+			<choose>
+				<!-- 알림 종류가 댓글 작성 또는 좋아요 -->
+				<when test="notificationType == 'insertComment'
+							or notificationType == 'boardLike'">
+					(SELECT MEMBER_NO
+					 FROM "BOARD"
+					 WHERE BOARD_NO = #{pkNo})
+				</when>
+				<!-- 알림 종류가 답글인 경우 -->
+				<when test="notificationType == 'insertchildComment'">
+					(SELECT MEMBER_NO
+					 FROM "COMMENT"
+					 WHERE COMMENT_NO = #{pkNo})
+				</when>
+			</choose>
+			)
+			
+	</insert>
+		
+	<!-- 알림을 받아야 하는 회원의 번호 + 안읽은 알람 개수 조회 -->
+	<select id="selectReceiveMember" resultType="map">
+		SELECT 
+			RECEIVE_MEMBER_NO "receiveMemberNo",
+			(SELECT COUNT(*) 
+			FROM "NOTIFICATION" SUB
+			WHERE SUB.RECEIVE_MEMBER_NO = MAIN.RECEIVE_MEMBER_NO 
+			AND SUB.NOTIFICATION_CHECK = 'N')
+			"notiCount"
+		FROM (
+			SELECT RECEIVE_MEMBER_NO
+				FROM "NOTIFICATION"
+			WHERE NOTIFICATION_NO =  #{notificationNo}
+		) MAIN
+	</select>
+	
+	<!-- 로그인 한 회원의 알림을 조회하겠다 -->
+	<select id="selectNotificationList" resultType="Notification">
+		SELECT 
+			NOTIFICATION_NO, 
+			NOTIFICATION_CONTENT, 
+			NOTIFICATION_URL, 
+			PROFILE_IMG AS SEND_MEMBER_PROFILE_IMG, 
+			SEND_MEMBER_NO, 
+			RECEIVE_MEMBER_NO,
+			NOTIFICATION_CHECK,
+			CASE 
+				WHEN TRUNC(NOTIFICATION_DATE) = TRUNC(CURRENT_DATE) THEN TO_CHAR(NOTIFICATION_DATE, 'AM HH:MI')
+				ELSE TO_CHAR(NOTIFICATION_DATE, 'YYYY-MM-DD')
+			END AS NOTIFICATION_DATE
+		FROM "NOTIFICATION"
+		JOIN "MEMBER" ON (SEND_MEMBER_NO = MEMBER_NO)
+		WHERE RECEIVE_MEMBER_NO = #{memberNo}
+		ORDER BY NOTIFICATION_NO DESC
+	</select>
+	
+	
+</mapper>

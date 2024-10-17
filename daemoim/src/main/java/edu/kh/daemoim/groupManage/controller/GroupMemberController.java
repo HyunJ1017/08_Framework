@@ -1,5 +1,6 @@
 package edu.kh.daemoim.groupManage.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -86,6 +87,12 @@ public class GroupMemberController {
 		return "groupManage/manageInvite";
 	}
 	
+	
+	/** 모임장 위임하기
+	 * @param memberNo
+	 * @param referer
+	 * @return
+	 */
 	@PostMapping("changeLeader")
 	public String changeLeader(
 			@RequestParam("nextLeader") int memberNo,
@@ -109,5 +116,34 @@ public class GroupMemberController {
 		return path;
 	}
 	
+	/** 차단회원 관리페이지로 이동
+	 * @param groupNo 전달받은 모임번호
+	 * @param model
+	 * @return 차단회원 관리페이지
+	 */
+	@GetMapping("{groupNo:[0-9]+}/banManage")
+	public String gotobanManage(
+			@PathVariable("groupNo") int groupNo,
+			@RequestParam Map<String, Object> paramMap,
+			Model model) {
+		/* 그룹정보 group
+		 * 차단회원 명수 memberAllCount
+		 * 차단회원 리스트 memberList
+		 */
+		paramMap.put("groupNo", groupNo);
+		Map<String, Object> map = service.gotobanManage(paramMap);
+		
+		int memberAllCount = (int)map.get("memberAllCount");
+		List<GroupMemberManageDto> memberList = (List<GroupMemberManageDto>) map.get("memberList");
+		ManagePagination pagination = (ManagePagination) map.get("pagination");
+		
+		GroupManageDto group = groupService.selectGroup(groupNo);
+		model.addAttribute("group", group);
+		model.addAttribute("memberAllCount", memberAllCount);
+		model.addAttribute("memberList", memberList);
+		model.addAttribute("pagination", pagination);
+		
+		return "groupManage/manageBan";
+	}
 	
 }

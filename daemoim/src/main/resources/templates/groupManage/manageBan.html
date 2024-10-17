@@ -3,21 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>회원관리</title>
+  <title>회원가입관리</title>
   <link rel="stylesheet" href="/css/groupManage/manageGroup.css">
 </head>
 <body>
 
   <!-- 해더 -->
   <th:block th:replace= "~{common/header}" ></th:block>
+  
 
   <main class="space-around">
 
     <!-- 사이드메뉴 -->
     <th:block th:replace= "~{groupManage/manageGroup :: th-lfSide }" ></th:block>
-    
+
+
     <section class="mainSec">
-      <h1><th:block th:text="${group.groupName}"></th:block> 가입신청 관리 <th:block th:text="${memberAllCount}"></th:block>명</h1>
+      <h1><th:block th:text="${group.groupName}"></th:block> 차단? 신고당한? 회원 관리 <th:block th:text="${memberAllCount}"></th:block>명</h1>
       <table border="1" id="memberManageTable">
         <thead>
           <tr id="tableTr">
@@ -29,26 +31,26 @@
             <th>프로필사진</th>
             <th class="orderBtn">닉네임</th>
             <th class="orderBtn">가입일</th>
-            <th class="orderBtn">탈퇴여부</th>
-            <th>권한1</th>
-            <th>권한2</th>
+            <th>차단해제</th>
           </tr>
         </thead>
         <tbody>
 
-          <th:block th:each= "member:${memberList}" th:object="${member}">
+          <th:block th:if= "${memberList}" th:each= "member:${memberList}" th:object="${member}">
             <tr>
               <td th:text="*{memberId}"></td>
               <td th:text="*{memberImg}"></td>
               <td th:text="*{memberNickname}"></td>
               <td th:text="*{memberGroupEnrollDate}"></td>
-              <td th:text="*{memberGroupDelFl}"></td>
               <td>
-                <th:block th:unless= "*{memberNo} == ${group.memberNo}"><button class="removeMember" th:data-member-no="*{memberNo}">강퇴</button></th:block>
+                <th:block th:unless= "*{memberNo} == ${group.memberNo}"><button>차단해제</button></th:block>
               </td>
-              <td>
-                <th:block th:unless= "*{memberNo} == ${group.memberNo}"><button class="delegate" th:data-member-no="*{memberNo}">권한 위임</button></th:block>
-              </td>
+            </tr>
+          </th:block>
+
+          <th:block th:if= "${#lists.isEmpty(memberList)}">
+            <tr>
+              <td colspan="6">차단인원이 없습니다.</td>
             </tr>
           </th:block>
 
@@ -97,7 +99,6 @@
 
 
     <section id="sideSec2">
-      
     </section>
 
   </main>
@@ -112,6 +113,6 @@
 
 
   </script>
-  <script src="/js/groupManage/manageGroupMember.js"></script>
+  <script src="/js/groupManage/manageBan.js"></script>
 </body>
 </html>

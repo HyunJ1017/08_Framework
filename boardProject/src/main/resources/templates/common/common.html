@@ -3,4 +3,18 @@
 
 <!-- font awesome 라이브러리 추가 + key 등록 -->
 <script src="https://kit.fontawesome.com/8695e357e4.js" crossorigin="anonymous"></script>
+
+<!-- 알림 관련 전역 변수 -->
+<script th:inline="javascript">
+  // 현재 접속한 클라이언트가 로그인 상태인지 확인하는 변수
+  // -> 알림은 로그인한 회원만 받아야 하니까
+  const notificationLoginCheck = /*[[${session.loginMember} ? true : false]]*/ false;
+
+  // 알림을 보낸 회원의 프로필 이미지가 없을경우 사용할 기본 이미지
+  const notificationDefaultImage = /*[[#{user.default.image}]]*/"기본이미지";
+
+
+
+</script>
+
 <script src="/js/header.js"></script>

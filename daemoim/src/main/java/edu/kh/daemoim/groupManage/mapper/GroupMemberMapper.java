@@ -25,5 +25,11 @@ public interface GroupMemberMapper {
 	// 모임리더바꾸기
 	int changeLeader(GroupManageDto newGroup);
 
+	// 차단멤버 전체수 조회
+	int getBanCount(int groupNo);
+
+	// 차단 멤버리스트 조회
+	List<GroupMemberManageDto> getBans(Map<String, Object> paramMap, RowBounds rowBounds);
+
 
 }
