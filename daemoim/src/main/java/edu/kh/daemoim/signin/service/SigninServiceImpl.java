@@ -1,14 +1,15 @@
-package edu.kh.daemoim.signup.service;
+package edu.kh.daemoim.signin.service;
 
 import org.springframework.stereotype.Service;
 
-import edu.kh.daemoim.signup.mapper.SignupMapper;
+import edu.kh.daemoim.signin.mapper.SigninMapper;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class SigninServiceImpl implements SigninService{
-
-	private final SignupMapper mapper;
 	
+	private final SigninMapper mapper;
+	
+
 }

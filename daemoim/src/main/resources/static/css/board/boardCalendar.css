@@ -1,0 +1,27 @@
+.header {
+  background-color: #d9d9d9;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.header h1 {
+  font-size: 24px;
+  color: white;
+}
+dialog {
+  position: fixed;
+  width: 300px;
+  z-index: 100;
+  padding: 20px;
+  background: #fff;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  box-shadow: 2px 2px 5px rgba(0,0,0,.5);
+  border: none;
+  border-radius: 10px;
+}
+#calendar {
+  padding: 50px;
+}

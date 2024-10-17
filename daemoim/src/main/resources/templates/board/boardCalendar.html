@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset='utf-8' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.15/index.global.min.js'></script>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        let popup = document.querySelector('dialog');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',
+          googleCalendarApiKey: 'AIzaSyCvULCPgQudE4-g1zR-A2_syQn5jfN__2g',
+          events: {
+          googleCalendarId: 'b0a2babc3491d7cd9ed45955499836217c6b25c8cd549f30a4cd67b0fda81a64@group.calendar.google.com'
+          },
+          eventClick: function(info) {
+            info.jsEvent.preventDefault(); // don't let the browser navigate
+            popup.querySelector('#detail').innerHTML =
+              `<h3>${info.event.title}</h3>
+              <div>${info.event.extendedProps.description}</div>`;
+            popup.setAttribute('open','open');
+          }
+        });
+        calendar.render();
+        popup.querySelector('button').addEventListener('click', () => {
+          popup.removeAttribute('open');
+        });
+      });
+
+    </script>
+    <link rel="stylesheet" href="/css/board/boardCalendar.css">
+  </head>
+  <body>
+     <!-- Header -->
+     <div class="header">
+      <h1>모임배경사진</h1>
+  </div>
+
+    <div id='calendar'></div>
+    <dialog>
+      <div id="detail">제목 테스트</div>
+      <button>닫기</button>
+    </dialog>
+  </body>
+</html>

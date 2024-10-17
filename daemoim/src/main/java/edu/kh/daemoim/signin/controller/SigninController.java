@@ -1,21 +1,21 @@
-package edu.kh.daemoim.signup.controller;
+package edu.kh.daemoim.signin.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import edu.kh.daemoim.signup.service.SignupService;
+import edu.kh.daemoim.signin.service.SigninService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-public class SignupController {
-	
-	private final SignupService service;
+public class SigninController {
 
+	private final SigninService service;
 	
-	@GetMapping("/signup")
+	@GetMapping("/signin")
 	public String signup() {
-		return "signup/signup";
+		return "signin/signin";
 	}
+	
 	
 }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내정보 페이지</title>
+  <link rel="stylesheet" href="/css/myPage/myPage-info.css">
+</head>
+
+<body>
+  <th:block th:replace="~{myPage/sideMenu}"></th:block>
+  <main class="profile-container">
+    <form class="profile-form">
+      <div class="daemoimImage">
+        <div>
+          <h2>이미지 (로고 넣을 공간)</h2>
+          <div class="profile-image-section">
+            <label for="profile-image">프로필 이미지</label>
+            <input type="file" id="profile-image" accept="image/*">
+          </div>
+          <img src="" alt="이미지 없음">
+        </div>
+      </div>
+      <h1 class="tn">개인정보 수정</h1>
+      <div class="profile-details">
+        <div class="profile-intro-section">
+          <label for="im">자기소개</label><br>
+          <textarea name="im" id="im" rows="5" cols="33" placeholder="자기소개 하는칸"></textarea>
+        </div>
+        <div class="profile-nickname-section">
+          <label for="nickname">닉네임</label><br>
+          <input type="text" id="nickname" placeholder="닉네임 입력">
+        </div>
+        <button > 변경 </button>
+      </div>
+    </form>
+  </main>
+</body>
+
+</html>

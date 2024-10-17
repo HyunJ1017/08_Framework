@@ -1,0 +1,128 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f4f8;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.left-side {
+  position: absolute;
+  left: 5%;
+  transform: translateY(-50%);
+  top: 50%;
+  width: 24%;
+  background-color: #d8e3e7;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.withdrawal-content {
+  width: 50%;
+  max-width: 800px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-left: 45%;
+}
+
+h3 {
+  color: #6a7f98;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.signup-box {
+  background-color: #edf5fa;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 15px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.signup-box label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.required {
+  color: #ff6b6b;
+}
+
+.signUp-input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.email-input-area {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+
+
+.email-input-area select {
+  width: auto;
+}
+
+button {
+  background-color: #a8d5e2;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #7fb7c8;
+}
+
+.signUp-message {
+  font-size: 0.9rem;
+  color: #7a869a;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+iframe {
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Final Button */
+#signUpBtn {
+  display: block;
+  margin: 20px auto;
+  background-color: #f26b6b;
+  width: 100%;
+}
+
+#signUpBtn:hover {
+  background-color: #e65c5c;
+}

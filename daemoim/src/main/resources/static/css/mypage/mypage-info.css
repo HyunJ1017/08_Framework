@@ -1,0 +1,115 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f4f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.profile-container {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.daemoimImage {
+  text-align: center;
+}
+
+.daemoimImage img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.daemoimImage input[type="file"] {
+  display: block;
+  margin: 0 auto;
+}
+
+.tn {
+  text-align: center;
+  color: #333;
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.profile-image-section,
+.profile-intro-section,
+.profile-nickname-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+textarea {
+  resize: none;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #a3d8f4;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #a3d8f4;
+}
+
+input[type="file"] {
+  padding: 5px;
+}
+
+.profile-container,
+textarea,
+input[type="text"] {
+  background-color: #f5f7fa;
+  border-radius: 12px;
+}
+
+.profile-container {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+h1, label {
+  color: #555;
+}
+
+textarea, input[type="text"] {
+  font-size: 1em;
+}
+
+.profile-details label {
+  font-weight: bold;
+  color: #777;
+}

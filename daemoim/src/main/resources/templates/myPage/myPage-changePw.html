@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>비밀번호 변경</title>
+</head>
+<body>
+  <th:block th:replace="~{myPage/sideMenu}"></th:block>
+  <div class="myPage-row">
+    <label>현재 비밀번호</label>
+    <input type="password" name="currentPw" id="currentPw" maxlength="30" >              
+</div>
+
+<div class="myPage-row">
+    <label>새 비밀번호</label>
+    <input type="password" name="newPw" id="newPw" maxlength="30">              
+</div>
+
+<div class="myPage-row">
+    <label>새 비밀번호 확인</label>
+    <input type="password" name="newPwConfirm" id="newPwConfirm" maxlength="30">              
+</div>
+
+<button class="myPage-submit">변경하기</button>
+  
+</form>
+</body>
+</html>
