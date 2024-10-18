@@ -78,6 +78,31 @@ const insertComment = (parentCommentNo) => {
 
       // 댓글목록 조회 함수 호출
       selectCommentList();
+
+
+      /* 알림 기능 */
+
+      // 알림 클릭시 이동하는 url에 ?cn=댓글번호 추가
+      // -> 알림 클릭 시 작성된 댓글 또는 답글 위치로 바로 이동
+
+      // 댓글을 작성한 경우
+      // -> {닉네임}님이 {게시글 제목} 게시글에 댓글을 작성했습니다
+      if(parentCommentNo === undefined){
+        const content = `<strong>${memberNickname}</strong>님이 <strong>${boardDetail.boardTitle}</strong>글에 댓글을 작성했습니다.`;
+
+        sendNotification("insertComment", `${location.pathname}?cn=${result}`, boardNo, content);
+      } else {
+        // 답글(대댓글)을 작성한 경우
+        // -> {닉네임}님이 답글을 작성했습니다
+        const content = `<strong>${memberNickname}</strong>님이 답글을 작성했습니다.`;
+
+        sendNotification("insertchildComment", `${location.pathname}?cn=${result}`, parentCommentNo, content);
+
+      }
+
+
+
+
     }
   })
   .catch(errMassage => console.error( errMassage ));

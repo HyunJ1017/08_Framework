@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace = "edu.kh.project.common.scheduling.mapper.SchedulingMapper">
+
+	<!-- DB에 저장되어 있는 파일명 모두 조회 -->
+	<select id="getDbFileNameList" resultType="string">
+		SELECT SUBSTR(PROFILE_IMG, INSTR(PROFILE_IMG, '/', -1) + 1 ) AS "FILE_NAME"
+		FROM "MEMBER"
+		UNION
+		SELECT TO_CHAR(IMG_RENAME) AS "FILE_NAME"
+		FROM BOARD_IMG
+	</select>
+	
+	
+</mapper>

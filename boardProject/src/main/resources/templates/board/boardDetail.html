@@ -124,6 +124,8 @@
   <script th:inline="javascript">
     const boardCode = /*[[${board.boardCode}]]*/ "보드코드입니다";
     const loginCheck = /*[[${session.loginMember != null}]]*/ "로그인true, 비회원 false";
+    const memberNickname = /*[[${session.loginMember?.memberNickname}]]*/ "로그인 한 회원의 닉네임";
+    const boardDetail = /*[[${board}]]*/ "현재 게시글 제목";
   </script>
 
   <script src="/js/board/boardDetail.js"></script>

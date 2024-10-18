@@ -31,6 +31,12 @@ boardLike.addEventListener("click", e => {
     if(result.check === 'insert'){
       document.querySelector("#boardLike").classList.remove("fa-regular");
       document.querySelector("#boardLike").classList.add("fa-solid");
+
+      /* 알림설정 */
+      const content = `<strong>${memberNickname}</strong>님이 <strong>${boardDetail.boardTitle}</strong> 게시글에 좋아요를 눌렀습니다.`;
+
+      sendNotification("boardLike", location.pathname, boardNo, content);
+
     } else {
       document.querySelector("#boardLike").classList.remove("fa-solid");
       document.querySelector("#boardLike").classList.add("fa-regular");

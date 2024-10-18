@@ -86,5 +86,26 @@
 		ORDER BY NOTIFICATION_NO DESC
 	</select>
 	
+	<!-- 로그인한 회원의 읽지않은 알림 갯수 조회하기 -->
+	<select id="notReadCheck" resultType="_int">
+		SELECT COUNT(*)
+		FROM "NOTIFICATION"
+		WHERE RECEIVE_MEMBER_NO = #{memberNo}
+		AND NOTIFICATION_CHECK = 'N'
+	</select>
+	
+	<!-- 알림 삭제하기 -->
+	<delete id="deleteNotification">
+		DELETE FROM "NOTIFICATION"
+		WHERE NOTIFICATION_NO = #{notificationNo}
+	</delete>
+	
+	<!-- 알림 읽음으로 변경 -->
+	<update id="updateNotification">
+		UPDATE "NOTIFICATION"
+		SET NOTIFICATION_CHECK = 'Y'
+		WHERE NOTIFICATION_NO = #{notificationNo}
+	</update>
+	
 	
 </mapper>

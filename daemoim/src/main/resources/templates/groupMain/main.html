@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모임 메인페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
+
+        /* 전체 레이아웃 컨테이너 */
+        .main-container {
+            display: flex;
+        }
+
+        /* 사이드바 스타일 */
+        .sidebar {
+            width: 200px;
+            background-color: white;
+            height: 53vh; /* 화면 전체 높이 */
+            padding-top: 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+
+        .sidebar a {
+            display: block;
+            color: black;
+            padding: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #c7c7c7;
+        }
+
+        .container {
+            margin-left: 220px; /* 사이드바 공간 확보 */
+            padding: 20px;
+            width: calc(100% - 220px);
+
+        }
+
+        /* 상단 배너 */
+        .screen {
+            width: 100%;
+            height: 200px;
+            background-color: lightgray;
+            margin-bottom: 20px;
+        }
+
+        .introduce {
+            width: 100%;
+            height: 150px;
+            background-color: lightgray;
+            margin-bottom: 20px;
+        }
+
+        /* 박스 레이아웃 */
+        .box-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .notice {
+            background-color: #d7e8d4;
+            padding: 20px;
+            height: 120px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+        }
+        .photobox{
+            background-color: #d7e8d4;
+            padding: 20px;
+            height: 250px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+        }
+
+        .schedule{
+            background-color: #d7e8d4;
+            padding: 20px;
+            height: 180px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+        }
+      
+
+
+
+        /* 반응형 설정 */
+        @media (max-width: 768px) {
+            .box-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .box-container {
+                grid-template-columns: 1fr;
+            }
+
+            /* 작은 화면에서 사이드바 숨기기 */
+            .sidebar {
+            
+                height: 1px;
+                position: fixed;
+            }
+
+            .container {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+     <!-- 왼쪽 사이드바 -->
+     <div class="sidebar">
+        <a href="#">공지사항</a>
+        <a href="#">일반 게시판</a>
+        <a href="#">사진첩</a>
+        <a href="#">일정</a>
+    </div>
+   <!-- 모임 배경사진 -->
+   <div class="screen">
+    <img src="images/img.png" alt="모임배경사진">
+  </div>
+
+   <!-- 모임 소개 -->
+   <div class="introduce">모임 소개</div>
+
+
+<div class="main-container">
+   
+    <!-- 컨텐츠 영역 -->
+    <div class="container">
+     
+        <!-- 박스 레이아웃 -->
+        <div class="box-container">
+            <div class="notice">공지사항</div>
+            <div class="schedule">모임일정</div>
+            <div class="schedule">모임일정</div>
+            <div class="photobox">사진첩</div>
+            <div class="schedule">모임일정</div>
+            <div class="schedule">모임일정</div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

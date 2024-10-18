@@ -19,4 +19,13 @@ public interface SseMapper {
 	//로그인 한 회원의 알림을 조회하겠다
 	List<Notification> selectNotificationList(int memberNo);
 
+	// 로그인한 회원의 읽지않은 알림 갯수 조회
+	int notReadCheck(int memberNo);
+
+	// 알림 삭제
+	void deleteNotification(int notificationNo);
+
+	// 알림 읽음처리 하기
+	void updateNotification(int notificationNo);
+
 }

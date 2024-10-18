@@ -1,0 +1,50 @@
+.searchBox {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  height: 100vh; 
+}
+
+.searchBox form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  z-index: 1;
+}
+
+/* 드롭다운 메뉴 활성화 시 */
+.dropdown.active {
+  display: block;
+}
+
+.filter-container {
+  position: relative;
+  margin-top: 10px;
+}
+
+.filter-icon {
+  cursor: pointer;
+}
+
+.dropdown a {
+  display: block;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.dropdown a:hover {
+  background-color: #f1f1f1;
+}
+
+button[type="submit"] {
+  margin-top: 10px; /* 검색 버튼과 검색창 사이의 간격 */
+}

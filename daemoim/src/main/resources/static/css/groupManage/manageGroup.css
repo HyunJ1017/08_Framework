@@ -51,6 +51,19 @@ main{
   font-family: 'MinSans-Regular';
   font-weight: 700;
 }
+.mainSec > .searchForm{
+  margin: 0 0 20px;
+}
+.mainSec > .searchForm select{
+  width: 85px;
+  height: 25px;
+}
+.mainSec > .searchForm select{
+  height: 25px;
+}
+.mainSec > .searchForm button{
+  margin: 10px;
+}
 .divInline{
   display: inline;
   margin: 5px;

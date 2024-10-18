@@ -1,0 +1,72 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+.category {
+  padding-top: 150px; /* 헤더 높이만큼 상단 여백 추가 */
+}
+
+.category-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.category-box {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 45%;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  padding: 15px;
+  align-items: center;
+}
+
+.icon {
+  width: 20%;
+  margin-right: 20px;
+}
+
+.icon img {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  background-color: #eee;
+}
+
+.details {
+  width: 75%;
+}
+
+.activity-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.location {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.participants {
+  display: flex;
+  align-items: center;
+}
+
+.participant {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin-right: 5px;
+  background-image: url('https://via.placeholder.com/30');
+  background-size: cover;
+}

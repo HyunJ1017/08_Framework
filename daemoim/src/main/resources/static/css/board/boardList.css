@@ -1,80 +1,138 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
+/* 기본 스타일 */
+body { 
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background-color: #fafafa;
   margin: 0;
   padding: 0;
+  color: #333;
 }
+
+/* Header 스타일 */
 .header {
-  background-color: #d9d9d9;
-  height: 200px;
+  background-color: #343a40;
+  height: 180px;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 .header h1 {
-  font-size: 24px;
-  color: white;
+  font-size: 28px;
+  color: #ffffff;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
+
+/* 레이아웃 스타일 */
 .container {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 30px;
+  padding: 20px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
 }
 .main-content {
-  width: 70%;
+  width: 65%; /* 메인 콘텐츠의 너비를 줄임 */
 }
 .sidebar {
-  width: 20%;
-  margin-left: 20px;
+  width: 30%; /* 사이드바의 너비를 늘림 */
+  margin-left: 20px; /* 여백을 약간 줄임 */
 }
-.post {
+/* 달력 스타일 (유지) */
+#calendar {
+  width: 100%; /* 사이드바 안에서 100% 차지 */
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 10px;
   background-color: white;
-  padding: 15px;
-  margin-bottom: 10px;
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+/* Post 스타일 */
+.post {
+  background-color: #ffffff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.post:hover {
+  transform: translateY(-5px); /* 살짝 위로 이동 */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 .post .profile {
   display: flex;
   align-items: center;
 }
 .post img {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 15px;
 }
 .post .description {
-  font-size: 12px;
-  color: gray;
+  font-size: 14px;
+  color: #777;
 }
 .post .comments {
   text-align: right;
-  color: gray;
+  color: #999;
   font-size: 12px;
 }
+
+/* Sidebar 스타일 */
 .sidebar-box {
-  background-color: #e0e0e0;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 5px;
+  background-color: #f0f0f0;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 .sidebar-box h3 {
-  margin: 0 0 10px 0;
+  margin: 0 0 15px 0;
+  color: #343a40;
+  font-size: 18px;
 }
+
+/* 버튼 스타일 */
 .btn-write {
-  background-color: black;
+  background-color: #007bff;
   color: white;
-  padding: 10px;
+  padding: 12px;
   text-align: center;
   border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.btn-write:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-#first, #second, #third {
-  cursor: pointer;
-}
-
+/* 캘린더 및 일정 링크 */
 .scheduleDetail {
   cursor: pointer;
+}
+.scheduleDetail:hover {
+  text-decoration: underline;
+  color: #007bff;
+}
+
+/* 마우스 오버 효과 */
+#first, #second, #third, .scheduleDetail, .btn-write {
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+#first:hover, #second:hover, #third:hover, .scheduleDetail:hover, .btn-write:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }

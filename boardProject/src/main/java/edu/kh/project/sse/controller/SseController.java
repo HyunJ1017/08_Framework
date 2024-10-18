@@ -5,8 +5,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -39,10 +41,18 @@ public class SseController {
 	
 	@Autowired
 	private SseService service;
-
+	
+	// 상수(final)선언 되어서 서버 실행시 static 필드에 항상 만들어져 있을거임!!!
+	// -> 이거때문에 @RequiredArgsConstructor 못쓰고 @Autowired 써야함
 	private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>(); // 연결된 클라이언트의 대기명단
 	
 	
+	
+	/** 클라이언트가 서버에 연결 요청
+   *  -> 클라이언트가 서버로부터 데이터를 받기 위한 대기상태에 놓임
+	 * @param loginMember
+	 * @return
+	 */
 	@GetMapping("sse/connect")
 	public SseEmitter sseConnect(
 			@SessionAttribute("loginMember") Member loginMember) {
@@ -66,11 +76,12 @@ public class SseController {
 		emitter.onTimeout( () -> emitters.remove(clientId) );
 		
 		return emitter;
-	}
+	} // sseConnect end
 	
 	
-	/** 알림 메시지 성공
+	/** 알림 메시지 전달
 	 * 
+	 * 	return void
 	 */
 	@PostMapping("sse/send")
 	public void sendNotification(
@@ -103,11 +114,11 @@ public class SseController {
 				emitter.send( map );
 			} catch (Exception e) {
 				emitters.remove(clientId);
-			}
+			} // try-catch end
 			
-		}
+		} // if end
 		
-	}
+	} // sendNotification() end
 	
 	/** 로그인 한 회원의 알림목록 조회
 	 * @param loginMember
@@ -118,4 +129,29 @@ public class SseController {
 		return service.selectNotificationList(loginMember.getMemberNo());
 	}
 	
+	
+	/** 현재 읽지 않은 알림 갯수 조회
+	 * @return
+	 */
+	@GetMapping("notification/notReadCheck")
+	public int  notReadCheck(@SessionAttribute("loginMember") Member loginMember) {
+		return service.notReadCheck(loginMember.getMemberNo());
+	}
+	
+	
+	/** 알림 지우기
+	 */
+	@DeleteMapping("notification")
+	public void deleteNotification(@RequestBody int notificationNo) {
+		service.deleteNotification(notificationNo);
+	}
+	
+	
+	/** 알림 읽음 표시하기
+	 * @param notificationNo
+	 */
+	@PutMapping("notification")
+	public void updateNotification(@RequestBody int notificationNo) {
+		service.updateNotification(notificationNo);
+	}
 }

@@ -17,7 +17,17 @@
     <th:block th:replace= "~{groupManage/manageGroup :: th-lfSide }" ></th:block>
     
     <section class="mainSec">
-      <h1><th:block th:text="${group.groupName}"></th:block> 가입신청 관리 <th:block th:text="${memberAllCount}"></th:block>명</h1>
+      <h1><th:block th:text="${group.groupName}"></th:block> 전체회원 관리 <th:block th:text="${memberAllCount}"></th:block>명</h1>
+      <div class="searchForm">
+        <form action="memberManage" method="GET">
+          <select name="key" id="searchKey">
+            <option value="n">닉네임</option>
+            <option value="i">아이디</option>
+          </select>
+          <input type="text">
+          <button>검색</button>
+        </form>
+      </div>
       <table border="1" id="memberManageTable">
         <thead>
           <tr id="tableTr">

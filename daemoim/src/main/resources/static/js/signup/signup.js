@@ -44,7 +44,7 @@ function findAddress() {
   
   /*전화번호 유효성 검사*/
   const memberTel = document.querySelector("#memberTel");
-  
+  F
   memberTel?.addEventListener("input", ()=>{ // ? 안전탐색 연산자
   
   // 입력된 전화 번호
@@ -69,3 +69,4 @@ function findAddress() {
   
    checkObj.memberTel = true;
   }
+});

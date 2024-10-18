@@ -106,7 +106,7 @@
 		WHERE GROUP_NO = #{groupNo}
 	</update>
 	
-	<!-- 차단멤버수 조회 -->
+	<!-- 강퇴멤버수 조회 -->
 	<select id="getBanCount">
 		SELECT COUNT(*)
 		FROM "MEMBER_GROUP"
@@ -115,7 +115,7 @@
 		AND MEMBER_GROUP_BAN = 'Y'
 	</select>
 	
-	<!-- 차단멤버리스트 조회 -->
+	<!-- 강퇴멤버리스트 조회 -->
 	<select id="getBans" resultType="GroupMemberManageDto">
 		SELECT
 			M.MEMBER_NO,

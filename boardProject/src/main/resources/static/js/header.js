@@ -27,6 +27,8 @@ SSE (Server - Sent - Event)
 
 .- 서버가 클라이언트에게 실시간으로 데이터를 전송할 수 있는 기술
 .- HTTP 프로토콜 기반으로 동작
+.- 스프링-웹에 이쁘게 들어있음
+.- implementation 'org.springframework.boot:spring-boot-starter-web'
 .- 단방향 통신 (ex : 무전기)
 
 
@@ -35,15 +37,15 @@ SSE (Server - Sent - Event)
 1) 클라이언트가 서버에 연결 요청
 .  -> 클라이언트가 서버로부터 데이터를 받기 위한 대기상태에 놓임
 .     (EventSource)
-.   유저 1  연결요청 ->
+.   유저 1  연결요청 ◢
 .                       서버
-.   유저 2  연결요청 ->
+.   유저 2  연결요청 ◥
 
 2) 서버가 연결된 클라이언트에게 데이터를 전달
 .  (서버 -> 클라이언트 데이터 전달하라는 요청을 AJAX를 이용해 비동기 요청)
-.   유저 1  요청 ->
-.                   서버
-.   유저 2  응답 <-
+.   유저 1  요청 ◢
+.                  서버
+.   유저 2  응답 ◣
 
 
 */
@@ -81,7 +83,15 @@ const connectSse = () => {
     // 알림 갯수 표시
     const notificationCountArea = document.querySelector(".notification-count-area");
     notificationCountArea.innerText = obj.notiCount;
-  })
+
+
+
+    /* 메세지가 왔을때 알림목록창이 열려있을경우 */
+    const notificationList = document.querySelector(".notification-list");
+    if(notificationList.classList.contains("notification-show")){
+      selectNotificationList(); // 알림목록 비동기조회
+    }
+  }) // event end
 
   /* 서버 연결이 종료된 경우(타임아웃 초과) */
   eventSource.addEventListener("error", () => {
@@ -91,9 +101,11 @@ const connectSse = () => {
 
     setTimeout(()=>{connectSse()}, 5000); // 5초 후 재연결 시도
      
-  })
+  }) // event end
 
-}
+} // connectSse() end
+
+
 
 /* 
 알림 메시지 전송 함수
@@ -137,7 +149,7 @@ const sendNotification = (type, url, pkNo, content) => {
   // .then() => 알림보낸사람은 할게 없음
   .catch(err => console.error( err ));
 
-};
+}; // sendNotification() end
 
 /* ************************************************************************ */
 
@@ -187,7 +199,7 @@ const selectNotificationList = () => {
 
         // 클릭 시 알림에 기록된 경로로 이동
         location.href = data.notificationUrl;
-      })
+      }) // event end
 
 
       // 알림 보낸 회원 프로필 이미지
@@ -224,17 +236,16 @@ const selectNotificationList = () => {
           headers: { "Content-Type": "application/json" },
           body: data.notificationNo
         })
-          .then(resp => {
-            if (resp.ok) return resp.text();
-            throw new Error("네트워크 응답이 좋지 않습니다.");
-          })
-          .then(result => {
-            // 클릭된 x버튼이 포함된 알림 삭제
+        .then(resp => {
+          if (resp.ok){
             notiDelete.parentElement.remove();
             notReadCheck();
+            return;
+          }
+          throw new Error("네트워크 응답이 좋지 않습니다.");
+        }) // fetch end
 
-          })
-      })
+      }) // event end
 
       // 조립
       notiList.append(notiItem);
@@ -242,11 +253,11 @@ const selectNotificationList = () => {
       notiText.append(senderProfile, contentContainer);
       contentContainer.append(notiDate, notiContent);
 
-    }
+    } // for end
     
   })
   .catch(IWantGoHome => console.error(IWantGoHome));
-};
+}; // selectNotificationList() end
 
 
 
@@ -255,9 +266,46 @@ const selectNotificationList = () => {
 
 /* ************************************************************************ */
 
+  /* 읽지않은 알림갯수 조회 및 알림 유무 표시여부 변경 */
+const notReadCheck = () => {
+  if(notificationLoginCheck === false) return;
+
+  fetch("/notification/notReadCheck")
+  .then(response => {
+    if(response.ok) return response.text();
+    throw new Error("알림 갯수 조회 실패" + response.status);
+  })
+  .then(count => {
+    // console.log(count);
+
+    // 종 버튼에 색 초기화(비활성화)
+    const notificationBtn = document.querySelector(".notification-btn ");
+    notificationBtn.classList.remove("fa-shake");
+    
+    // 알림 갯수 표시
+    const notificationCountArea = document.querySelector(".notification-count-area");
+    notificationCountArea.innerText = count;
+    
+
+    // 종 버튼에 색 추가(활성화)
+    if(count < 1) return;
+    notificationBtn.classList.add("fa-shake");
+  })
+  .catch(e=>console.error(e));
+
+}; // notReadCheck() end
+
+
+/* ************************************************************************ */
+
 document.addEventListener("DOMContentLoaded", ()=>{
+  // 서버에 sse연결요청
   connectSse();
 
+  // 서버에 읽지않은 알림메시지 확인요청
+  notReadCheck();
+
+  // 알림버튼 클릭시 알림창 이벤트
   const notificationBtn = document.querySelector(".notification-btn");
   notificationBtn?.addEventListener("click", () => {
 
@@ -273,4 +321,23 @@ document.addEventListener("DOMContentLoaded", ()=>{
     }
 
   });
-});
+
+
+  /* 쿼리스트링중 cn이 존재하는 경우 해당 댓글을 찾아 화면을 스크롤해서 이동하는 잡기술 */
+  const params = new URLSearchParams(location.search);
+  const cn = params.get("cn");
+  if(cn !== null){
+    const searchId = 'c' + cn;
+    const target = document.getElementById(searchId);
+    // const target = document.querySelector(`"#${searchId}"`);
+    // -> 이거로 얻어오면 못씀 ㅜㅜ
+    // 댓글 요소가 제일 위에서 얼만큼 떨어져 있는지 반환받기
+    const scrollPosition = target.offsetTop
+
+    window.scrollTo({
+      top : scrollPosition - 200, // 스크롤 길이 - 적당히
+      behavior : "smooth"   // 부드업게 동작
+    })
+  }
+
+}); // DOMContentLoaded() end
