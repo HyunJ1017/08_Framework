@@ -25,9 +25,11 @@ public class GroupMemberManageDto {
 	private String enrollDate;
 	private int    authority;
 	private String memberImg;
+	private String memberIm;
+	private char   memberOutFl;
 
 	private String memberGroupEnrollDate;	// 모임 가입일
-	private String memberGroupBan;				// 벤?
+	private String memberGroupBan;				// 강퇴
 	private String memberGroupDelFl;			// 모임탈퇴여부
 	
 	// "MEMBER_GROUP" 테이블 필드

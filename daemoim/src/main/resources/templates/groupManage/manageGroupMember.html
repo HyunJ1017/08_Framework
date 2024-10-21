@@ -39,7 +39,6 @@
             <th>프로필사진</th>
             <th class="orderBtn">닉네임</th>
             <th class="orderBtn">가입일</th>
-            <th class="orderBtn">탈퇴여부</th>
             <th>권한1</th>
             <th>권한2</th>
           </tr>
@@ -52,7 +51,6 @@
               <td th:text="*{memberImg}"></td>
               <td th:text="*{memberNickname}"></td>
               <td th:text="*{memberGroupEnrollDate}"></td>
-              <td th:text="*{memberGroupDelFl}"></td>
               <td>
                 <th:block th:unless= "*{memberNo} == ${group.memberNo}"><button class="removeMember" th:data-member-no="*{memberNo}">강퇴</button></th:block>
               </td>

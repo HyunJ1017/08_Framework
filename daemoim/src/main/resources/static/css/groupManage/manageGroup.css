@@ -320,7 +320,6 @@ tr th{height: 40px; background-color: #A0937D;}
 #tableTr > th:nth-child(2){ min-width: 90px;}   /* 프로필사진 */
 #tableTr > th:nth-child(3){ min-width: 90px;}   /* 닉네임 */
 #tableTr > th:nth-child(4){ min-width: 140px;}  /* 가입일 */
-#tableTr > th:nth-child(5){ min-width: 70px;}   /* 탈퇴여부 */
 #tableTr > th:nth-child(6){ min-width: 50px;}   /* 권한1 */
 #tableTr > th:last-child{ min-width: 50px;}     /* 권한2 */
 .orderBtn:hover{

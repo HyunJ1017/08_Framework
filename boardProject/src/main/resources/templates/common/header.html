@@ -109,5 +109,8 @@
     <li>
       <a href="/fileUpload/main"><i class="fa-solid fa-image"></i> 업로드 연습</a>
     </li>
+    <li th:if= "${session.loginMember}">
+      <a href="/chatting"><i class="fa-solid fa-right-to-bracket"></i>채팅방</a>
+    </li>
   </ul>
 </nav>

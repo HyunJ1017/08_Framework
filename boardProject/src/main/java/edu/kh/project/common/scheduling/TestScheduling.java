@@ -1,6 +1,9 @@
 package edu.kh.project.common.scheduling;
 
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import lombok.extern.slf4j.Slf4j;
 
 /* Spring Scheduler : 
  *  스프링에서 제공하는 일정 시간/주기 마다 예정된 코드를 실행하는 객체
@@ -18,14 +21,11 @@ import org.springframework.scheduling.annotation.Scheduled;
  *    - 해당 메서드는 반환형이 존재해서는 안된다!! == void
  * */
 
-import org.springframework.stereotype.Component;
-import lombok.extern.slf4j.Slf4j;
-
 //@Component
 @Slf4j
 public class TestScheduling {
 	
-//@Scheduled() 매개 변수
+	//@Scheduled() 매개 변수
 	
 	// 1) fixedDelay : 
 	//	 - 이전 작업이 끝난 후 다음 작업이 시작 할 때 까지의 시간을 지정
@@ -40,11 +40,8 @@ public class TestScheduling {
 	
 	//   - cron="초 분 시 일 월 요일 [년도]"   (일요일 1 ~ 토요일 7)
 		
-	//	 ex) 
-	//		cron = "0 50 12 7 5 3 2024" [2024년] 화요일 5월 7일 12시 50분 0초에 수행
-	//		cron = "* 0/5 * * * *" 각시 5분 매초마다 수행 ㅜㅜ
-	//		cron = "0/6 * * * * *" 각 분 0, 6, 12, 18... 초마다
-	//		cron = "59 59 23 * * *" 매일 23시 59분 59초마다, (방문자 수 집계 등등)
+	//	 ex) [2024년] 화요일 5월 7일 12시 50분 0초에 수행
+	//		cron="0 50 12 7 5 3 2024"
 	
 	//   - 특수문자 별 의미
 	// * : 모든 수
@@ -55,9 +52,9 @@ public class TestScheduling {
 	// ? : 특별한 값 없음 (월/요일만 가능)
 	// L : 마지막 (월/요일만 가능)
 	
-	//@Scheduled(cron = "59 59 23 * * *") // ms 단위
+	//@Scheduled(fixedDelay = 5000) // ms 단위
 	public void test() {
 		log.info("@@@@@ 스케쥴러 테스트 작동중 @@@@@");
 	}
-
+	
 }

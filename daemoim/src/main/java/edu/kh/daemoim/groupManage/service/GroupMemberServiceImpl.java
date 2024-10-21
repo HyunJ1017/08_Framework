@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import edu.kh.daemoim.groupManage.dto.GroupManageDto;
 import edu.kh.daemoim.groupManage.dto.GroupMemberManageDto;
 import edu.kh.daemoim.groupManage.dto.ManagePagination;
+import edu.kh.daemoim.groupManage.mapper.GroupMemberManageMapper;
 import edu.kh.daemoim.groupManage.mapper.GroupMemberMapper;
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class GroupMemberServiceImpl implements GroupMemberService {
 
 	private final GroupMemberMapper mapper;
+	private final GroupMemberManageMapper manageMapper;
 	
 	// 모임 회원 조회
 	@Override
@@ -80,7 +82,17 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 	// 그룹 리더 바꾸기
 	@Override
 	public int changeLeader(GroupManageDto newGroup) {
-		return mapper.changeLeader(newGroup);
+		int preGroupLeader = manageMapper.getLeaderNo(newGroup.getGroupNo()); 
+		int result = mapper.changeLeader(newGroup);
+		
+		if(result < 1) return result;
+		
+		// 이전 모임장 권한 내리기
+		result = mapper.changeLeaderAuthority(preGroupLeader, 1);
+		if(result < 1) return result;
+		// 다음 모임장 권한 올리기
+		result = mapper.changeLeaderAuthority(newGroup.getMemberNo(), 2);
+		return result;
 	}
 	
 	// 차단회원 관리페이지
