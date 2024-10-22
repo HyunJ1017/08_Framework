@@ -60,7 +60,7 @@
 		
   </insert>
   
-  <!-- 그룹 조회 -->
+  <!-- 모임 조회 -->
   <select id="selectGroup" resultType="GroupManageDto">
   	SELECT
   		GROUP_NO,

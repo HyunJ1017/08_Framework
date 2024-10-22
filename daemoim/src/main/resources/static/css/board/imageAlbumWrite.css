@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+form {
+    margin-bottom: 20px;
+}
+input[type="text"] {
+    width: 300px; /* 제목 입력 칸의 너비 조정 */
+    padding: 10px;
+    margin: 10px 0;
+}
+.file-input {
+    margin: 10px 0;
+}
+input[type="submit"] {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+.post {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+}
+.post img {
+    max-width: 100%;
+    height: auto;
+}
+.image-preview {
+    display: none;
+    margin: 10px 0;
+    max-width: 300px; /* 미리보기 이미지의 최대 너비 */
+}

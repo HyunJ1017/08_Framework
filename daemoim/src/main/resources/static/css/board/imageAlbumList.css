@@ -1,0 +1,92 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  height: 100%;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+header, footer {
+  background-color: #f8f8f8;
+  padding: 20px;
+  text-align: center;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+footer {
+  margin-top: auto;
+}
+main {
+  flex: 1;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  overflow-y: auto;
+}
+.photo-item {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+.photo-item img {
+  width: 100%;
+  height: auto;
+  max-height: 600px;
+  object-fit: cover;
+}
+.photo-info {
+  margin-top: 10px;
+}
+.top-controls {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+}
+#add-post-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+}
+.search-box input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+}
+.search-box button {
+  padding: 8px 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 0 4px 4px 0;
+}
+.footer-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+#load-more {
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  margin-right: 10px;
+}

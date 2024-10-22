@@ -24,10 +24,17 @@ public class GroupManageServiceImpl implements GroupManageService {
 	private final GroupManageMapper mapper;
 	
 	@Value("${daemoim.groupMain.web-path}")
-	private String webPath;
+	private String groupMainWebPath;
 	
 	@Value("${daemoim.groupMain.folder-path}")
-	private String folderPath;
+	private String groupMainFolderPath;
+	
+	@Value("${daemoim.groupHeader.web-path}")
+	private String groupHeaderWebPath;
+	
+	@Value("${daemoim.groupHeader.folder-path}")
+	private String groupHeaderFolderPath;
+	
 
 	// 모임이름 중복검사
 	@Override
@@ -63,7 +70,7 @@ public class GroupManageServiceImpl implements GroupManageService {
 			// 파일 리네임
 			groupMainRename = FileUtil.rename( groupImg.getOriginalFilename() );
 			// 파일 요청경로 저장
-			inputGroup.setGroupMainImg(webPath + groupMainRename);
+			inputGroup.setGroupMainImg(groupMainWebPath + groupMainRename);
 		}
 		
 		// mapper에 모임 등록하고 결과 반환받기
@@ -77,11 +84,11 @@ public class GroupManageServiceImpl implements GroupManageService {
 		
 		if(groupImg.isEmpty() == false) {
 			// 파일저장
-			File folder = new File(folderPath);
+			File folder = new File(groupMainFolderPath);
 			if(folder.exists() == false) folder.mkdirs();
 			
 			try {
-				groupImg.transferTo( new File( folderPath + groupMainRename ) );
+				groupImg.transferTo( new File( groupMainFolderPath + groupMainRename ) );
 			} catch (Exception e) {
 				result = 0;
 				throw new RuntimeException();
@@ -95,6 +102,39 @@ public class GroupManageServiceImpl implements GroupManageService {
 	public GroupManageDto selectGroup(int groupNo) {
 		
 		return mapper.selectGroup(groupNo);
+	}
+	
+	// 모임 상세정보 수정
+	@Override
+	public int updateGroup(GroupManageDto updateGroup, List<MultipartFile> images, List<Integer> deleteOrderList) {
+		
+		// 기존 모임정보 얻어오기
+		GroupManageDto preGroup = mapper.selectGroup( updateGroup.getGroupNo() );
+		
+		// 이미지 수정
+		// 이미지 rename, path 세팅
+		
+		if(deleteOrderList.isEmpty() == false) { // 삭제한 이미지가 있다면
+			for( int i : deleteOrderList) {
+				switch(i) {
+				case 0 : updateGroup.setGroupMainImg(null); break;
+				case 1 : updateGroup.setGroupHeaderImg(null); break;
+				}
+			}
+		}
+		
+		for(int i=0 ; i<2 ; i++) {
+			
+			
+		}
+		
+		
+		// 모임정보 수정 (모임명, 소개글, 카테고리, 카테고리 리스트, 이미지요청주소 2개)
+		// 카테고리 리스트는 수정 안했을때 값이 0임
+		
+		
+		
+		return 0;
 	}
 
 }

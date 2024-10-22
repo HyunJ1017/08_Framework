@@ -76,6 +76,25 @@ const connectSse = () => {
     const obj = JSON.parse(e.data);
     console.log("1. :" + obj);
 
+    
+    /* 채팅 알림을 받았는데 해당 채팅방에 입장한 상태인 경우 알림 X */
+    try{
+      if(selectChattingNo && selectChattingNo == obj.chattingRoomNo){
+        fetch("/notification", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: obj.notificationNo
+        })
+        .then(resp => {
+          if (!resp.ok) throw new Error("채팅 알림 삭제 실패");
+        })
+        .catch(err => console.error(err));
+        return;
+      }
+    }catch(e){}
+
+    /* ------------------------------------------------------------ */
+    
     // 종 버튼에 색 추가(활성화)
     const notificationBtn = document.querySelector(".notification-btn ");
     notificationBtn.classList.add("fa-shake");

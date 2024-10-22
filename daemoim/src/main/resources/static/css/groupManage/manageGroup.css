@@ -37,6 +37,11 @@ main{
   flex-direction: row;
   justify-content: space-around;
 }
+.space-between{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .mainSec{
   display: flex;
   flex-direction: column;
@@ -112,16 +117,25 @@ main{
   flex-direction: column;
   justify-content: space-between;
 }
+.imgDelBtn:hover{
+  cursor: pointer;
+}
 #imageSec > section > div:last-child{
   height: 65px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+#imageSec > section > div:last-child > *{
+  height: 30px;
 }
 #inputImgPreview1{
   width: 200px;
   height: 200px;
 }
 #inputImgPreview2{
-  max-width: 180px;
-  max-height: 60px;
+  max-width: 360px;
+  max-height: 120px;
 }
 .inputName{
   margin: 0 0 5px;
@@ -239,6 +253,13 @@ input[type="radio"]:checked + label { /* 라벨이 꼭 뒤에잇어야함 */
   flex-wrap: wrap;
 }
 
+/* 제출버튼 */
+.submitDiv{
+  user-select: none; /* 드래그 막음 */
+}
+.submitDiv:hover{
+  cursor: pointer;
+}
 
 /* ****************************** */
 /* ********** 사이드바 ********** */

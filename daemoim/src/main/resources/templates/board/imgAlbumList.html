@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사진첩 게시판</title>
+
+    
+    <link rel="stylesheet" th:href="@{/css/board/imageAlbum.css}">
+    <th:block th:replace="~{common/common}"></th:block>
+</head>
+<body>
+        <div class="top-controls">
+          <div class="search-box">
+              <input type="text" id="top-search" placeholder="게시글 제목 검색">
+              <button onclick="searchPhotos('top')">검색</button>
+          </div>
+            <button id="add-post-btn">게시글 등록</button>
+        </div>
+
+        <main id="photo-gallery">
+            <!-- 사진들이 여기에 동적으로 추가됩니다 -->
+        </main>
+
+        <footer>
+            <div class="footer-controls">
+                <div id="load-more">더 보기</div>
+            </div>
+        </footer>
+        <th:block th:replace="~{common/footer}"></th:block>
+    </div>
+
+    <script src="/js/board/imageAlbumList.js"></script>
+</body>
+</html>

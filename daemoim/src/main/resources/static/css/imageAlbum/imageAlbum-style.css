@@ -1,0 +1,37 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+header, footer {
+  background-color: #f8f8f8;
+  padding: 20px;
+  text-align: center;
+}
+main {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 20px;
+  position: relative;
+}
+img {
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+.upload-button {
+  position: absolute;
+  top: 20px; /* 이미지 위쪽 위치 조정 */
+  left: 50%; /* 중앙 정렬 */
+  transform: translateX(-50%);
+  background-color: #007BFF;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  z-index: 1; /* 이미지 위에 보이도록 설정 */
+}

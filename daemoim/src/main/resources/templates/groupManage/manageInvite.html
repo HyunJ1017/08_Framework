@@ -35,7 +35,7 @@
             <th>권한2</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="tableBody">
 
           <th:block th:if= "${memberList}" th:each= "member:${memberList}" th:object="${member}">
             <tr>
@@ -44,10 +44,14 @@
               <td th:text="*{memberNickname}"></td>
               <td th:text="*{inviteReqTime}"></td>
               <td>
-                <th:block th:unless= "*{memberNo} == ${group.memberNo}"><button>승인</button></th:block>
+                <button class="inviteAgree" th:data-member-no="*{memberNo}" th:data-member-nickname="*{memberNickname}">
+                  승인
+                </button>
               </td>
               <td>
-                <th:block th:unless= "*{memberNo} == ${group.memberNo}"><button>거절</button></th:block>
+                <button class="inviteRefuse" th:data-member-no="*{memberNo}" th:data-member-nickname="*{memberNickname}">
+                  거절
+                </button>
               </td>
             </tr>
           </th:block>
@@ -110,13 +114,7 @@
   <!-- 푸터 -->
   <th:block th:replace= "~{common/footer}" ></th:block>
   <th:block th:replace= "~{common/common}" ></th:block>
+  <th:block th:replace= "~{groupManage/manageGroup :: th-manageGroupFooter }" ></th:block>
 
-  <script th:inline="javascript">
-    const pagination = /*[[${pagination}]]*/ "페이지네이션 객체"
-
-
-
-  </script>
-  <script src="#"></script>
 </body>
 </html>

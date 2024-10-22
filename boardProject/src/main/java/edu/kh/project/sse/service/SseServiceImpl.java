@@ -31,9 +31,18 @@ public class SseServiceImpl implements SseService {
 		if(result > 0) { // 알림 삽입 성공시
 			// 알림을 받아야 하는 회원의 번호 + 안읽은 알람 개수 조회
 			map = mapper.selectReceiveMember(notification.getNotificationNo());
+
+			
+      /* 채팅 알림인 경우 */
+      if(notification.getNotificationType().equals("chatting")){
+        String url = notification.getNotificationUrl();
+        String[] arr = url.split("chat-no=");
+        String chatNo = arr[arr.length-1];
+  
+        map.put("chattingRoomNo", chatNo);
+        map.put("notificationNo", notification.getNotificationNo());
+      }
 		}
-		
-		
 		
 		return map;
 	}

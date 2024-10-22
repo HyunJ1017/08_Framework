@@ -25,7 +25,7 @@ public interface GroupMemberMapper {
 	// 모임리더바꾸기
 	int changeLeader(GroupManageDto newGroup);
 	// 모임리더 권한설정
-	int changeLeaderAuthority(int preGroupLeader, int i);
+	int changeLeaderAuthority(int memberNo, int level);
 
 	// 차단멤버 전체수 조회
 	int getBanCount(int groupNo);

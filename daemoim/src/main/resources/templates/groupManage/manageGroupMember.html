@@ -43,7 +43,7 @@
             <th>권한2</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="tableBody">
 
           <th:block th:each= "member:${memberList}" th:object="${member}">
             <tr>
@@ -113,13 +113,7 @@
   <!-- 푸터 -->
   <th:block th:replace= "~{common/footer}" ></th:block>
   <th:block th:replace= "~{common/common}" ></th:block>
+  <th:block th:replace= "~{groupManage/manageGroup :: th-manageGroupFooter }" ></th:block>
 
-  <script th:inline="javascript">
-    const pagination = /*[[${pagination}]]*/ "페이지네이션 객체"
-
-
-
-  </script>
-  <script src="/js/groupManage/manageGroupMember.js"></script>
 </body>
 </html>

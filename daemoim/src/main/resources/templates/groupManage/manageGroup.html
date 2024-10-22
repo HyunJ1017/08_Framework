@@ -49,7 +49,11 @@
 
       <h1>모임정보 상세수정</h1>
       
-      <form action="#" method="POST" enctype="multipart/form-data" th:object="${group}">
+      <form th:action="@{/groupManage/{groupNo}/manageGroup (groupNo=${group.groupNo})}"
+            method="POST"
+            enctype="multipart/form-data"
+            id="updateForm"
+            th:object="${group}">
 
 
         <!-- ********** 모임 이름 ********** -->
@@ -130,19 +134,27 @@
 
               <!-- 모임 대표 이미지 -->
               <div class="title">
-                <i class="fa-solid fa-gear"></i>
-                모임 대표 이미지
-                <br>
-                <img th:with="group=#{group.default.image}" class="inputImgPreview"
-                     th:src="${groupMainImg ?: group }" alt="이미지표시 없음" id="inputImgPreview1">
+                <div class="space-between">
+                  <div>
+                    <i class="fa-solid fa-gear"></i>
+                    모임 대표 이미지
+                  </div>
+                  <div>
+                    <i class="imgDelBtn fa-solid fa-xmark" style="color: #000000;"></i>
+                  </div>
+                </div>
+               
+                
+                <img th:with="groupMainDefault=#{groupMain.default.image}" class="inputImgPreview"
+                     th:src="${group.groupMainImg ?: groupMainDefault}" alt="이미지표시 없음" id="inputImgPreview1">
               </div>
 
               <div>
-                <div id="imgName1" class="inputName" th:text="*{groupMainImg} ? *{groupMainImg} : 기본이미지 ">선택된 이미지 파일명.jpg</div>
+                <div id="imgName1" class="inputName"><!-- 이미지이름 --></div>
                 <label class="hoverPoint" for="inputImg1">
                   이미지 선택
                 </label>
-                <div class="hoverPoint divInline" id="deleteImg">선택 취소</div>
+                <div class="hoverPoint divInline deleteImg">변경 취소</div>
                 <br>
                 <input type="file" name="inputImg" id="inputImg1" accept="image/*" style="display: none;">
               </div>
@@ -152,21 +164,29 @@
             <section>
               <!-- 모임 상단 이미지 -->
               <div class="title">
-                <i class="fa-solid fa-gear"></i>
-                모임 상단 이미지
+                <div class="space-between">
+                  <div>
+                    <i class="fa-solid fa-gear"></i>
+                    모임 상단 이미지
+                  </div>
+                  <div>
+                    <i class="imgDelBtn fa-solid fa-xmark" style="color: #000000;"></i>
+                  </div>
+                </div>
+
                 <div style="display: flex; flex-direction: column; align-items: center;">
-                  <img th:with="groupHeader=#{group.default.image}" class="inputImgPreview"
-                       th:src="${groupHeaderImg ?: groupHeader }" alt="이미지표시 없음" id="inputImgPreview2">
+                  <img th:with="groupHeaderDefault=#{groupHeader.default.image}" class="inputImgPreview"
+                       th:src="${group.groupHeaderImg ?: groupHeaderDefault}" alt="이미지표시 없음" id="inputImgPreview2">
                 </div>
               </div>
 
 
               <div>
-                <div id="imgName2" class="inputName"  th:text="*{groupMainImg} ? *{groupMainImg} : 기본이미지 ">선택된 이미지 파일명.jpg</div>
+                <div id="imgName2" class="inputName"><!-- 이미지이름 --></div>
                 <label class="hoverPoint" for="inputImg2">
                 이미지 선택
                 </label>
-                <div class="hoverPoint divInline" id="deleteImg2">선택 취소</div>
+                <div class="hoverPoint divInline deleteImg">변경 취소</div>
                 <br>
                 <input type="file" name="inputImg" id="inputImg2" accept="image/*" style="display: none;">
               </div>
@@ -205,8 +225,8 @@
             <div class="preViewer">
 
               <div style="display: flex; flex-direction: column; align-items: center;">
-                <img th:with="groupHeader=#{group.default.image}" class="inputImgPreview"
-                     th:src="${groupHeaderImg ?: groupHeader }" alt="이미지표시 없음" id="inputImgPreview3" style="display: block;">
+                <img th:with="groupHeaderDefault=#{groupHeader.default.image}" class="inputImgPreview"
+                     th:src="${groupHeaderImg ?: groupHeaderDefault }" alt="이미지표시 없음" id="inputImgPreview3" style="display: block;">
               </div>
               <div id="preViewIntroduce" th:text="*{groupIntroduce}">
                 소개글
@@ -303,13 +323,13 @@
                 <div class="categoryBox" id="CategoryListTr">
 
                 </div>
-                <div>
+                <!-- <div>
                   <span>직접입력</span>
-                  <input type="radio" id="userInput" name="categoryListNo">
+                  <input type="radio" id="userInput" name="categoryListNo" value="-1">
                   <label for="userInput" style="width: 199px;">
-                    <input type="text" id="userInputcategoryList">
+                    <input type="text" name="userInputList" id="userInputcategoryList">
                   </label>
-                </div>
+                </div> -->
               </div>
 
             </section>
@@ -319,7 +339,7 @@
         <!-- 완료 버튼 -->
 
         <div id="btnDiv">
-          <div>수정하기</div>
+          <div class="submitDiv">수정하기</div>
         </div>
 
       </form><!-- form end -->
@@ -342,14 +362,29 @@
   <th:block th:replace= "~{common/common}" ></th:block>
 
   <script th:inline="javascript">
+    const originalGroupName = /*[[${group.groupName}]]*/ "변경전 모임명";
     // 기본이미지 호출용, 모임 이미지가 필수라면 삭제
-    const groupDefaultImage = /*[[#{group.default.image}]]*/ "모임 기본 이미지";
+    const groupDefaultMainImage = /*[[#{groupMain.default.image}]]*/ "모임 기본 대표이미지";
+    const groupDefaultHeaderImage = /*[[#{groupHeader.default.image}]]*/ "모임 기본 해더이미지";
+    const defaultImg = [groupDefaultMainImage, groupDefaultHeaderImage];
     const groupOriginalMainImg = /*[[${group.groupMainImg}]]*/ "변경전 모임 대표이미지";
+    const groupOriginalHeaderImg = /*[[${group.groupHeaderImg}]]*/ "변경전 모임 해더이미지";
+    const originalImg = [groupOriginalMainImg, groupOriginalHeaderImg];
     const beforeCategoryListNo = /*[[${group.categoryListNo}]]*/ "변경전 카테고리 리스트 번호";
   </script>
 
-  <script src="/js/groupManage/manageGroup.js"></script>
-  <script src="https://kit.fontawesome.com/8695e357e4.js" crossorigin="anonymous"></script>
+  <section style="display: none;" id="manageGroupFooter" th:fragment= "th-manageGroupFooter">
+
+    <script th:inline="javascript">
+      const pagination = /*[[${pagination}]]*/ "페이지네이션 객체";
+      const groupNo = /*[[${group.groupNo}]]*/ "그룹번호" ;
+    </script>
+
+    <script src="/js/groupManage/manageGroup.js"></script>
+    <script src="https://kit.fontawesome.com/8695e357e4.js" crossorigin="anonymous"></script>
+
+  </section>
+
 
 </body>
 </html>

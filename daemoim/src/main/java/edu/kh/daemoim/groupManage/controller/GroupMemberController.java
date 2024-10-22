@@ -9,9 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.kh.daemoim.groupManage.dto.GroupManageDto;
 import edu.kh.daemoim.groupManage.dto.GroupMemberManageDto;
@@ -31,6 +33,7 @@ public class GroupMemberController {
 	
 	/** 모임 멤버관리페이지로 이동
 	 * @param groupNo : 모임번호
+	 * @param paramMap : 
 	 * @param model : 모임에 가입된 회원들을 담을 객체
 	 * @return
 	 */
@@ -144,6 +147,39 @@ public class GroupMemberController {
 		model.addAttribute("pagination", pagination);
 		
 		return "groupManage/manageBan";
+	}
+	
+	
+	/** 페이지 확인
+	 * @param map
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("getTableList")
+	public List<GroupMemberManageDto> getTableList(
+			@RequestBody Map<String, Object> paramMap){
+		
+		int requestType = (int)paramMap.get("requestType");
+	  // int
+	  // 1 : 전체회원 조회
+	  // 2 : 가입신청인원 조회
+	  // 3 : 강퇴회원 조회
+		
+		List<GroupMemberManageDto> memberList = null;
+		
+		switch(requestType) {
+		case 1 :
+			memberList = (List<GroupMemberManageDto>) ( service.getMemberList(paramMap) ).get("memberList");
+			break;
+		case 2 :
+			memberList = (List<GroupMemberManageDto>) ( service.getInviteList(paramMap) ).get("memberList");
+			break;
+		case 3 :
+			memberList = (List<GroupMemberManageDto>) ( service.gotobanManage(paramMap) ).get("memberList");
+			break;
+		}
+		
+		return memberList;
 	}
 	
 }

@@ -51,6 +51,8 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 		return map;
 	}
 	
+
+	
 	// 가입신청관리페이지
 	@Override
 	public Map<String, Object> getInviteList(Map<String, Object> paramMap) {
@@ -104,7 +106,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 		 * 차단회원 리스트 memberList
 		 */
 		
-		// 차단멤버 수 조회(DEL_FL = 'N')
+		// 강퇴멤버 수 조회(BAN_FL = 'Y')
 		int memberAllCount = mapper.getBanCount((int)paramMap.get("groupNo"));
 		
 		// 페이지네이션 설정

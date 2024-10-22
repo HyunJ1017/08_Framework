@@ -11,6 +11,16 @@
 			MEMBER_NO = #{memberNo}
 		AND GROUP_NO = #{groupNo}
 	</update>
+
+	<!-- 강퇴회원 복구 -->
+	<update id="backupMember">
+		UPDATE "MEMBER_GROUP"
+		SET MEMBER_GROUP_BAN = 'N',
+			MEMBER_GROUP_DEL_FL = 'N'
+		WHERE
+			MEMBER_NO = #{memberNo}
+		AND GROUP_NO = #{groupNo}
+	</update>
   
 	<!-- 모임장 번호 확인 -->
 	<select id="getLeaderNo" resultType="_int">
@@ -25,5 +35,22 @@
 		FROM "MEMBER"
 		WHERE MEMBER_NO = #{memberNo}
 	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="insertMember">
+		INSERT INTO "MEMBER_GROUP"
+		VALUES(
+			#{memberNo},
+			#{groupNo},
+			DEFAULT, DEFAULT, DEFAULT)
+	</insert>
+	
+	<!-- 가입신청 지우기 -->
+	<delete id="deleteInvite">
+		DELETE FROM "INVITE"
+		WHERE
+			MEMBER_NO = #{memberNo}
+		AND GROUP_NO = #{groupNo}
+	</delete>
 
 </mapper>

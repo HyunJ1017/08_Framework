@@ -1,8 +1,10 @@
 package edu.kh.daemoim.groupManage.service;
 
+import java.util.List;
 import java.util.Map;
 
 import edu.kh.daemoim.groupManage.dto.GroupManageDto;
+import edu.kh.daemoim.groupManage.dto.GroupMemberManageDto;
 
 
 public interface GroupMemberService {
@@ -12,6 +14,7 @@ public interface GroupMemberService {
 	 * @return
 	 */
 	Map<String, Object> getMemberList(Map<String, Object> paramMap);
+	
 
 	/** 가입신청목록 조회
 	 * @param paramMap
@@ -30,6 +33,7 @@ public interface GroupMemberService {
 	 * @return
 	 */
 	Map<String, Object> gotobanManage(Map<String, Object> paramMap);
+
 
 
 }

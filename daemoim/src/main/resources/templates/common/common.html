@@ -2,6 +2,24 @@
 <link rel="stylesheet" href="/css/main-style.css">
 
 <script src="https://kit.fontawesome.com/5eb8a8a2db.js" crossorigin="anonymous"></script>
-<script src="/js/main.js"></script>
+
+
+<!-- 알림 관련 전역 변수 선언 -->
+<script th:inline="javascript">
+  
+  // 현재 접속한 클라이언트가 로그인 상태인지 확인하는 변수
+  // -> 알림은 로그인 한 회원만 받을 수 있다!!
+  const notificationLoginCheck 
+    = /*[[${session.loginMember} ? true : false]]*/ false;
+
+  // 알림을 보낸 회원의 프로필 이미지가 없을 경우 사용할
+  // 기본 이미지
+  const notificationDefaultImage 
+    = /*[[#{user.default.image}]]*/ '기본이미지';
+
+</script>
+
+
+<script src="/js/header.js"></script>
 
 

@@ -1,5 +1,7 @@
 package edu.kh.daemoim.groupManage.service;
 
+import java.util.Map;
+
 public interface GroupMemberManageService {
 
 	/** 모임 강퇴
@@ -14,5 +16,20 @@ public interface GroupMemberManageService {
 	 * @return memberNickname
 	 */
 	String selectMemberNickname(int memberNo);
+
+	/** 강퇴회원 복구
+	 * @param memberNo
+	 * @param loginMemberNo
+	 * @param groupNo
+	 * @return result
+	 */
+	int backupMember(int memberNo, int loginMemberNo, int groupNo);
+
+	/** 모임가입
+	 * @param loginMemberNo
+	 * @param map
+	 * @return
+	 */
+	int inviteMember(int loginMemberNo, Map<String, Object> map);
 
 }

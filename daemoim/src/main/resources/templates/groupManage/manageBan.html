@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>회원가입관리</title>
+  <title>강퇴회원관리</title>
   <link rel="stylesheet" href="/css/groupManage/manageGroup.css">
 </head>
 <body>
@@ -34,7 +34,7 @@
             <th>차단해제</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="tableBody">
 
           <th:block th:if= "${memberList}" th:each= "member:${memberList}" th:object="${member}">
             <tr>
@@ -43,7 +43,9 @@
               <td th:text="*{memberNickname}"></td>
               <td th:text="*{memberGroupEnrollDate}"></td>
               <td>
-                <th:block th:unless= "*{memberNo} == ${group.memberNo}"><button>차단해제</button></th:block>
+                <button class="backupMemberBtn" th:data-member-no="*{memberNo}">
+                  차단해제
+                </button>
               </td>
             </tr>
           </th:block>
@@ -106,13 +108,7 @@
   <!-- 푸터 -->
   <th:block th:replace= "~{common/footer}" ></th:block>
   <th:block th:replace= "~{common/common}" ></th:block>
+  <th:block th:replace= "~{groupManage/manageGroup :: th-manageGroupFooter }" ></th:block>
 
-  <script th:inline="javascript">
-    const pagination = /*[[${pagination}]]*/ "페이지네이션 객체"
-
-
-
-  </script>
-  <script src="/js/groupManage/manageBan.js"></script>
 </body>
 </html>
