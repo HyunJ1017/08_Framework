@@ -10,7 +10,7 @@ import edu.kh.daemoim.groupManage.dto.ManageCategory;
 @Mapper
 public interface GroupManageMapper {
 
-	// 그룹명 중복검사
+	// 모임명 중복검사
 	int groupNameCheck(String inputName);
 	
 	// 카테고리 리스트 검색
@@ -25,8 +25,11 @@ public interface GroupManageMapper {
 	// 모임장 그룹에 넣기
 	int insertGroupLeader(GroupManageDto inputGroup);
 	
-	// 그룹 조회
+	// 모임 조회
 	GroupManageDto selectGroup(int groupNo);
+
+	// 모임 상세내용 수정
+	int updateGroup(GroupManageDto updateGroup);
 
 
 

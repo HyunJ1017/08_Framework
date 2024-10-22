@@ -103,9 +103,6 @@ public class GroupManageController {
 		// 전달받은 모임정보를 전달하기위해 세팅
 		model.addAttribute("group", group);
 		
-		log.info("메인 이미지 : {}", group.getGroupMainImg());
-		log.info("해더 이미지 : {}", group.getGroupHeaderImg());
-		
 		// 카테고리리스트 세팅
 		List<ManageCategory> categoryArr = service.getCategoryArr();
 		model.addAttribute("categoryArr", categoryArr);
@@ -128,7 +125,14 @@ public class GroupManageController {
 		
 		int result = service.updateGroup(updateGroup, images, deleteOrderList);
 		
-		return "";
+		String path = null;
+		if(result > 0) {
+			path = "redirect:/groupMain";
+		} else {
+			path = "redirect:/groupManage/" + updateGroup.getGroupNo() + "/manageGroup";
+		}
+		
+		return path;
 	}
 
 }

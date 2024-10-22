@@ -38,10 +38,55 @@
       <div class="sideStiky" id="sideLinkList">
         <h4>모임 및 회원정보 관리</h4>
   
-        <a th:href="@{/groupManage/{groupNo}/manageGroup(groupNo=${group.groupNo})}">모임 상세정보 수정</a>
-        <a th:href="@{/groupMemberManage/{groupNo}/memberManage(groupNo=${group.groupNo})}">전체 회원 관리</a>
-        <a th:href="@{/groupMemberManage/{groupNo}/inviteManage(groupNo=${group.groupNo})}">가입 신청 확인</a>
-        <a th:href="@{/groupMemberManage/{groupNo}/banManage(groupNo=${group.groupNo})}">강퇴 회원 관리</a>
+        <a href="#">
+          <i class="fa-solid fa-list" style="color: #fc6e55;"></i>
+          모임공지
+        </a>
+
+        <a href="#">
+          <i class="fa-solid fa-lightbulb" style="color: #fc6e55;"></i>
+          모임알림
+        </a>
+
+        <a href="#">
+          <i class="fa-solid fa-square-poll-horizontal" style="color: #74C0FC;"></i>
+          최근게시글
+        </a>
+
+        <a href="#">
+          <i class="fa-solid fa-square-poll-horizontal" style="color: #fc6e55;"></i>
+          인기게시글
+        </a>
+
+        <a th:href="@{/groupManage/{groupNo}/manageGroup(groupNo=${group.groupNo})}">
+          <i class="fa-solid fa-clipboard" style="color: #74C0FC;"></i>
+          모임 상세정보 수정
+        </a>
+
+        <a th:href="@{/groupMemberManage/{groupNo}/memberManage(groupNo=${group.groupNo})}">
+          <i class="fa-solid fa-users" style="color: #74C0FC;"></i>
+          전체 회원 관리
+        </a>
+
+        <a th:href="@{/groupMemberManage/{groupNo}/inviteManage(groupNo=${group.groupNo})}">
+          <i class="fa-solid fa-handshake" style="color: #74C0FC;"></i>
+          가입 신청 확인
+        </a>
+
+        <a th:href="@{/groupMemberManage/{groupNo}/banManage(groupNo=${group.groupNo})}">
+          <i class="fa-solid fa-gears" style="color: #74C0FC;"></i>
+          강퇴 회원 관리
+        </a>
+
+      </div>
+
+      <div id="sideCommentList">
+        <h4><i class="fa-solid fa-message" style="color: #74C0FC;"></i> 최근댓글</h4>
+        <a href="#">댓글1</a>
+        <a href="#">댓글2</a>
+        <a href="#">댓글3</a>
+        <a href="#">댓글4</a>
+        <a href="#">댓글5</a>
       </div>
     </section>
 

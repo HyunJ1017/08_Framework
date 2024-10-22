@@ -88,5 +88,18 @@
 			DEFAULT, DEFAULT, DEFAULT)
 	</insert>
 
-
+	<!-- 모임 상세내용 수정 -->
+	<update id="updateGroup">
+		UPDATE "GROUP"
+		SET
+			GROUP_NAME = #{groupName},
+			GROUP_INTRODUCE = #{groupIntroduce},
+			CATEGORY_NO = #{categoryNo},
+			CATEGORY_LIST_NO = #{categoryListNo},
+			GROUP_MAIN_IMG = #{groupMainImg},
+			GROUP_HEADER_IMG = #{groupHeaderImg}
+		WHERE
+			GROUP_NO = #{groupNo}
+	</update>
+	
 </mapper>

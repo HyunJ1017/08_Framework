@@ -320,12 +320,15 @@ groupName?.addEventListener("input", () => {
 
 const groupIntroduce = document.querySelector("#groupIntroduce");
 const countIntroduce = document.querySelector("#countIntroduce");
+const preViewIntroduce = document.querySelector("#preViewIntroduce");
 const groupIntroduceMessage = document.querySelector("#groupIntroduceMessage");
 
 groupIntroduce?.addEventListener("input", ()=>{
 
   const inputIntroduce = groupIntroduce.value.trim();
   const inputLength = inputIntroduce.length;
+
+  preViewIntroduce.innerText = inputIntroduce;
 
   if(inputLength < 1){
     detailConfirm.groupIntroduce = false;

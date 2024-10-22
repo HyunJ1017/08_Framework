@@ -280,7 +280,7 @@ input[type="radio"]:checked + label { /* 라벨이 꼭 뒤에잇어야함 */
   align-items: center;
   white-space: nowrap;
 }
-#sideSec1 a{
+#sideSec1 > #sideLinkList > a{
   padding: 15px;
   margin: 10px;
   width: 170px;
@@ -291,15 +291,22 @@ input[type="radio"]:checked + label { /* 라벨이 꼭 뒤에잇어야함 */
   border: 1px solid rgb(116, 116, 116);
   background-color: rgb(230, 230, 230);
   box-shadow: 2px 2px 4px grey;
-
+  
   font-family: 'MinSans-Regular';
   font-weight: 700;
   text-align: center;
   text-decoration: none;
   color: black;
 }
-#sideSec1 a:nth-of-type(2n){   align-self: flex-start;}
-#sideSec1 a:nth-of-type(2n-1){ align-self: flex-end;}
+#sideSec1 > #sideLinkList > a:nth-of-type(2n){   align-self: flex-start;}
+#sideSec1 > #sideLinkList > a:nth-of-type(2n-1){ align-self: flex-end;}
+#sideSec1 > #sideCommentList > a{
+  /* font-family: 'MinSans-Regular'; */
+  /* font-weight: 700; */
+  text-align: left;
+  text-decoration: none;
+  color: black;
+}
 
 #sideSec2{
   width: 250px;
