@@ -3,4 +3,45 @@
 <mapper namespace="edu.kh.daemoim.signup.mapper.SignupMapper">
 
 
+<!-- 이메일 체크  -->
+ <select id="emailCheck"
+  resultType="_int">
+  	SELECT
+  		COUNT(*)
+  	FROM 
+  		"MEMBER"
+  	WHERE 
+  		MEMBER_EMAIL = #{memberFullEmail}
+  	AND
+  		MEMBER_DEL_FL = 'N'
+  	
+  </select>
+
+<!-- 아이디 체크  -->
+  <select id="memberIdCheck"
+  resultType="_int">
+  	SELECT
+  		COUNT(*)
+  	FROM 
+  		"MEMBER"
+  	WHERE 
+  		MEMBER_ID = #{memberId}
+  	AND
+  		MEMBER_DEL_FL = 'N'
+  </select>
+
+
+<!-- 닉네임 체크  -->
+  <select id="nicknameCheck"
+  resultType="_int">
+  	SELECT
+  		COUNT(*)
+  	FROM 
+  		"MEMBER"
+  	WHERE 
+  		MEMBER_NICKNAME = #{nickname}
+  	AND
+  		MEMBER_DEL_FL = 'N'
+  </select>
+
 </mapper>

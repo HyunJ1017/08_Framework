@@ -12,7 +12,7 @@
     <section class="signUp-content">
       <div class="signup-box">
         <label for="memberEmail">
-          <span class="required">*</span>아이디(이메일)
+          <span class="required">*</span>이메일
         </label>
         <div class="signUp-input-area">
           <label for="email-kind">
@@ -20,19 +20,19 @@
             placeholder="아이디(이메일)" maxlength="15" autocomplete="off"
             size = "9">
             <span>@</span>
-            <input type="text" id="email-kind"
+            <input type="text" id="emailDomain"
             placeholder="" maxlength="15" autocomplete="off" size = "9">
             <select id="email-type" name="email" onchange="changeEmail()">
               <option value="">직접입력</option>
               <option value="naver.com">naver.com</option>
               <option value="daum.com">daum.net</option>
-              <option value="google.com">google.com</option>
+              <option value="gmail.com">gmail.com</option>
               <option value="yahoo.com">yahoo.com</option>
-              <button id="sendAuthKeyBtn" type="button">인증번호 받기</button>
             </select>
+            <button id="sendAuthKeyBtn" type="button">인증번호 받기</button>
           </label>
         </div>
-        <span class="signUp-message" id="emailMessage">메일을 받을 수 있는 이메일을 입력해주세요.</span>
+        <span class="signUp-message" id="emailMessage">이메일을 입력해주세요.</span>
         <label for="emailCheck">
           <span class="required"><br>*</span> 인증번호
         </label>
@@ -41,6 +41,18 @@
           <button id="checkAuthKeyBtn" type="button">인증하기</button>
         </div>
         <span class="signUp-message" id="authKeyMessage"></span>
+        <!-- 아이디   -->
+        <label for="memberId">
+          <span class="required">*</span> 아이디
+        </label>
+  
+        <div class="signUp-input-area">
+          <input type="text" name="memberId" id="memberId" placeholder="아이디" maxlength="10" >
+        </div>
+  
+        <span class="signUp-message" id="idMessage">영어,숫자로만 3~10글자</span>
+
+
         <!-- 비밀번호/비밀번호 확인 입력 -->
         <label for="memberPw">
           <span class="required">*</span> 비밀번호
@@ -59,16 +71,16 @@
         <!-- 정규 표현식 -->
         <span class="signUp-message" id="pwMessage">영어,숫자,특수문자(!,@,#,-,_) 6~20글자 사이로 입력해주세요.</span>
 
-        <!-- 닉네임 입력 -->
-        <label for="memberNickname">
-          <span class="required">*</span> 닉네임
-        </label>
+      <!-- 닉네임 입력 -->
+      <label for="memberNickname">
+        <span class="required">*</span> 닉네임
+      </label>
 
-        <div class="signUp-input-area">
-          <input type="text" name="memberNickname" id="memberNickname" placeholder="닉네임" maxlength="10" >
-        </div>
+      <div class="signUp-input-area">
+        <input type="text" name="memberNickname" id="memberNickname" placeholder="닉네임" maxlength="10" >
+      </div>
 
-        <span class="signUp-message" id="nickMessage">한글,영어,숫자로만 3~10글자</span>
+      <span class="signUp-message" id="nickMessage">한글,영어,숫자로만 3~10글자</span>
 
 
         <!-- 전화번호 입력 -->

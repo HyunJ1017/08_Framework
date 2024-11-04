@@ -26,27 +26,25 @@ body {
 /* 레이아웃 스타일 */
 .container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start; /* 왼쪽 정렬 */
   margin-top: 30px;
+  flex-grow: 1;
   padding: 20px;
-  max-width: 1200px;
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
 }
 .main-content {
-  width: 65%; /* 메인 콘텐츠의 너비를 줄임 */
+  width: 70%; /* 게시글 영역 너비 */
 }
 .sidebar {
-  width: 30%; /* 사이드바의 너비를 늘림 */
-  margin-left: 20px; /* 여백을 약간 줄임 */
+  width: 25%; /* 배너 영역 너비 */
+  height: 100%;
 }
 /* 달력 스타일 (유지) */
 #calendar {
   width: 100%; /* 사이드바 안에서 100% 차지 */
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 10px;
   background-color: white;
   border-radius: 5px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -57,7 +55,8 @@ body {
 .post {
   background-color: #ffffff;
   padding: 20px;
-  margin-bottom: 20px;
+  margin: 20px;
+  width: auto;
   border-radius: 10px;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -90,6 +89,8 @@ body {
 .sidebar-box {
   background-color: #f0f0f0;
   padding: 20px;
+  width: 72%;
+  margin-left: 20px;
   margin-bottom: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -99,12 +100,41 @@ body {
   color: #343a40;
   font-size: 18px;
 }
+/* 배너 스타일 */
+.sidebar-box.banner {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.banner-item {
+  background-color: #f0f0f0;
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.banner-item:hover {
+  background-color: #007bff;
+  color: white;
+  transform: translateY(-3px);
+}
 
 /* 버튼 스타일 */
 .btn-write {
   background-color: #007bff;
   color: white;
   padding: 12px;
+  margin-left: 17px;
+  width: 78%;
   text-align: center;
   border-radius: 5px;
   cursor: pointer;
@@ -135,4 +165,23 @@ body {
 #first:hover, #second:hover, #third:hover, .scheduleDetail:hover, .btn-write:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.pagination{
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+.pagination li{
+  width: 20px;
+  margin: 0 5px;
+  text-align: center;
+}
+
+.pagination a{
+  display: block;
+  width: 100%;
+  height: 100%;
 }

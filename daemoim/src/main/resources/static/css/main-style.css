@@ -1,106 +1,126 @@
+*{
+  border : none;
+}
 /************ 헤더 css ************/
 
-/* 전체 헤더 영역 */
+@font-face {
+  font-family: 'PartialSansKR-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/PartialSansKR-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .header {
   width: 100%;
   background-color: white;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   padding: 10px 20px;
   box-sizing: border-box;
   position: fixed; /* 헤더를 고정 */
   top: 0;
   left: 0;
-  z-index: 100;
-  height: 80px; 
-}
-
-/* 상단 로고와 로그인 버튼 */
-.top-row {
+  z-index: 100; /* 항상 다른 요소들보다 위에 보이도록 설정 */
+  height: 180px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
+  flex-direction: column; /* 상단 로고와 카테고리 탭들을 수직으로 배치 */
 }
 
-/* 로고 */
-.logo-wrapper {
-  display: flex;
-  align-items: center;
-}
-
+/* 상단 로고 */
 .logo {
-  width: 100px; /* 로고 크기 */
-  height: auto;
-}
-
-/* 로그인 버튼 */
-.login-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.login-wrapper button {
-  padding: 10px 20px;
-  font-size: 14px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-}
-
-/* 카테고리와 검색창 */
-.middle-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-  gap: 20px;
-}
-
-.categories a {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #ccc;
-  border-radius: 10px;
-  text-decoration: none;
+  font-family: 'PartialSansKR-Regular'; /* 사용자 정의 폰트 사용 */
+  text-decoration: none; /* 로고에 밑줄 제거 */
   color: black;
-  font-size: 16px;
+  font-size: 50px; /* 로고 텍스트 크기 설정 */
+  margin-right: auto; /* 로고를 왼쪽으로 정렬 */
 }
 
-/* 검색창 */
+/* 로그인 버튼 및 검색창 */
+
+
+.login-search-wrapper {
+  display: flex;
+  align-items: center; /* 수직 가운데 정렬 */
+  justify-content: flex-end; /* 오른쪽 끝으로 정렬 */
+  flex-grow: 1; /* 남은 공간을 차지 */
+}
+
 .search {
   display: flex;
-  align-items: center;
-  border: 1px solid black;
+  align-items: center; /* 검색창 내 요소들을 수직 가운데 정렬 */
+  border: 1px solid black; /* 검색창 테두리 설정 */
   padding: 10px;
+  margin-right: 10px; /* 검색창 오른쪽에 여백 추가 */
+}
+
+.headerSearchBtn{
+  color: black;
 }
 
 .search input {
   border: none;
-  outline: none;
+  outline: none; /* 선택될 때 파란색 외곽선을 없앰 */
   padding: 5px;
-  width: 200px;
+  width: 200px; /* 검색창 입력 필드의 너비 설정 */
 }
 
 .search button {
   padding: 5px 10px;
-  background-color: #ccc;
+  background-color: #ccc; /* 검색 버튼 배경색 설정 */
   border: none;
-  border-radius: 5px;
+  border-radius: 5px; /* 버튼 모서리 둥글게 설정 */
 }
 
 
+.headerLoginBtn{
+  text-decoration: none;
+  color: black;
+}
 
+
+.loginBtnBox {
+  margin-left: 10px; /* 로그인 버튼 왼쪽 여백 추가 */
+}
+
+
+.login button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #ccc; /* 회색 테두리 설정 */
+  background-color: #f1f1f1; /* 연한 회색 배경색 설정 */
+}
+
+/* 카테고리 버튼 스타일 */
+.bottom-row {
+  width: 100%;
+  margin-top: 10px; /* 카테고리 탭과 로그인 부분 사이 여백 */
+}
+
+.categories {
+  display: flex;
+  justify-content: center; /* 카테고리 버튼들을 중앙에 배치 */
+  gap: 10px; /* 버튼 간 간격 설정 */
+  margin-top: 10px;
+}
+
+.categories a {
+  padding: 10px 20px;
+  border-radius: 10px; /* 버튼 모서리 둥글게 설정 */
+  text-decoration: none; /* 밑줄 제거 */
+  color: black; /* 버튼 텍스트 색상 설정 */
+  font-size: 16px;
+}
 
 /************ 메인 컨텐츠 css ************/
 
 .main {
-  padding-top: 150px;
+  padding-top: 200px; /* 고정된 헤더의 높이만큼 패딩을 추가 */
+  padding-bottom: 60px; /* 하단 푸터와의 공간 확보 */
 }
 
 .category-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-wrap: wrap; /* 화면 크기에 따라 줄바꿈 */
+  justify-content: space-between; /* 아이템 간격 균일하게 배분 */
   padding: 20px;
 }
 
@@ -108,28 +128,28 @@
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
-  width: 45%;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 45%; /* 카테고리 박스의 너비 설정 */
+  margin-bottom: 20px; /* 각 박스 간의 간격 설정 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
   display: flex;
   padding: 15px;
-  align-items: center;
+  align-items: center; /* 수직 가운데 정렬 */
 }
 
 .icon {
-  width: 20%;
-  margin-right: 20px;
+  width: 20%; /* 아이콘의 너비 비율 설정 */
+  margin-right: 20px; /* 아이콘과 텍스트 간의 간격 설정 */
 }
 
 .icon img {
   width: 100%;
   height: auto;
-  border-radius: 50%;
-  background-color: #eee;
+  border-radius: 50%; /* 아이콘 이미지를 둥글게 */
+  background-color: #eee; /* 아이콘 배경색 설정 */
 }
 
 .details {
-  width: 75%;
+  width: 75%; /* 텍스트 상세 부분의 너비 비율 설정 */
 }
 
 .activity-name {
@@ -146,20 +166,21 @@
 
 .participants {
   display: flex;
-  align-items: center;
+  align-items: center; /* 참여자 목록을 수직 가운데 정렬 */
 }
 
 .participant {
   width: 30px;
   height: 30px;
-  border-radius: 50%;
+  border-radius: 50%; /* 참여자 이미지를 둥글게 */
   background-color: #ccc;
   margin-right: 5px;
-  background-image: url('https://via.placeholder.com/30');
+  background-image: url('https://via.placeholder.com/30'); /* 대체 이미지 URL */
   background-size: cover;
 }
 
-/* 로그인 섹션 */
+/************ 로그인 섹션 css ************/
+
 .login-section {
   text-align: center;
   margin-bottom: 30px;
@@ -169,7 +190,7 @@
   border: 1px solid black;
   padding: 20px;
   width: 50%;
-  margin: 0 auto;
+  margin: 0 auto; /* 가운데 정렬 */
 }
 
 .login-box button {
@@ -187,7 +208,8 @@
   justify-content: space-around;
 }
 
-/* 추천 모임 */
+/************ 추천 모임 css ************/
+
 .group-section {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 두 개씩 나란히 표시 */
@@ -213,7 +235,7 @@
 .group-image img {
   width: 100px;
   height: 100px;
-  object-fit: cover;
+  object-fit: cover; /* 이미지를 박스 크기에 맞게 잘라 표시 */
 }
 
 .group-info {
@@ -232,7 +254,8 @@
   margin: 10px 0;
 }
 
-/* 팝업창 */
+/************ 팝업창 css ************/
+
 .popup {
   display: none; 
   position: fixed;
@@ -242,8 +265,8 @@
   padding: 20px;
   background-color: white;
   border: 2px solid black;
-  z-index: 1000;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+  z-index: 1000; /* 가장 위에 표시되도록 설정 */
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
 }
 
 .popup.active {
@@ -258,7 +281,7 @@
   color: white;
   border: none;
   padding: 5px;
-  cursor: pointer;
+  cursor: pointer; /* 버튼 모양 커서 */
 }
 
 .popup-overlay {
@@ -268,7 +291,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5); /* 배경 반투명 검정색 */
   z-index: 999;
 }
 
@@ -277,32 +300,35 @@
 }
 
 /************ 반응형 처리 ************/
+
 @media (max-width: 768px) {
-  .top-row {
-    flex-direction: column;
+  .header {
+    flex-direction: column; /* 수직으로 배치 */
     align-items: flex-start;
+    height: auto; /* 콘텐츠에 따라 자동 높이 */
   }
 
-  .login-wrapper {
-    position: absolute;
-    top: 10px;
-    right: 20px;
+  .logo {
+    margin-bottom: 10px;
   }
 
-  .middle-row {
-    flex-direction: column;
-    gap: 10px;
+  .login-search-wrapper {
+    justify-content: flex-start; /* 수평으로 배치 */
+    flex-direction: column; /* 검색창과 로그인 버튼을 수직으로 배치 */
+    align-items: flex-start;
+    width: 100%;
   }
 
   .categories {
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: wrap; /* 줄바꿈 허용 */
+    justify-content: center; /* 중앙에 배치 */
   }
 }
 
-/* 위로가기 버튼 */
+/************ 위로가기 버튼 css ************/
+
 .scroll-top {
-  position : sticky;
+  position: sticky;
   text-align: end;
   margin-top: 30px;
   margin-right: 20px;
@@ -313,19 +339,16 @@
   padding: 10px;
 }
 
-
-
 /************ 푸터 css ************/
 
-/* 푸터를 항상 하단에 고정하고 가운데 정렬 */
 footer {
   width: 100%;
   text-align: center;
   padding: 10px;
-  background-color: #f1f1f1;
-  position: fixed;
   bottom: 0;
   left: 0;
+  height: 50px; 
+  z-index: 10; /* 콘텐츠 위로 겹치지 않도록 설정 */
 }
 
 footer nav a {

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>모임 검색</title>
+
+  
+  <!-- templates/common/common.html 조각으로 추가 -->
+  <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" href="../static/css/search/search.css">
+</head>
+<body>
+
+  <main class="main">
+    <!-- common/header.html 을 조각으로 추가 -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <!-- 검색창 -->
+    <section class="searchBox">
+      <form action="#" method="get" id="search">
+        <input type="text" name="query" id="searchQuery" placeholder="검색어 입력">
+        
+        <!-- 필터 -->
+        <div class="filter-icon" onclick="toggleDropdown()">
+          <i class="fas fa-filter"></i>
+        </div>
+        
+        <div class="dropdown" id="dropdownMenu" style="display: none;">
+          <a href="#">액티비티</a>
+          <a href="#">문화/여가</a>
+          <a href="#">자기계발</a>
+          <a href="#">연애</a>
+        </div>
+        <button type="submit">검색</button>
+      </form>
+    </section>
+
+    <section class="group-section">
+      <div class="group-box">
+        <section class="group-image">
+          <img src="group.png" alt="모임 대표 사진">
+        </section>
+        <section class="group-info">
+          <a href="#">추천 모임 이름</a>
+          <h1>모임 소개</h1>
+          <br>
+          <a href="#">모임 카테고리</a> <a href="#">위치</a><span> | </span>  <a href="#">인원수</a>
+        </section>
+      </div>
+
+      <div class="group-box">
+        <section class="group-image">
+          <img src="#" alt="모임 대표 사진">
+        </section>
+        <section class="group-info">
+          <a href="#">추천 모임 이름</a>
+          <h1>모임 소개</h1>
+          <br>
+          <a href="#">모임 카테고리</a> <a href="#">위치</a><span> | </span>  <a href="#">인원수</a>
+        </section>
+      </div>
+
+      <div class="group-box">
+        <section class="group-image">
+          <img src="#" alt="모임 대표 사진">
+        </section>
+        <section class="group-info">
+          <a href="#">추천 모임 이름</a>
+          <h1>모임 소개</h1>
+          <br>
+          <a href="#">모임 카테고리</a> <a href="#">위치</a><span> | </span>  <a href="#">인원수</a>
+        </section>
+      </div>
+
+      <div class="group-box">
+        <section class="group-image">
+          <img src="#" alt="모임 대표 사진">
+        </section>
+        <section class="group-info">
+          <a href="#">추천 모임 이름</a>
+          <h1>모임 소개</h1>
+          <br>
+          <a href="#">모임 카테고리</a> <a href="#">위치</a><span> | </span>  <a href="#">인원수</a>
+        </section>
+      </div>
+
+      <div class="group-box">
+        <section class="group-image">
+          <img src="#" alt="모임 대표 사진">
+        </section>
+        <section class="group-info">
+          <a href="#">추천 모임 이름</a>
+          <h1>모임 소개</h1>
+          <br>
+          <a href="#">모임 카테고리</a> <a href="#">위치</a><span> | </span>  <a href="#">인원수</a>
+        </section>
+      </div>
+
+      <div class="group-box">
+        <section class="group-image">
+          <img src="#" alt="모임 대표 사진">
+        </section>
+        <section class="group-info">
+          <a href="#">추천 모임 이름</a>
+          <h1>모임 소개</h1>
+          <br>
+          <a href="#">모임 카테고리</a> <a href="#">위치</a><span> | </span>  <a href="#">인원수</a>
+        </section>
+      </div>
+    </section>
+
+    <!-- common/footer.html 추가 -->
+    <th:block th:replace="~{common/footer}"></th:block>
+
+  <script src="../static/js/main.js"></script>
+  <script src="../static/js/search/search.js"></script>
+
+</body>
+</html>

@@ -102,3 +102,8 @@ label span.required {
   color: #e74c3c;
   margin-right: 5px;
 }
+
+.signUp-message{
+  font-size: 14px;
+  letter-spacing: -1px;
+}

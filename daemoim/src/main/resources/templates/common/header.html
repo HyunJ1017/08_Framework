@@ -1,30 +1,41 @@
 <header class="header">
-  <div class="top-row">
-      <div class="login-search-wrapper">
-        <div class="login">
-          <!-- 로그인 버튼 -->
-          <button id="login-btn">로그인</button>
-          <a href="myPage/info">마이페이지</a>
-          <a href="">관리자 페이지</a>
-        </div>
+  <section>
+    <div class="top-row">
+      <a href="/" style="font-family:'PartialSansKR-Regular'" class="logo">
+        대모임 <!-- 로고 텍스트 -->
+      </a>
 
-        <div class="search">
-          <input type="text" placeholder="검색" />
-          <button>검색</button>
+      <div class="login-search-wrapper">
+        <a href="/search/search" class="headerSearchBtn">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </a>
+        <div class="loginBtnBox">
+          <a href="/signin" class="headerLoginBtn">로그인</a>
         </div>
       </div>
-  </div>
+    </div>
+  </section>
 
-  <div class="bottom-row">
-    <a href="/">
-      <img src="/images/logo.png" alt="메인 로고" id="homeLogo">
-    </a>
-
-    <nav class="categories">
-      <a href="category/activity"><i class="fa-solid fa-person-running"> 액티비티</i></a>
-      <a href="category/culture"><i class="fa-solid fa-star"> 문화/여가</i></a>
-      <a href="category/develop"><i class="fa-solid fa-book"> 자기계발</i></a>
-      <a href="category/dating"><i class="fa-solid fa-heart"> 연애</i></a>
-    </nav>
-  </div>
+  <section>
+    <div class="bottom-row">
+      <nav class="categories">
+        <!-- 각 카테고리를 클릭하면 category 페이지로 이동하면서, 카테고리 이름을 query parameter로 전달 -->
+        <a href="/category/category?type=allCategory" class="category-btn" data-category="allCategory">
+          <i class="fa-solid fa-bars"> 전체</i>
+        </a>
+        <a href="/category/category?type=activity" class="category-btn" data-category="activity">
+          <i class="fa-solid fa-person-running"> 액티비티</i>
+        </a>
+        <a href="/category/category?type=culture" class="category-btn" data-category="culture">
+          <i class="fa-solid fa-star"> 문화/여가</i>
+        </a>
+        <a href="/category/category?type=develop" class="category-btn" data-category="develop">
+          <i class="fa-solid fa-book"> 자기계발</i>
+        </a>
+        <a href="/category/category?type=dating" class="category-btn" data-category="dating">
+          <i class="fa-solid fa-heart"> 연애</i>
+        </a>
+      </nav>
+    </div>
+  </section>
 </header>

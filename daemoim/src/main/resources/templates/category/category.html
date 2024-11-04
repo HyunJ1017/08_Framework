@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카테고리</title>
+    <link rel="stylesheet" href="/css/main-style.css">
+    <link rel="stylesheet" href="/css/category/category.css">
+
+    <!-- 공통 파일 include -->
+    <th:block th:replace="~{common/common}"></th:block>
+    
+    <!-- JavaScript 추가 -->
+    <script src="/js/category/category.js" defer></script>
+</head>
+<body>
+    <!-- 헤더 영역 (공통) -->
+    <th:block th:replace="~{common/header}"></th:block>
+
+    <!-- 카테고리 탭 영역 -->
+    <div class="category-tabs">
+        <a href="#" class="tab-link" data-target="allCategory">전체</a>
+        <a href="#" class="tab-link" data-target="activity">액티비티</a>
+        <a href="#" class="tab-link" data-target="culture">문화/여가</a>
+        <a href="#" class="tab-link" data-target="develop">자기계발</a>
+        <a href="#" class="tab-link" data-target="dating">연애</a>
+    </div>
+
+    <!-- 카테고리 콘텐츠 영역 -->
+    <div class="category-content" id="allCategory">
+        <h1>&nbsp;&nbsp;<i class="fa-solid fa-bars"></i>&nbsp;&nbsp;전체</h1>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;여기에서 모든 카테고리를 확인할 수 있습니다.</p>
+        <section class="activity-section">
+            <div class="category-container">
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="야구 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="/groupMain" class="activity-name">야구</a>
+                        <div class="group-name">야구 모임</div>
+                        <div class="location">장소: 서울시 마포구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                3 <!-- 참여인원 -->
+                                / 10 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="축구 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="activity-name">축구</a>
+                        <div class="group-name">축구 모임</div>
+                        <div class="location">장소: 서울시 강남구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                5 <!-- 참여인원 -->
+                                / 15 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="클라이밍 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="activity-name">클라이밍</a>
+                        <div class="group-name">클라이밍 모임</div>
+                        <div class="location">장소: 서울시 송파구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                4 <!-- 참여인원 -->
+                                / 12 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="배구 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="activity-name">배구</a>
+                        <div class="group-name">배구 모임</div>
+                        <div class="location">장소: 서울시 영등포구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                6 <!-- 참여인원 -->
+                                / 20 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="category-content" id="activity">
+        <h1>&nbsp;&nbsp;<i class="fa-solid fa-person-running"></i>&nbsp;&nbsp;액티비티</h1>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;다양한 액티비티 활동을 확인해 보세요.</p>
+        <section class="activity-section">
+            <div class="category-container">
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="야구 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="activity-name">야구</a>
+                        <div class="group-name">야구 모임</div>
+                        <div class="location">장소: 서울시 마포구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                3 <!-- 참여인원 -->
+                                / 10 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="축구 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="activity-name">축구</a>
+                        <div class="group-name">축구 모임</div>
+                        <div class="location">장소: 서울시 강남구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                5 <!-- 참여인원 -->
+                                / 15 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="클라이밍 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="activity-name">클라이밍</a>
+                        <div class="group-name">클라이밍 모임</div>
+                        <div class="location">장소: 서울시 송파구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                4 <!-- 참여인원 -->
+                                / 12 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="배구 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="activity-name">배구</a>
+                        <div class="group-name">배구 모임</div>
+                        <div class="location">장소: 서울시 영등포구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                6 <!-- 참여인원 -->
+                                / 20 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="category-content" id="culture">
+        <h1>&nbsp;&nbsp;<i class="fa-solid fa-star"></i>&nbsp;&nbsp;문화/여가</h1>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;여가 시간에 즐길 수 있는 다양한 문화 콘텐츠를 소개합니다.</p>
+        <section class="culture-section">
+            <div class="category-container">
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="영화 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="culture-name">영화</a>
+                        <div class="group-name">영화 모임</div>
+                        <div class="location">장소: 서울시 마포구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                3 <!-- 참여인원 -->
+                                / 10 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="독서 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="culture-name">독서</a>
+                        <div class="group-name">독서 모임</div>
+                        <div class="location">장소: 서울시 강남구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                5 <!-- 참여인원 -->
+                                / 15 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="명상 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="culture-name">명상</a>
+                        <div class="group-name">클라이밍 모임</div>
+                        <div class="location">장소: 서울시 송파구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                4 <!-- 참여인원 -->
+                                / 12 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="음악 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="culture-name">음악감상</a>
+                        <div class="group-name">음악감상 모임</div>
+                        <div class="location">장소: 서울시 영등포구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                6 <!-- 참여인원 -->
+                                / 20 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="category-content" id="develop">
+        <h1>&nbsp;&nbsp;<i class="fa-solid fa-book"></i>&nbsp;&nbsp;자기계발</h1>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;자기계발을 위한 다양한 활동과 자료를 만나보세요.</p>
+        <section class="develop-section">
+            <div class="category-container">
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="취업 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="develop-name">취업</a>
+                        <div class="group-name">취업 모임</div>
+                        <div class="location">장소: 서울시 마포구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                3 <!-- 참여인원 -->
+                                / 10 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="축구 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="develop-name">축구</a>
+                        <div class="group-name">축구 모임</div>
+                        <div class="location">장소: 서울시 강남구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                5 <!-- 참여인원 -->
+                                / 15 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="클라이밍 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="develop-name">클라이밍</a>
+                        <div class="group-name">클라이밍 모임</div>
+                        <div class="location">장소: 서울시 송파구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                4 <!-- 참여인원 -->
+                                / 12 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="배구 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="develop-name">배구</a>
+                        <div class="group-name">배구 모임</div>
+                        <div class="location">장소: 서울시 영등포구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                6 <!-- 참여인원 -->
+                                / 20 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="category-content" id="dating">
+        <h1>&nbsp;&nbsp;<i class="fa-solid fa-heart"></i>&nbsp;&nbsp;연애</h1>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;연애와 관련된 다양한 콘텐츠를 확인해 보세요.</p>
+        <section class="dating-section">
+            <div class="category-container">
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="연애모임 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="dating-name">연애모임</a>
+                        <div class="group-name">연애모임</div>
+                        <div class="location">장소: 서울시 마포구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                3 <!-- 참여인원 -->
+                                / 10 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="연애모임 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="dating-name">연애모임</a>
+                        <div class="group-name">연애모임</div>
+                        <div class="location">장소: 서울시 강남구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                5 <!-- 참여인원 -->
+                                / 15 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="연애모임 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="dating-name">연애모임</a>
+                        <div class="group-name">연애모임</div>
+                        <div class="location">장소: 서울시 송파구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                4 <!-- 참여인원 -->
+                                / 12 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="category-box">
+                    <div class="icon">
+                        <img src="#" alt="연애모임 아이콘">
+                    </div>
+                    <div class="details">
+                        <a href="#" class="dating-name">연애모임</a>
+                        <div class="group-name">연애모임</div>
+                        <div class="location">장소: 서울시 영등포구</div>
+                        <div class="participants">
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <div class="participant-img"></div>
+                            <i class="fa-solid fa-users"> &nbsp;</i>
+                            
+                            <div>
+                                6 <!-- 참여인원 -->
+                                / 20 <!-- 제한 인원 -->
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 푸터 영역 (공통) -->
+    <footer>
+        <th:block th:replace="~{common/footer}"></th:block>
+    </footer>
+
+</body>
+</html>

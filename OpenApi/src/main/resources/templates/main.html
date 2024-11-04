@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>공공데이터 - 미세먼지 정보 조회</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  
+  <!-- 해더 -->
+  <header>
+    <section></section>
+    <section>
+      <h1>공공데이터 - 미세먼지 정보 조회</h1>
+    </section>
+    <section></section>
+  </header>
+
+  <main>
+
+    <!-- 좌측담장 -->
+    <section class="side-left">
+      <span>배고프다</span>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>이름</th>
+            <th>☆☆☆☆☆</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>제육볶음</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>볶음밥</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>짜장면</td>
+            <td>4</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <pre>
+        인코딩 버전 서비스키 (브라우저, JS, a태그, postman(CURL) // -> 주소형태의 요청)
+        DRX%2B9starwalkin%3D%3D
+  
+        디코딩 버전 서비스키 (서버(java) // -> 자동으로 인코딩되기때문에 인코딩 이전 문자로 보내주어야 함)
+        DRX+9starwalkin==
+      </pre>
+
+      <div class="dustSearch-div">
+        <div>
+          <select name="sidoName" id="sidoName">
+            <option value="서울">서울</option>
+            <option value="인천">인천</option>
+            <option value="대구">대구</option>
+            <option value="부산">부산</option>
+            <option value="제주">제주</option>
+          </select>
+          <div id="dustSearch">조회</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>목록</th>
+              <th>수치</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="3">미세먼지</td>
+              <td class="resultTd"></td>
+            </tr>
+            <tr>
+              <td class="resultTd"></td>
+            </tr>
+            <tr>
+              <td class="resultTd"></td>
+            </tr>
+            <tr>
+              <td rowspan="3">초미세먼지</td>
+              <td class="resultTd"></td>
+            </tr>
+            <tr>
+              <td class="resultTd"></td>
+            </tr>
+            <tr>
+              <td class="resultTd"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+    </section>
+
+    <!-- 우측담장 -->
+    <section>
+      <p>점심매뉴</p>
+      <p>우리는 왜 1시에 먹는거야</p>
+    </section>
+  </main>
+
+  <!-- 푸터 -->
+  <footer>
+
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
