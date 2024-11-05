@@ -1,0 +1,112 @@
+/* 색상 팔레트 */
+:root {
+  --primary-color: #333;
+  --accent-color: #fc9562;
+  --background-color: #f9f9f9;
+  --text-color: #333;
+  --button-color: #fc9562;
+  --button-hover-color: #e28353;
+  --input-border-color: #ddd;
+  --input-background-color: #f1f1f1;
+  --input-text-color: #555;
+}
+
+/* 기본 레이아웃 */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding-left: 275px; /* 사이드바 폭만큼의 패딩 추가 */
+}
+
+/* 메인 컨테이너 */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 제목 스타일 */
+.myPage-title {
+  font-size: 28px;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* 설명 텍스트 스타일 */
+.myPage-subject {
+  font-size: 16px;
+  color: var(--text-color);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* 비밀번호 변경 폼 스타일 */
+.changePw-box {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+/* 입력 필드와 라벨 스타일 */
+.myPage-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.myPage-row label {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+}
+
+.myPage-row input[type="password"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+  background-color: var(--input-background-color);
+  color: var(--input-text-color);
+}
+
+/* 설명 메시지 스타일 */
+.signUp-message {
+  font-size: 14px;
+  color: var(--text-color);
+  margin-top: 10px;
+  display: block;
+}
+
+/* 버튼 스타일 */
+.myPage-submit {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: var(--button-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.myPage-submit:hover {
+  background-color: var(--button-hover-color);
+}

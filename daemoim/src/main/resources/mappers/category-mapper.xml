@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.kh.daemoim.category.mapper.CategoryMapper">
+
+   <select id="getGroupsByCategory" resultType="CategoryDTO">
+    SELECT 
+    	g.GROUP_NO AS "groupNo",
+        g.GROUP_NAME AS "groupName",
+        g.GROUP_MAIN_IMG AS "groupMainImg", 
+        g.GROUP_INTRODUCE AS "groupIntroduce", 
+        c.CATEGORY_NAME AS "categoryName",
+        COUNT(DISTINCT mg.MEMBER_NO) AS "currentPopulation",  
+        g.GROUP_MAX_POPULATION AS "maxPopulation"
+    FROM 
+        "GROUP" g
+    JOIN 
+        MEMBER_GROUP mg ON g.GROUP_NO = mg.GROUP_NO
+    JOIN 
+        CATEGORY c ON g.CATEGORY_NO = c.CATEGORY_NO
+    WHERE 
+        g.GROUP_DEL_FL = 'N'
+        <if test="category != 'allCategory'"> 
+            AND c.CATEGORY_NAME = 
+                <choose>
+                    <when test="category == 'activity'"> '액티비티' </when>
+                    <when test="category == 'culture'"> '문화/여가' </when>
+                    <when test="category == 'develop'"> '자기계발' </when>
+                    <when test="category == 'dating'"> '연애' </when>
+                </choose>
+        </if>
+        AND (g.GROUP_NAME LIKE '%' || #{query} || '%'  
+        OR g.GROUP_INTRODUCE LIKE '%' || #{query} || '%')           
+    GROUP BY 
+        g.GROUP_NO, g.GROUP_NAME, g.GROUP_MAIN_IMG, g.GROUP_INTRODUCE, c.CATEGORY_NAME, g.GROUP_MAX_POPULATION
+    ORDER BY 
+        COUNT(DISTINCT mg.MEMBER_NO) DESC
+	</select>
+
+
+
+
+
+	
+</mapper>

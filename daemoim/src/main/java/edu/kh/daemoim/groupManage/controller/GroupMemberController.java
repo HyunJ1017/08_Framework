@@ -84,6 +84,7 @@ public class GroupMemberController {
 		GroupManageDto group = groupService.selectGroup(groupNo);
 		model.addAttribute("group", group);
 		model.addAttribute("memberList", memberList);
+		model.addAttribute("memberCount", map.get("memberCount"));
 		model.addAttribute("memberAllCount", memberAllCount);
 		model.addAttribute("pagination", pagination);
 		
@@ -142,6 +143,7 @@ public class GroupMemberController {
 		
 		GroupManageDto group = groupService.selectGroup(groupNo);
 		model.addAttribute("group", group);
+		model.addAttribute("memberCount", map.get("memberCount"));
 		model.addAttribute("memberAllCount", memberAllCount);
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("pagination", pagination);

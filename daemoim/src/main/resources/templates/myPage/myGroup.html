@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내가 가입한 모임</title>
+  <link rel="stylesheet" href="/css/myPage/myGroup.css"> 
+</head>
+<body>
+  <section id="sideMenu"> 
+    <th:block th:replace="~{myPage/sideMenu}"></th:block>
+  </section>
+
+  <section id="titleName">
+    <th:block th:if="${loginMember != null}">
+      <h2>내가 가입한 모임</h2>
+      <th:block th:if="${joinGroups == null && #lists.isEmpty(joinGroups)}">
+        <p>가입한 모임이 없습니다.</p>
+      </th:block>
+    </th:block>
+  </section>
+
+  <section id="myGrouplist">
+    <form action="myGroup" method="myGroup" id="myGroup" class="myGroup">
+      <th:block th:if="${joinGroups != null && !#lists.isEmpty(joinGroups)}">
+        <div class="activity-section">
+          <div class="category-box" th:each="group : ${joinGroups}">
+            <div class="icon">
+              <img th:src="${group.groupMainImg != null ? group.groupMainImg : '/images/default.png'}" />
+            </div>
+            <div class="details">
+              <a th:href="@{/groupMain/{groupNo}(groupNo=${group.groupNo})}" class="categoryGroup-name">
+                [[${group.groupName}]]
+              </a>
+              <div class="group-name">[[${group.groupIntroduce}]]</div>
+              <div class="location">[[${group.categoryName}]]</div>
+              <div class="participants">
+                <i class="fa-solid fa-users"></i>
+                <span>[[${group.currentPopulation}]] / [[${group.maxPopulation}]]</span>
+              </div>
+            </div>
+            <button type="button" class="outGroupBtn" th:data-group-no="${group.groupNo}">
+              모임에서 나가기
+            </button>
+          </div>
+        </div>
+      </th:block>
+    </form>
+  </section>
+  <th:block th:replace="~{common/footer}"></th:block>
+  <script src="/js/myPage/myPage-myGroup.js"></script>
+</body>
+</html>

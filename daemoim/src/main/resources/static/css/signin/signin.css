@@ -1,82 +1,148 @@
+/* 색상 팔레트 */
+:root {
+    --primary-color: #333;
+    --accent-color: #fc9562;
+    --background-color: #f9f9f9;
+    --text-color: #333;
+    --button-color: #fc9562;
+    --button-hover-color: #e28353;
+    --input-border-color: #ddd;
+}
+
+/* 기본 레이아웃 */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f2f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  margin: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
+/* 로그인 컨테이너 */
 .login-container {
-  background-color: #ffffff;
-  padding: 60px;
-  border-radius: 15px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  width: 400px;
-  text-align: center;
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    text-align: center;
+    margin: auto;
+    padding: auto;
 }
 
+/* 로그인 타이틀 */
 .login-title {
-  margin-bottom: 40px;
-  font-size: 28px;
-  font-weight: bold;
-  color: #333333;
+    font-size: 36px;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+/* 아이디/비밀번호 입력 영역 */
+.id-pw-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .input-group {
-  margin-bottom: 20px;
-  text-align: left;
+    width: 100%;
+    margin-bottom: 15px;
 }
 
 .input-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #333333;
-  font-size: 16px;
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
 }
 
-.input-group input {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #cccccc;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 0.3s;
+.input-group input[type="text"],
+.input-group input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
-.input-group input:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
+/* 로그인 버튼 */
 button[type="submit"] {
-  width: 100%;
-  padding: 16px;
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+    background-color: var(--button-color);
+    color: white;
+    padding: 12px 0;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: background-color 0.3s;
 }
 
 button[type="submit"]:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
+    background-color: var(--button-hover-color);
 }
 
-a {
-  display: block;
-  margin-top: 20px;
-  color: #007bff;
-  text-decoration: none;
-  font-size: 16px;
+/* 아이디/비밀번호 찾기 링크 */
+.find-text {
+    margin-top: 15px;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-color);
 }
 
-a:hover {
-  text-decoration: underline;
+.find-link {
+    color: var(--text-color);
+    text-decoration: none;
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+.find-link:hover {
+    color: var(--button-color);
+    text-decoration: underline;
+}
+
+.divider {
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+/* 아이디 저장 체크박스와 라벨 정렬 */
+.checkedsaveId {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  margin-top: 5px; /* 체크박스가 필드와 적절한 간격을 두도록 */
+  font-size: 14px;
+}
+
+.checkedsaveId .design {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.checkedsaveId input[type="checkbox"] {
+  margin-left: 5px; /* 체크박스와 텍스트 사이 간격 */
+  transform: scale(1.2); /* 체크박스 크기 조정 */
+}
+
+/* 아이디와 비밀번호 라벨 오른쪽 정렬 */
+.right {
+  display: inline-block;
+  width: 80px; /* 라벨 너비 고정 */
+  text-align: right;
+  margin-right: 10px; /* 입력 필드와의 간격 */
 }

@@ -1,0 +1,35 @@
+<div id="overlay" class="overlay"></div>
+<section id="popup" class="popup" >
+<form action="/report/invite"
+      method="POST"
+      id= formTag>
+  <span id="closeReportBtn" class="close">✖</span>
+
+  <h2>신고하기</h2>
+  <p th:text= "${memberNickname}">신고당한 유저 닉네임</p>
+  <p th:if= "${board}" th:text="${board.boardTitle}" style="font-size: small;">신고당한 글</p>
+  <p th:if= "${comment}" th:text="${comment.contens}" style="font-size: small;">신고당한 댓글</p>
+  <label for="reportReason">신고 사유:</label>
+
+  <select id="reportReason">
+    <option value="0">사유를 선택해주세요</option>
+    <option value="1">욕설 또는 부적절한 언행</option>
+    <option value="2">사이버범죄 및 범행예고</option>
+    <option value="3">도배</option>
+    <option value="4">악의적이거나 타인을 괴롭히는 내용</option>
+    <option value="5">불쾌한거나 부적절한 이름</option>
+    <option value="6">기타</option>
+  </select>
+  <small id="reasonError" class="error-message"></small>
+
+  <br><br>
+
+  <label for="reportDetails">신고 내용:</label>
+  <textarea id="reportDetails" maxlength="280"></textarea>
+  <small id="detailsError" class="error-message"></small>
+
+  <br><br>
+
+  <button id="submit">신고하기</button>
+</form>
+</section>

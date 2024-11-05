@@ -1,0 +1,19 @@
+<link rel="stylesheet" href="/css/boardList.css">
+
+<nav>
+  <!-- Sidebar (왼쪽 배너) -->
+  <ul>
+      <li class="banner2" th:each="boardType : ${application.boardTypeList}">
+          <a class="banner" th:href="@{/board/{groupNo}/{boardTypeCode}(groupNo = ${groupNo}, boardTypeCode = ${boardType.boardTypeCode})}"
+             th:text="${boardType.boardName}"
+             th:classappend="${boardType.boardName} == ${boardName} ? current-board : ''"
+             style="font-family: 'NEXON Lv1 Gothic OTF';"
+             >게시판 이름</a>
+      </li>
+      <li class="banner2">
+          <a th:href="@{/board/boardSchedule/{groupNo}(groupNo = ${groupNo})}">일정</a>
+      </li>
+  </ul>
+</nav>
+
+<script src="/js/board/boardList.js"></script>

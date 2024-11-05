@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.kh.daemoim.chatting.mapper.ChattingMapper">
+
+	<!-- [ws] 마지막 접속일 < 읽음처리 < 현재시간 -->
+	<update id="updateChatCount">
+		UPDATE CHAT C
+		SET CHAT_COUNT = CHAT_COUNT + 1
+		WHERE
+		    C.GROUP_NO = #{groupNo}
+		AND CHAT_WRITE_DATE >
+		    COALESCE(
+		        (SELECT CHAT_CONTECT_DATE
+		         FROM CHAT_ROOM CR
+		         WHERE
+		             CR.MEMBER_NO = #{memberNo}
+		         AND CR.GROUP_NO = #{groupNo}),
+		        TO_DATE('1970-01-01', 'YYYY-MM-DD')
+		    	)
+	</update>
+	
+	<!-- [ws] 마지막 접속일 업데이트 -->
+	<select id="searchChatRoomUser">
+		SELECT COUNT(*) FROM CHAT_ROOM
+		WHERE
+			GROUP_NO = #{groupNo}
+		AND MEMBER_NO = #{memberNo}
+	</select>
+	
+	<update id="updateChatContectDate">
+		UPDATE CHAT_ROOM
+		SET CHAT_CONTECT_DATE = CURRENT_DATE
+		WHERE
+			MEMBER_NO = #{memberNo}
+		AND	GROUP_NO  = #{groupNo}
+	</update>
+	
+	<insert id="insertChatContectDate">
+		INSERT INTO CHAT_ROOM
+		VALUES(
+			#{groupNo}, #{memberNo}, DEFAULT
+		)
+	</insert>
+
+	<!-- [ws] 전달받은 채팅 입력 -->
+	<insert id="insertChatting">
+		INSERT INTO CHAT
+		VALUES(
+			SEQ_CHAT_NO.NEXTVAL,
+			#{chatContent},
+			DEFAULT, DEFAULT,
+			#{memberNo},
+			#{groupNo}
+		)
+	</insert>
+	
+	<!-- [ws] 채팅받을 모임의 회원들 얻어오기 -->
+	<select id="getMemberNos" resultType="Chat">
+		SELECT MG.MEMBER_NO
+		FROM "MEMBER_GROUP" MG
+		JOIN "MEMBER" M ON (M.MEMBER_NO = MG.MEMBER_NO)
+		WHERE
+			GROUP_NO = #{groupNo}
+		AND MEMBER_GROUP_BAN = 'N'
+		AND MEMBER_GROUP_DEL_FL = 'N'
+		AND MEMBER_DEL_FL = 'N'
+		AND MEMBER_OUT_FL = 'N'
+	</select>
+	
+	<!-- 채팅방 정보 얻어오기 -->
+	<select id="getChatInfo" resultType="ChatRoom">
+		SELECT
+			MG.GROUP_NO,
+		    G.GROUP_NAME,
+		    (
+				SELECT 
+					COUNT(*)
+				FROM CHAT C
+				WHERE C.GROUP_NO = MG.GROUP_NO
+				<![CDATA[	
+				AND CHAT_WRITE_DATE >
+				]]>
+					NVL((SELECT CHAT_CONTECT_DATE 
+						FROM CHAT_ROOM CR
+						WHERE
+							MEMBER_NO = #{memberNo}
+						AND CR.GROUP_NO = MG.GROUP_NO),
+						TO_DATE('1970-01-01', 'YYYY-MM-DD')
+					)
+				
+			) AS "UNREAD_COUNT"
+		FROM MEMBER_GROUP MG
+		LEFT JOIN "GROUP" G ON (MG.GROUP_NO = G.GROUP_NO)
+		WHERE MG.MEMBER_NO = #{memberNo}
+		AND	G.GROUP_DEL_FL = 'N'
+	</select>
+	
+	
+	<!-- 마지막으로 접속한 그룹번호 불러오기 -->
+	<select id="getLastReaded" resultType="_int">
+		SELECT GROUP_NO
+		FROM CHAT_ROOM
+		WHERE MEMBER_NO = 20
+		ORDER BY CHAT_CONTECT_DATE DESC
+		FETCH FIRST 1 ROWS ONLY
+	</select>
+	
+	<!-- 아무 채팅방 들어간적이 있는지 확인 -->
+	<select id="searchChatRoom" resultType="_int">
+		SELECT COUNT(*)
+		FROM CHAT_ROOM
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<!-- 채팅내역 불러오기 -->
+	<select id="getContent" resultType="Chat">
+		SELECT 
+			CHAT_NO,
+			CHAT_CONTENT,
+			<![CDATA[	
+				CASE
+					WHEN CURRENT_DATE - CHAT_WRITE_DATE < 1/24/60
+					THEN FLOOR( (CURRENT_DATE - CHAT_WRITE_DATE) *60 *60 *24 ) || '초 전'
+					
+					WHEN CURRENT_DATE - CHAT_WRITE_DATE < 1/24
+					THEN FLOOR( (CURRENT_DATE - CHAT_WRITE_DATE) *60 *24 ) || '분 전'
+					
+					WHEN CURRENT_DATE - CHAT_WRITE_DATE < 1
+					THEN FLOOR( (CURRENT_DATE - CHAT_WRITE_DATE) *24 ) || '시간 전'
+					
+					ELSE TO_CHAR(CHAT_WRITE_DATE, 'YYYY-MM-DD')
+					
+				END AS "CHAT_WRITE_DATE",
+			]]>
+			(
+			    ( SELECT COUNT(*)
+				FROM MEMBER_GROUP MG2
+				WHERE MG2.GROUP_NO = #{groupNo} )
+				- 
+				( C.CHAT_COUNT )
+			) AS "CHAT_COUNT",
+			MEMBER_NO,
+			(SELECT MEMBER_NICKNAME FROM "MEMBER" M WHERE C.MEMBER_NO = M.MEMBER_NO) AS "MEMBER_NICKNAME",
+			(SELECT MEMBER_IMG FROM "MEMBER" M WHERE C.MEMBER_NO = M.MEMBER_NO) AS "MEMBER_PROFILE_URL",
+			GROUP_NO 
+		FROM CHAT C
+		WHERE GROUP_NO= #{groupNo}
+		ORDER BY CHAT_NO ASC
+	</select>
+
+</mapper>

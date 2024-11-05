@@ -1,41 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>내정보 페이지</title>
-  <link rel="stylesheet" href="/css/myPage/myPage-info.css">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내정보 페이지</title>
+    <link rel="stylesheet" href="/css/myPage/myPageInfo.css">
 </head>
 
 <body>
-  <th:block th:replace="~{myPage/sideMenu}"></th:block>
+  <section id="sideMenu"> 
+    <th:block th:replace="~{myPage/sideMenu}"></th:block>
+  </section>
   <main class="profile-container">
-    <form class="profile-form">
-      <div class="daemoimImage">
-        <div>
-          <h2>이미지 (로고 넣을 공간)</h2>
-          <div class="profile-image-section">
-            <label for="profile-image">프로필 이미지</label>
-            <input type="file" id="profile-image" accept="image/*">
-          </div>
-          <img src="" alt="이미지 없음">
-        </div>
+    <h1 class="myPage-title">프로필</h1>
+    <span class="myPage-subject">프로필 이미지를 변경할 수 있습니다.</span>
+
+    <form action="profile" method="POST" name="myPageImgFrm" id="profile" enctype="multipart/form-data">
+      <div class="profile-image-area">
+        <img th:with="user=#{user.default.image}" 
+           th:src="${session.loginMember.memberImg}" 
+             id="profileImg">
       </div>
-      <h1 class="tn">개인정보 수정</h1>
-      <div class="profile-details">
-        <div class="profile-intro-section">
-          <label for="im">자기소개</label><br>
-          <textarea name="im" id="im" rows="5" cols="33" placeholder="자기소개 하는칸"></textarea>
-        </div>
-        <div class="profile-nickname-section">
-          <label for="nickname">닉네임</label><br>
-          <input type="text" id="nickname" placeholder="닉네임 입력">
-        </div>
-        <button > 변경 </button>
+
+      <div class="profile-btn-area">
+        <label for="imageInput">이미지 선택
+        <input type="file" name="profileImg" id="imageInput" accept="image/*"></label>
+        <button type="submit">변경하기</button>
       </div>
     </form>
+    <!-- 닉네임과 자기소개 변경 양식 -->
+    <form action="info" method="POST" name="myPageFrm">
+      <div class="myPage-row">
+        <label for="memberNickname">닉네임</label>
+        <input type="text" name="memberNickname" maxlength="10" id="memberNickname" th:value="${session.loginMember.memberNickname}">
+      </div>
+
+      <div class="profile-details">
+        <div class="profile-introduce-section">
+          <label for="memberIm">자기소개</label><br>
+          <textarea th:text="${session.loginMember.memberIm}" id="memberIm" class="memberIm" placeholder="자기소개 입력" name="memberIm" rows="5" cols="30"></textarea>
+        </div>
+       <label class="changeBtnDesign"> <button id="changeBtn" type="submit" >변경</button></label>
+      </div>
+    </form>
+  
+
   </main>
+
+
+  <script src="/js/myPage/myPage-info.js"></script>
 </body>
 
 </html>

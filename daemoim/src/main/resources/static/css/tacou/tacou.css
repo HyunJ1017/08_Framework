@@ -1,93 +1,95 @@
+/* 색상 팔레트 */
+:root {
+  --primary-color: #333;
+  --accent-color: #fc9562;
+  --background-color: #f9f9f9;
+  --text-color: #333;
+  --button-color: #fc9562;
+  --button-hover-color: #e28353;
+  --input-border-color: #ddd;
+}
+
+/* 기본 페이지 설정 */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
   margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color);
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
 
+/* 메인 컨테이너 */
 .container {
-  width: 100%;
-  padding: 40px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 30px;
   border-radius: 10px;
-  overflow-y: auto;
-  max-height: 90vh;
-  margin: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 600px;
+  box-sizing: border-box;
+  text-align: center;
 }
 
+/* 회원가입 제목 */
 .signup-title {
-  text-align: center;
-  color: #333;
-  font-size: 1.8em;
+  font-size: 32px;
+  color: var(--primary-color);
   margin-bottom: 20px;
+  font-weight: bold;
 }
 
-.terms {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-}
-
+/* 약관 제목 */
 .terms-title {
-  color: #555;
-  font-size: 1.2em;
-  margin-bottom: 10px;
-  text-align: center;
+  font-size: 24px;
+  color: var(--primary-color);
+  margin: 15px 0;
+  text-align: left;
 }
 
+/* 약관 프레임 */
 .terms-iframe {
   width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  scrollbar-width: thin;
-  scrollbar-color: #007bff #f0f4f8;
+  height: 200px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
 }
 
-.terms-iframe::-webkit-scrollbar {
-  width: 8px;
-}
-
-.terms-iframe::-webkit-scrollbar-track {
-  background: #f0f4f8;
-  border-radius: 10px;
-}
-
-.terms-iframe::-webkit-scrollbar-thumb {
-  background-color: #007bff;
-  border-radius: 10px;
-  border: 2px solid #f0f4f8;
-}
-
+/* 약관 동의 라벨 및 체크박스 */
 .terms-label {
+  font-size: 16px;
+  color: var(--text-color);
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-weight: bold;
-  color: #777;
+  gap: 8px;
+  margin-top: 5px;
 }
 
-.agree {
+/* 체크박스 스타일 */
+.terms-label input[type="checkbox"] {
   transform: scale(1.2);
+  margin-right: 5px;
+  accent-color: var(--accent-color);
 }
 
+/* 버튼 스타일 */
 .signup-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 1em;
-  color: #fff;
-  background-color: #007bff;
+  background-color: var(--button-color);
+  color: white;
+  padding: 12px 20px;
+  font-size: 18px;
+  font-weight: bold;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  align-self: center;
+  width: 100%;
+  margin-top: 20px;
+  transition: background-color 0.3s;
 }
 
 .signup-button:hover {
-  background-color: #0056b3;
+  background-color: var(--button-hover-color);
 }

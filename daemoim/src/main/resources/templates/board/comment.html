@@ -5,12 +5,10 @@
 		<ul id="commentList" th:fragment="comment-list">
 
 			<!-- 대댓글(자식)인 경우 child-comment 클래스 추가 -->
-			<li class="comment-row" 
-					th:each="comment : ${board.commentList} " 
-					th:classappend="${comment.parentCommentNo} != 0 ? child-comment"
-					th:object="${comment}"
-					th:id="|c*{commentNo}|"
-					th:data-comment-no="*{commentNo}">
+			<li class="comment-row" th:each="comment : ${board.commentList} "
+				th:classappend="${comment.parentCommentNo} != 0 ? child-comment" th:object="${comment}" 
+				th:id="|c*{commentNo}|"
+				th:data-comment-no="*{commentNo}">
 
 				<th:block th:if="*{commentDelFl} == 'Y'">
 					삭제된 댓글 입니다
@@ -18,27 +16,34 @@
 
 				<th:block th:if="*{commentDelFl} == 'N'">
 					<p class="comment-writer">
+					<a th:href="|/myPage/memberInfo/*{memberNickname}|">
 						<!-- 프로필 이미지 없을 경우 -->
-						<img th:unless="*{profileImg}" th:src="#{user.default.image}">
+						<img th:unless="*{memberImg}" th:src="#{user.default.image}">
 						<!-- 프로필 이미지 있을 경우 -->
-						<img th:if="*{profileImg}" th:src="*{profileImg}">
-	
+						<img th:if="*{memberImg}" th:src="*{memberImg}">
+
 						<span th:text="*{memberNickname}">닉네임</span>
-						<span class="comment-date" th:text="*{commentWriteDate}">작성일</span>
+
+					</a>
+					<span class="comment-date" th:text="*{commentWriteDate}">작성일</span>
 					</p>
-	
+
 					<p class="comment-content" th:text="*{commentContent}">댓글 내용</p>
-	
+
 					<!-- 버튼 영역 -->
 					<div class="comment-btn-area">
 						<button class="child-comment-btn">답글</button>
-	
-						<th:block th:if="${session.loginMember != null and session.loginMember.memberNo == comment.memberNo}">
+
+						<!-- 로그인 회원과 댓글 작성자가 같은 경우 -->
+						 <script th:inline="javascript">
+/* 							console.log([[${session.loginMember.memberNo}]]);
+							console.log([[${comment.memberNo}]]); */
+						 </script>
+						<th:block th:if="${session.loginMember != null && session.loginMember.memberNo == comment.memberNo}">
 							<button class="update-comment-btn">수정</button>
 							<button class="delete-comment-btn">삭제</button>
 						</th:block>
-						<!-- 로그인 회원과 댓글 작성자가 같은 경우 -->
-	
+
 					</div>
 				</th:block>
 

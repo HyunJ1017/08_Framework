@@ -1,34 +1,152 @@
-/* 기본적으로 모든 카테고리 콘텐츠는 숨김 */
-.category-content {
-  position: absolute;
+/* Font */
+@font-face {
+  font-family: 'PartialSansKR-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/PartialSansKR-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'NEXON Lv1 Gothic OTF';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Cafe24Nyangi-W-v1.0';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/Cafe24Nyangi-W-v1.0.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+
+/* 검색창을 화면 중앙에 정렬 */
+.categoryBody{
+  font-family: 'NEXON Lv1 Gothic OTF';
+}
+.search-section {
+  margin-top: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-wrapper {
+  width: 400px;
+  max-width: 400px;
+}
+
+.input-wrapper input {
   width: 100%;
-  top: 0;
-  left: 100%; /* 처음에는 화면 밖에 위치 */
-  z-index: 10;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* opacity와 transform 전환 */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* 활성화된 콘텐츠의 기본 스타일 */
-.category-content.active {
-  visibility: visible;
-  margin-top: 200px; /* 헤더와의 겹침 문제 해결 */
-  opacity: 1;
-  left: 0;
-  transform: translateX(0); /* 활성화된 콘텐츠는 제자리 */
+/* 모임 목록 섹션 스타일 */
+.categorySearch {
+  padding: 20px;
 }
 
-/* 슬라이드 인 효과: 새로운 콘텐츠가 화면 안으로 들어옴 */
-.category-content.slide-in {
-  transform: translateX(0); /* 들어오는 콘텐츠는 제자리로 이동 */
-  left: 0;
-  visibility: visible;
-  opacity: 1;
+#groupContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 한 줄에 세 개씩 나란히 배치 */
+  gap: 5px; /* 요소 간 간격 줄이기 */
+  justify-content: center;
+  margin-top: 20px;
 }
 
-/* 슬라이드 아웃 효과: 현재 콘텐츠가 화면 밖으로 나감 */
-.category-content.slide-out {
-  transform: translateX(-100%); /* 나가는 콘텐츠는 왼쪽으로 슬라이드 아웃 */
-  opacity: 0; /* 사라지는 동안 서서히 투명화 */
+.category-box {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  min-width: 450px; 
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: block;
+  transition: transform 0.2s, box-shadow 0.2s; /* hover 효과 추가 */
+  display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin: 10px;
+}
+
+.category-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.icon {
+  width: 150px;  /* 너비를 고정하여 이미지 크기 설정 */
+  height: 150px; /* 높이를 고정하여 이미지 크기 설정 */
+  margin-bottom: 15px; /* 이미지 아래에 여백을 주어 텍스트와의 간격 확보 */
+}
+
+.icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 이미지가 영역을 꽉 채우도록 설정 */
+  border-radius: 5%;
+  background-color: #eee;
+}
+
+.details {
+  width: 100%;
+}
+
+.categoryGroup-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.group-name2 {
+  font-size: 16px;
+  margin-top:  10px;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 10; /* 표시할 줄 수: 5줄로 설정 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.location {
+  color: #777;
+  margin-bottom: 15px;
+}
+
+.participants {
+  display: flex;
+  align-items: center;
+  margin-top: 15px; 
+}
+
+.participants i {
+  margin-right: 5px;
+}
+
+.participants div{
+  font-size: 18px;
+  color: black;
+
+}
+
+.scroll-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.scroll-top button {
+  font-size: 30px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  color: black;
 }

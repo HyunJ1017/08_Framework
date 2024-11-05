@@ -1,32 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="edu.kh.daemoim.groupMain.mapper.GroupMainMapper">
+<mapper
+	namespace="edu.kh.daemoim.groupMain.mapper.GroupMainMapper">
 
 	<select id="getBoardList" resultType="Notice">
 		SELECT BOARD_NO,
 		BOARD_TITLE,
 		BOARD_WRITE_DATE
 		FROM BOARD
-
+		WHERE BOARD_DEL_FL = 'N'
+		AND
+		GROUP_NO = #{groupNo}
+		ORDER BY
+		BOARD_WRITE_DATE DESC
+		FETCH FIRST 5 ROWS
+		ONLY
 	</select>
 
 
 
 
 	<select id="selectBoardList" resultType="Notice">
-		SELECT BOARD_NO,
+		SELECT
+		BOARD_NO,
 		BOARD_TITLE,
-		BOARD_WRITE_DATE
+		TO_CHAR(BOARD_WRITE_DATE, 'YYYY-MM-DD') AS "BOARD_WRITE_DATE"
 		FROM BOARD
-		WHERE BOARD_DEL_FL = 'N'
-		ORDER BY BOARD_WRITE_DATE DESC
-
-
-
-
+		WHERE
+		BOARD_DEL_FL = 'N'
+		AND GROUP_NO = #{groupNo}
+		AND BOARD_TYPE_CODE = 1
+		ORDER BY
+		BOARD_WRITE_DATE DESC
+		FETCH FIRST 5 ROWS ONLY
 	</select>
 
 
+	<select id="getPhotos" resultType="PhotoBox">
+		SELECT
+		BOARD_IMG_NO,
+		BOARD_IMG_PATH,
+		BOARD_IMG_ORIGINAL_NAME,
+		BOARD_IMG_RENAME,
+		BOARD_IMG_ORDER,
+		B.GROUP_NO,
+		BOARD_IMG_PATH || BOARD_IMG_RENAME AS
+		"FILE_LOCATION"
+
+		FROM "BOARD_IMG" BI
+		LEFT JOIN
+		"BOARD" B ON (B.BOARD_NO =
+		BI.BOARD_NO)
+
+		WHERE
+		B.GROUP_NO = #{groupNo}
+		AND BOARD_DEL_FL = 'N'
+		ORDER BY B.BOARD_WRITE_DATE DESC
+		FETCH FIRST 4 ROWS ONLY
+	</select>
+
+	<select id="getSchedule" resultType="Schedule">
+
+		SELECT
+		CASE
+		WHEN SCHEDULE_DATE
+		- CURRENT_DATE = 0 THEN 'day'
+		ELSE TO_CHAR(SCHEDULE_DATE -
+		CURRENT_DATE)
+		END AS D_DAY,
+		TO_CHAR(SCHEDULE_DATE, 'MM"월" DD"일" HH24"시"
+		II"분" "("DY")"')
+		AS SCHEDULE_DATE,
+		LOCATION,
+		TO_CHAR(COST, 'L999,999') AS COST,
+		(SELECT COUNT(*) FROM
+		SCHEDULE_MEMBER SM
+		WHERE SM.SCHEDULE_NO =
+		B.SCHEDULE_NO ) AS
+		"MEMBER_COUNT"
+
+		FROM SCHEDULE B
+
+		WHERE
+		B.GROUP_NO = #{groupNo}
+		AND
+		SCHEDULE_DATE >= CURRENT_DATE
+		ORDER BY
+		SCHEDULE_DATE ASC
+		FETCH FIRST 6
+		ROWS ONLY
+	</select>
+
+	<select id="getIntroduce" resultType="string">
+		SELECT GROUP_INTRODUCE
+		FROM
+		"GROUP"
+		WHERE GROUP_NO = #{groupNo}
+
+	</select>
+
+	<!-- 모임 가입 회원 확인 -->
+	<select id="checkLoginMember" resultType="_int">
+		SELECT COUNT(*)
+		FROM
+		MEMBER_GROUP
+		WHERE MEMBER_NO = #{memberNo}
+		AND GROUP_NO = #{groupNo}
+
+	</select>
+
+	<!--모임 가입신청 확인 버튼 클릭 시 -->
+	<insert id="joinGroup">
+		INSERT INTO INVITE
+		VALUES(#{memberNo}, #{groupNo},
+		DEFAULT, DEFAULT)
+
+
+	</insert>
 
 
 

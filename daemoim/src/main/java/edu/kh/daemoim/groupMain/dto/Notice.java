@@ -26,7 +26,12 @@ public class Notice {
 	private int memberNo;
 	private int boardTypeCode;
 	private int groupNo;
+	private String memberGroupEnrollDate;
+	private String memberGroupBan;
+	private String memberGroupDelFl;
 	
+	
+
 	
 
 }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>회원관리</title>
+  <title>대모임</title>
   <link rel="stylesheet" href="/css/groupManage/manageGroup.css">
 </head>
 <body>
@@ -24,7 +24,7 @@
             <option value="n">닉네임</option>
             <option value="i">아이디</option>
           </select>
-          <input type="text">
+          <input type="text" name="query" id="searchQuery">
           <button>검색</button>
         </form>
       </div>
@@ -48,7 +48,7 @@
           <th:block th:each= "member:${memberList}" th:object="${member}">
             <tr>
               <td th:text="*{memberId}"></td>
-              <td th:text="*{memberImg}"></td>
+              <td><img th:src="*{memberImg}" alt="profileImage" width="40px" height="40px"></td>
               <td th:text="*{memberNickname}"></td>
               <td th:text="*{memberGroupEnrollDate}"></td>
               <td>
@@ -101,17 +101,16 @@
           </th:block>
         </ul>
       </div>
+      <th:block th:replace= "~{common/footer}" ></th:block>
     </section>
 
 
     <section id="sideSec2">
       
     </section>
-
   </main>
   
   <!-- 푸터 -->
-  <th:block th:replace= "~{common/footer}" ></th:block>
   <th:block th:replace= "~{common/common}" ></th:block>
   <th:block th:replace= "~{groupManage/manageGroup :: th-manageGroupFooter }" ></th:block>
 

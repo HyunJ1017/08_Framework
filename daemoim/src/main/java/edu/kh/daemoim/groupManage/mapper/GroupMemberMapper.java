@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import edu.kh.daemoim.groupManage.dto.GroupManageDto;
@@ -25,7 +26,7 @@ public interface GroupMemberMapper {
 	// 모임리더바꾸기
 	int changeLeader(GroupManageDto newGroup);
 	// 모임리더 권한설정
-	int changeLeaderAuthority(int memberNo, int level);
+	int changeLeaderAuthority(@Param("memberNo") int memberNo, @Param("level") int level);
 
 	// 차단멤버 전체수 조회
 	int getBanCount(int groupNo);

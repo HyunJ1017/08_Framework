@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>팝업창미리보기용</title>
+  <style>
+
+    .popup-view, .popup-view *{/* 기본설정 */
+      box-sizing: border-box;
+    }
+
+    /* 팝업창 */
+    .popup-view{
+      width: 302px; height: 302px; /* 이미지 크기 +2 씩 */
+      border: 1px solid rgb(0, 0, 0, 0.8);
+      position: absolute;
+      top: 20vw;
+      left: 40vh;
+
+      position: relative;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    /* 팝업창 내부 이미지 박스 */
+    .popup-view > .absoluteDiv{
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      z-index: 101;
+    }
+    .popup-underbar{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      height: 32px;
+      padding: 3px;
+      background-color: rgb(0, 0, 0, 0.8);
+      color: white;
+
+      z-index: 102;
+    }
+    .display-non{ display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- 팝업창 -->
+  <section class="popup-view display-non">
+    <!-- 팝업창 내부 이미지 박스, position-absolute -->
+    <div class="absoluteDiv">
+      <!-- <div style="width: 300px; height: 300px; background-color: blue;">이미지 대체용</div> -->
+      <img src="#" alt="popupImage" id="popupImage">
+    </div>
+    <!-- 하단 체크,닫기버튼 -->
+    <form action="#" method="post" class="popup-underbar" id="popupCheckClose">
+      <div>하루동안 보지않기 <input type="checkbox" name="aDayNoneView" id="popupCheck"></div>
+      <button>닫기</button>
+    </form>
+  </section>
+  
+  <script>
+    
+    // 팝업 불러오기 함수
+    const popupViewCheck = () => {
+
+      
+      fetch("/popup/popupCheck")
+      .then(response => {
+        if(response.ok) return response.json();
+        throw new Error("popup창 실패");
+      })
+      .then(map => {
+
+        console.log("popup result : ", map.result);
+
+        // 결과 0이면 종료
+        if(map.result === 0 ) return;
+        
+        // 전달받은 이미지 표시
+        const popupImage = document.getElementById("popupImage");
+        popupImage.src = map.popup.popupLocation + map.popup.popupRename;
+        
+        // 이미지가 로드된 후 창 크기 변경
+        popupImage.onload = function() {
+
+          const popupView = document.querySelector(".popup-view");
+
+          // 이미지의 실제 크기를 기준으로 창 크기 설정
+          popupView.style.width = `${popupImage.naturalWidth}px`;
+          popupView.style.height = `${popupImage.naturalHeight}px`;
+
+          // 창 위치설정
+          popupView.style.top = map.popup.popupUp + 'vh';
+          popupView.style.left = map.popup.popupLeft + 'vw';
+
+          popupView.classList.remove("display-non");
+        };
+
+      })
+      .catch(err => console.error(err));
+
+    };
+
+    // 팝업창 닫기버튼 함수
+    const addPopupcloseBtn = () => {
+      const popupCheckClose = document.querySelector("#popupCheckClose");
+      popupCheckClose.addEventListener("submit", e => {
+        e.preventDefault();
+        const popupCheck = document.querySelector("#popupCheck");
+        let check = 0;
+        if(popupCheck.checked == true) {
+          // + 체크 활성화시 쿠키남기기 ajax 실행
+          check = 1;
+        }
+
+        // 되돌려서 세션에 팝업 열었다고 남기고,
+        // 하루동안 안뜨게 했으면 쿠키남기기
+        fetch("/popup/popupClose?check=" + check)
+        .then(response=>{
+          if(response.ok === true) console.log("체팅닫기잘됨");
+          if(response.ok === false) throw new Erroe("체팅닫기오류");
+        })
+        .catch(err => console.error(err));
+
+        // 비동기 보내놓고 창 닫기
+        const popupView = document.querySelector(".popup-view");
+        popupView.classList.add("display-non");
+
+      });
+    };
+
+    document.addEventListener("DOMContentLoaded", ()=>{
+      if(document.querySelector(".popup-view") !== null){
+        popupViewCheck();
+        addPopupcloseBtn();
+      }
+    });
+
+  </script>
+</body>
+</html>

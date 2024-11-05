@@ -13,48 +13,42 @@
 <body>
     <!-- Header -->
     <div class="header">
-        <h1>모임배경사진</h1>
+        <a href="/" th:href="@{/}"> <!-- 메인 페이지로 이동하는 링크 추가 -->
+            <img th:with="groupHeaderDefault=#{groupHeader.default.image}"
+            th:src="${groupHeaderImg ?: groupHeaderDefault}" alt="모임배경사진">
+        </a>
     </div>
 
     <!-- Container -->
     <div class="container">
-        <!-- Sidebar (왼쪽 배너) -->
-        <div class="sidebar">
-            <div class="sidebar-box banner">
-                <div class="banner-item" id="noticePage">공지사항</div>
-                <div class="banner-item" id="boardListPage">일반 게시판</div>
-                <div class="banner-item" id="photoPage">사진첩</div>
-                <div class="banner-item" id="schedulePage">일정</div>
-            </div>
-        </div>
+        
+        <th:block th:replace="~{common/header2}"></th:block>
 
         <!-- Main content -->
-        <div class="main-content">
-            <table class="post">
-                <tbody>
+        <div class="list-wrapper" th:fragment= "list">
+            <table class="list-table">
 
-                    <th:block th:if="${#lists.isEmpty(boardList)}">
-                        <tr>
-                            <th colspan="6">게시글이 존재하지 않습니다.</th>
-                        </tr>
-                    </th:block>
-
-                    <th:block th:unless= "${#lists.isEmpty(boardList)}">
-
+                <th:block th:unless= "${#lists.isEmpty(boardList)}">
+                        <thead>
+                            <th>제목</th>
+                            <th>닉네임</th>
+                            <th>작성일</th>
+                            <th>조회 수</th>
+                        </thead>
+                    <tbody>
+                        
                         <tr th:each= "board : ${boardList}" th:object="${board}">
-
-                            <td th:text="${rnum}">게시글 번호</td>
-
+                            
                             <td>
                                 <img th:if="*{thumbnail}" th:src="*{thumbnail}" class="img">
 
-                                <a th:href="@{board/{boardTypeCode}/{boardNo} (boardTypeCode=1, boardNo=*{boardNo})}"
+                                <a th:href="@{{groupNo}/{boardTypeCode}/{boardNo} (groupNo = ${groupNo}, boardTypeCode = ${boardTypeCode}, boardNo = *{boardNo})}"
                                    th:text="*{boardTitle}">게시글 제목</a>
 
                                 <th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
                             </td>
 
-                            <td th:text="*{memberNo}">닉네임</td>
+                            <td th:text="*{memberNickname}">닉네임</td>
             
                             <td th:text="*{boardWriteDate}">2023-10-26</td>
             
@@ -62,9 +56,60 @@
 
                         </tr>
 
-                    </th:block>
-                </tbody>
+                    </tbody>
+                </th:block>
             </table>
+            <!-- 게시글이 있을 때만 페이지네이션이 보이게 할 예정 -->
+            <div class="pagination-area" th:unless="${#lists.isEmpty(boardList)}">
+
+                <ul class="pagination" th:object="${pagination}">
+
+                    <!-- 첫 페이지로 이동 -->
+                    <li><a th:data-page="*{startPage}" href="#">&lt;&lt;</a></li>
+
+                    <!-- 이전 목록 마지막 번호로 이동 -->
+                    <li><a th:data-page="*{prevPage}"  href="#">&lt;</a></li>
+
+                    <!-- 특정 페이지로 이동 -->
+                    
+
+                    <!-- 
+                        #numbers.sequence(startPage, endPage)
+                        -> startPage 부터 endPage까지 1씩 증가하는 숫자를 가진
+                        List를 만들어서 반환
+                    -->
+                    <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+                    
+                        <!-- 현재 보고있는 페이지 -->
+                        <li th:if="${i} == *{currentPage}"> 
+                        <a class="current" th:text="${i}">현재 페이지</a> 
+                        </li>
+
+                        <!-- 보고있지 않은 페이지 -->
+                        <li th:unless="${i} == *{currentPage}"> 
+                        <a th:data-page="${i}"  href="#" th:text="${i}">이동할 수 있는 페이지</a> 
+                        </li>
+
+                    </th:block>
+
+
+                    <!-- 다음 목록 시작 번호로 이동 -->
+                    <li><a th:data-page="*{nextPage}"  href="#">&gt;</a></li>
+                    <!-- 끝 페이지로 이동 -->
+                    <li><a th:data-page="*{maxPage}"  href="#">&gt;&gt;</a></li>
+                </ul>
+                <!-- 검색창 -->
+                <div class="search-area">
+                    <form th:action="@{{code}(code=${boardTypeCode})}" method="get" id="boardSearch">
+                    <select name="key" id="searchKey">
+                        <option value="t">제목</option>
+                        <option value="w">작성자</option>
+                    </select>
+                    <input type="text" name="query" id="searchQuery" placeholder="검색어를 입력해주세요.">
+                    <button>검색</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
         <!-- Sidebar -->
@@ -74,55 +119,13 @@
                 <div id="calendar"></div>
             </div>
             <div>
-                <button th:if= "${session.loginMember}" id="btn-write">글 작성하기</button>
+                <a th:if= "${session.loginMember}"
+                   th:href="@{{groupNo}/insert (groupNo = ${groupNo})}"
+                   class="btn-write hidden">글 작성하기</a>
             </div>
         </div>
 
-        <!-- 게시글이 있을 때만 페이지네이션이 보이게 할 예정 -->
-      <div class="pagination-area" th:unless="${#lists.isEmpty(boardList)}">
-
-        <ul class="pagination" th:object="${pagination}">
-
-          <!-- 첫 페이지로 이동 -->
-          <li><a href="#">&lt;&lt;</a></li>
-
-          <!-- 이전 목록 마지막 번호로 이동 -->
-          <li><a href="#">&lt;</a></li>
-
-          <!-- 특정 페이지로 이동 -->
-          
-
-          <!-- 
-            #numbers.sequence(startPage, endPage)
-            -> startPage 부터 endPage까지 1씩 증가하는 숫자를 가진
-               List를 만들어서 반환
-          -->
-          <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
-           
-            <!-- 현재 보고있는 페이지 -->
-            <li th:if="${i} == *{currentPage}"> 
-              <a class="current" th:text="${i}">현재 페이지</a> 
-            </li>
-
-            <!-- 보고있지 않은 페이지 -->
-            <li th:unless="${i} == *{currentPage}"> 
-              <a href="#" th:text="${i}">이동할 수 있는 페이지</a> 
-            </li>
-
-          </th:block>
-
-
-          <!-- 다음 목록 시작 번호로 이동 -->
-          <li><a href="#">&gt;</a></li>
-
-          <!-- 끝 페이지로 이동 -->
-          <li><a href="#">&gt;&gt;</a></li>
-        </ul>
-      </div>
-
     </div>
-
-    <th:block th:replace="~{common/footer}"></th:block>
 
     <!--  
         th:inline="javascript" : java 타입의 데이터를 JS 타입으로 변경
@@ -131,6 +134,6 @@
         const pagination = /*[[${pagination}]]*/ "페이지네이션객체";
     </script>
 
-    <script src="/js/board/boardList.js"></script>
+    <script src="/js/board/boardList2.js"></script>
 </body>
 </html>

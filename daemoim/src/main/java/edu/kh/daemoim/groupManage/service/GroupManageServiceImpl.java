@@ -9,8 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import edu.kh.daemoim.board.dto.Board;
+import edu.kh.daemoim.board.dto.Comment;
 import edu.kh.daemoim.common.util.FileUtil;
+import edu.kh.daemoim.groupMain.dto.Schedule;
 import edu.kh.daemoim.groupManage.dto.GroupManageDto;
+import edu.kh.daemoim.groupManage.dto.GroupMemberManageDto;
 import edu.kh.daemoim.groupManage.dto.ManageCategory;
 import edu.kh.daemoim.groupManage.mapper.GroupManageMapper;
 import lombok.RequiredArgsConstructor;
@@ -202,6 +206,59 @@ public class GroupManageServiceImpl implements GroupManageService {
 		result = mapper.updateGroup(updateGroup);
 		
 		return result;
+	}
+	
+	
+	// [인터페이스] 최근작성댓글 얻어오기
+	@Override
+	public List<Comment> getRecentComments(String groupNo) {
+		return mapper.getRecentComments(groupNo);
+	}
+	
+	// 공지글 불러오기
+	@Override
+	public List<Board> getOrderBoard(int groupNo) {
+		return mapper.getOrderBoard(groupNo);
+	}
+	
+	// 최근글 불러오기
+	@Override
+	public List<Board> getRecentBoard(int groupNo) {
+		return mapper.getRecentBoard(groupNo);
+	}
+	
+	// 인기글 불러오기
+	@Override
+	public List<Board> getPopularBoard(int groupNo, int period) {
+		return mapper.getPopularBoard(groupNo, period);
+	}
+	
+	// [인터페이스] 모임상단이미지 얻어오기
+	@Override
+	public String getGroupHeaderImg(String groupNo) {
+		
+		GroupManageDto group =  mapper.selectGroup( Integer.parseInt(groupNo) );
+		String headerLocation = group.getGroupHeaderImg();
+		
+		return headerLocation;
+	}
+	
+	// 모임 회원 리스트 호출
+	@Override
+	public List<GroupMemberManageDto> getMemberList(int groupNo) {
+		return mapper.getMemberList(groupNo);
+	}
+	
+	// 일정 호출
+	@Override
+	public List<Schedule> getScheduleList(int groupNo) {
+		return mapper.getScheduleList(groupNo);
+	}
+	
+	// 일정회원불러오기
+	@Override
+	public List<Integer> searchScheduleMember(int scheduleNo) {
+		return mapper.searchScheduleMember(scheduleNo);
 	}
 
 }

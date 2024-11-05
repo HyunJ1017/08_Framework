@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>회원가입관리</title>
+  <title>대모임</title>
   <link rel="stylesheet" href="/css/groupManage/manageGroup.css">
 </head>
 <body>
@@ -19,7 +19,8 @@
 
 
     <section class="mainSec">
-      <h1><th:block th:text="${group.groupName}"></th:block> 회원 가입 관리 <th:block th:text="${memberAllCount}"></th:block>명</h1>
+      <h1><th:block th:text="${group.groupName}"></th:block> 회원 가입 관리</h1>
+      <h3>가입신청인원 : <th:block th:text="${memberCount}"></th:block>명, 모임 총원 : <th:block th:text="${memberAllCount}"></th:block>/<th:block th:text="${group.groupMaxPopulation}"></th:block>명</h3>
       <table border="1" id="memberManageTable">
         <thead>
           <tr id="tableTr">
@@ -40,7 +41,7 @@
           <th:block th:if= "${memberList}" th:each= "member:${memberList}" th:object="${member}">
             <tr>
               <td th:text="*{memberId}"></td>
-              <td th:text="*{memberImg}"></td>
+              <td><img th:src="*{memberImg}" alt="profileImage" width="40px" height="40px"></td>
               <td th:text="*{memberNickname}"></td>
               <td th:text="*{inviteReqTime}"></td>
               <td>
@@ -103,16 +104,15 @@
           </th:block>
         </ul>
       </div>
+      <th:block th:replace= "~{common/footer}" ></th:block>
     </section>
 
 
     <section id="sideSec2">
     </section>
-
   </main>
   
   <!-- 푸터 -->
-  <th:block th:replace= "~{common/footer}" ></th:block>
   <th:block th:replace= "~{common/common}" ></th:block>
   <th:block th:replace= "~{groupManage/manageGroup :: th-manageGroupFooter }" ></th:block>
 

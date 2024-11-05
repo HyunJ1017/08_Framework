@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.kh.daemoim.common.interceptor.mapper.InterceptorMapper">
+
+
+	<select id="getMemberNoList" resultType="_int">
+		SELECT
+			MG.MEMBER_NO
+		FROM MEMBER_GROUP MG
+		JOIN "MEMBER" M ON (MG.MEMBER_NO = M.MEMBER_NO)
+		WHERE
+			MEMBER_DEL_FL = 'N'
+		AND	MEMBER_OUT_FL = 'N'
+		AND MG.GROUP_NO = #{groupNo}
+		AND MG.MEMBER_GROUP_DEL_FL = 'N'
+		AND MG.MEMBER_GROUP_BAN = 'N'
+	</select>
+
+	<select id="getMembetNo" resultType="_int">
+		SELECT
+			MEMBER_NO
+		FROM "GROUP"
+		WHERE GROUP_NO = #{groupNo}
+	</select>
+
+
+	
+</mapper>

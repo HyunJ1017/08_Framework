@@ -1,121 +1,191 @@
-const previewList = document.getElementsByClassName("preview");
-const inputImageList = document.getElementsByClassName("inputImage");
-const deleteImageList = document.getElementsByClassName("delete-image");
+const form = document.getElementById('boardWriteFrm');
+const imageInput = document.getElementById('imageInput');
+const imageList = document.getElementById('imageList');
+const imageCount = document.getElementById('imageCount');
+const addImageBtn = document.querySelector('.add-image-btn');
+let imageArray = []; // 이미지 저장할 배열
 
-// 마지막으로 선택된 파일을 저장할 배열
-const lastValidFiles = [];
+const MAX_IMAGES = 20;
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 파일 크기 제한 (10MB)
 
 
-/** 미리보기 함수
- * @param  file : <input type="file"> 에서 선택된 파일
- * @param {*} order : 이미지 순서
- */
-const updatePreview = (file, order) => {
+// 이미지 미리보기 생성 함수
+function createPreviewElement(file, index) {
+  // const submitInput = document.createElement("input");
+  // submitInput.type = "file";
 
-  // 선택된 파일이 지정된 크기를 초과한 경우 선택 막기
-  const maxSize = 1024 * 1024 * 10; // 10MB를 byte 단위로 작성
 
-  if(file.size > maxSize){ // 파일 크기 초과 시
-    alert("10MB 이하의 이미지만 선택해 주세요");
 
-    // 미리보기는 안되어도 크기가 초과된 파일이 선택되어 있음!!
 
-    // 이전 선택된 파일이 없는데 크기 초과 파일을 선택한 경우
-    if(lastValidFiles[order] === null){
-      inputImageList[order].value = ""; // 선택 파일 삭제
-      return;
-    }
 
-    // 이전 선택된 파일이 있을 때
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(lastValidFiles[order]);
-    inputImageList[order].files = dataTransfer.files;
+  const preview = document.createElement('div');
+  preview.className = 'image-preview';
+  preview.dataset.index = index;
 
-    return;
-  }
+  const previewWrapper = document.createElement('div');
+  previewWrapper.className = 'preview-wrapper';
 
-  
-  // 선택된 이미지 백업
-  lastValidFiles[order] = file;
+  const img = document.createElement('img');
+  img.className = 'preview';
 
-  // JS에서 제공하는 파읽을 읽어오는 객체
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'delete-image';
+  deleteBtn.type = 'button'; // 명시적으로 button 타입 지정
+  deleteBtn.innerHTML = '×';
+  deleteBtn.onclick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    confirmM("사진을 삭제하시겠습니까?")
+      .then(result => {
+        if (!result) return;
+        removeImage(index);
+      })
+  };
+
+  const fileName = document.createElement('div');
+  fileName.className = 'file-name';
+  fileName.textContent = file.name;
+
   const reader = new FileReader();
-
-  // 파일을 읽어 오는데
-  // DataURL 형식으로 읽어옴
-  // DataURL: 파일 전체 데이터가 브라우저가 해석할 수 있는
-  //          긴 주소형태 문자열로 변환
+  reader.onload = (e) => {
+    img.src = e.target.result;
+  };
   reader.readAsDataURL(file);
 
-  reader.addEventListener("load", e => {
-    previewList[order].src = e.target.result;
-    // e.target.result == 파일이 변환된 주소 형태 문자열
-  })
+  previewWrapper.appendChild(img);
+  previewWrapper.appendChild(deleteBtn);
+  previewWrapper.appendChild(fileName);
+  preview.appendChild(previewWrapper);
+
+  return preview;
+} // createPreviewElement end
+
+
+// 이미지 제거 함수
+function removeImage(indexToRemove) {
+  imageArray = imageArray.filter((_, index) => index !== indexToRemove);
+  refreshImageDisplay();
+  updateImageCount();
 }
 
 
+// 이미지 디스플레이 새로고침
+function refreshImageDisplay() {
 
-// ----------------------------------------------------------------
+  // 추가 버튼을 제외한 모든 프리뷰 제거
+  const previews = imageList.querySelectorAll('.image-preview');
+  previews.forEach(preview => preview.remove());
 
-/* input태그, x버튼에 이벤트 리스너 추가 */
-for (let i = 0; i < inputImageList.length; i++) {
-
-  // input 태그에 이미지 선택 시 미리보기 함수 호출
-  inputImageList[i].addEventListener("change", e => {
-    const file = e.target.files[0];
-
-    if (file === undefined) { // 선택 취소 시
-
-      // 이전에 선택한 파일이 없는 경우
-      if (lastValidFiles[i] === null) return;
-
-
-      //***  이전에 선택한 파일이 "있을" 경우 ***
-      const dataTransfer = new DataTransfer();
-
-      // DataTransfer가 가지고 있는 files 필드에 
-      // lastValidFiles[i] 추가 
-      dataTransfer.items.add(lastValidFiles[i]);
-
-      // input의 files 변수에 lastVaildFile이 추가된 files 대입
-      inputImageList[i].files = dataTransfer.files;
-
-      // 이전 선택된 파일로 미리보기 되돌리기
-      updatePreview(lastValidFiles[i], i); 
-
-      return;
-    }
-
-    updatePreview(file, i);
-  })
+  // 이미지 재렌더링
+  imageArray.forEach((file, index) => {
+    const preview = createPreviewElement(file, index);
+    imageList.insertBefore(preview, addImageBtn);
+  });
+}
 
 
-
-  /* X 버튼 클릭 시 미리보기, 선택된 파일 삭제 */
-  deleteImageList[i].addEventListener("click", () => {
-
-    previewList[i].src      = ""; // 미리보기 삭제
-    inputImageList[i].value = ""; // 선택된 파일 삭제
-    lastValidFiles[i]       = null; // 백업 파일 삭제
-  })
+// 이미지 개수 업데이트
+function updateImageCount() {
+  imageCount.textContent = imageArray.length;
+  addImageBtn.style.display = imageArray.length >= MAX_IMAGES ? 'none' : 'flex';
+}
 
 
-} // for end
+// 파일 유효성 검사
+function validateFile(file) {
+  if (file.size > MAX_FILE_SIZE) {
+    alert(`${file.name}의 크기가 10MB를 초과합니다.`);
+    return false;
+  }
+  if (!file.type.startsWith('image/')) {
+    alert(`${file.name}은(는) 이미지 파일이 아닙니다.`);
+    return false;
+  }
+  return true;
+}
 
-/* 제목 미작성 시 제출 불가 */
-const form = document.querySelector("#boardWriteFrm");
-form.addEventListener("submit", e => {
 
-  // 제목 input 얻어오기
-  const boardTitle = document.querySelector("[name=boardTitle]");
-  const boardContent = document.querySelector("[name=boardContent]");
+// 파일 입력 처리
+function handleFileSelect(e) {
+  const files = Array.from(e.target.files);
+  const remainingSlots = MAX_IMAGES - imageArray.length;
 
-  // 제목을 입력 안 했을 때
-  if(boardTitle.value.trim().length === 0){
-    alert("제목을 작성해주세요");
-    boardTitle.focus();
-    e.preventDefault();
+  if (files.length > remainingSlots) {
+    alert(`이미지는 최대 ${MAX_IMAGES}장까지만 업로드 가능합니다.`);
+    files.length = remainingSlots;
+  }
+
+  const validFiles = files.filter(validateFile);
+  if (validFiles.length > 0) {
+    imageArray = [...imageArray, ...validFiles];
+    refreshImageDisplay();
+    updateImageCount();
+  }
+
+  // 입력 초기화 (같은 파일을 다시 선택할 수 있도록)
+  e.target.value = '';
+}
+
+
+// 폼 제출 처리
+function handleSubmit(e) {
+  e.preventDefault();
+
+  const title = form.querySelector('[name="boardTitle"]').value.trim();
+
+  if (title.length === 0) {
+    alert('제목을 작성해주세요.');
+    form.querySelector('[name="boardTitle"]').focus();
     return;
   }
 
-})
+  if (imageArray.length === 0) {
+    alert('사진을 등록해주세요.');
+    return;
+  }
+
+  const formData = new FormData(form);
+  // 기존 이미지 필드 제거 (중복 방지)
+  formData.delete('images');
+  // 이미지 배열의 파일들을 추가
+  imageArray.forEach(file => {
+    formData.append('images', file);
+  });
+
+  fetch(form.action + '2', {
+    method: 'POST',
+    body: formData
+  })
+    .then(response => {
+      if (response.ok) return response.text();
+      throw new Error("게시글 등록 중 오류가 발생했습니다.");
+    })
+    .then(result => {
+      if (result !== null) {
+        location.href = result;
+      } else {
+        alert(data.message || '게시글 등록에 실패했습니다.');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+
+// 취소 버튼 처리
+function handleCancel(e) {
+  e.preventDefault();
+  confirmM("작성을 취소하시겠습니까?")
+    .then(result => {
+      if (!result) return;
+    })
+  history.back();
+}
+
+// 이벤트 리스너 등록
+document.addEventListener('DOMContentLoaded', () => {
+  imageInput.addEventListener('change', handleFileSelect);
+  form.addEventListener('submit', handleSubmit);
+  document.getElementById('cancelBtn').addEventListener('click', handleCancel);
+});

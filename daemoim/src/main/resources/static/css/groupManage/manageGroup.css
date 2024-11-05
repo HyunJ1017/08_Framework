@@ -27,12 +27,15 @@
   border-radius: 4px;
 }
 
-/* 메인 */
+/* ****************************** */
+/* ************ 메인 ************ */
 main{
+  margin: 220px; /* 해더에 밀림 ㅜㅜ */
   font-family: 'Pretendard-Regular';
-  min-height: 63vh;
+  min-height: 100vh; /* 전체 화면 높이 확보 */
 }
 .space-around{
+  width: 100%; /* 부모 너비를 전체 화면에 맞춤 */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -43,12 +46,14 @@ main{
   justify-content: space-between;
 }
 .mainSec{
+  width: 1070px;
+  height: auto; /* 높이 자동 조정 */
   display: flex;
   flex-direction: column;
   align-items: center;  
   padding: 15px;
   margin: 15px;
-  background-color: rgb(245, 245, 245);
+  background-color: rgb(240, 240, 240);
   border-radius: 10px;
 }
 .mainSec > h1{
@@ -57,13 +62,15 @@ main{
   font-weight: 700;
 }
 .mainSec > .searchForm{
+  min-width: 380px;
   margin: 0 0 20px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: rgb(59, 19, 0, 0.2);
+  text-align: center;
 }
-.mainSec > .searchForm select{
+.mainSec > div > form select{
   width: 85px;
-  height: 25px;
-}
-.mainSec > .searchForm select{
   height: 25px;
 }
 .mainSec > .searchForm button{
@@ -78,19 +85,21 @@ main{
   border-radius: 5px;
   padding: 30px;
   margin: 10px;
-  background-color: rgb(230, 230, 230);
+  background-color: rgb(225, 225, 225);
 }
 .serviceIntroduce{
   margin: 0 0 10px;
 }
 #btnDiv{
+  flex-grow: 1;
   margin: 50px;
   display: flex;
   flex-direction: row;
+  align-items: flex-end;
   justify-content: center;
 }
 #btnDiv > div{ /* 하단 수정, 돌아가기버튼 */
-  width: 500px;
+  width: 450px;
   height: 40px;
   margin: 10px;
   border-radius: 8px;
@@ -100,12 +109,26 @@ main{
   justify-content: center;
   align-items: center;
 }
+#btnDiv > div:hover{
+  cursor: pointer;
+  border: 3px solid rgb(99, 99, 99);
+}
 .title{
   margin: 50px 0 20px 0;
   font-family: 'AssacomFreeGothicTTF-Regular';
   font-size: 18px;
 }
-/* 이미지 수정 */
+/* ************************************************ */
+/* ***************모임명********************** */
+.createContent > #groupName{
+  height: 35px;
+  width: 870px;
+}
+#searchKey + input{ /* 회원검색창 */
+  height: 31px;
+}
+/* ************************************************ */
+/* ***************이미지 수정********************** */
 #imageSec{
   display: flex;
   flex-direction: row;
@@ -158,13 +181,21 @@ main{
   height: 75px;
 }
 #preViewIntroduce{
+  margin: 0;
   width: 500px;
-  height: 50px;
+  height: 70px;
   background-color: #c4c4c4;
-  font-size: 0.5em;
   text-align: center;
   align-content: center;
+
+  display: flex;
+  flex-direction: column;
+
 }
+#preViewIntroduce > span{display: block;}
+#preViewIntroduce > span:first-child{font-size: 1.2em; font-weight: bold;}
+#preViewIntroduce > span:nth-child(2){font-size: 1.2em; font-weight: bold; margin: 0 0 5px;}
+#preViewIntroduce > span:nth-child(n+3){font-size: 0.4em;}
 .preViewDiv{
   display: flex;
   flex-direction: column;
@@ -216,7 +247,8 @@ main{
   flex-direction: row;
 }
 
-/* 카테고리 */
+/* ********************************************************* */
+/* *********************** 카테고리 ************************/
 .categoryTitleSpan{
   display: block;
   margin: 10px 0 10px;
@@ -253,6 +285,12 @@ input[type="radio"]:checked + label { /* 라벨이 꼭 뒤에잇어야함 */
   flex-wrap: wrap;
 }
 
+#categoryBtn:hover, #categoryListBtn:hover{
+  cursor: pointer;
+  background-color: rgb(46, 46, 46);
+  color: wheat;
+}
+
 /* 제출버튼 */
 .submitDiv{
   user-select: none; /* 드래그 막음 */
@@ -261,8 +299,8 @@ input[type="radio"]:checked + label { /* 라벨이 꼭 뒤에잇어야함 */
   cursor: pointer;
 }
 
-/* ****************************** */
-/* ********** 사이드바 ********** */
+/* ************************************************** */
+/* ****************** 사이드바 ********************** */
 #sideSec1{
   width: 250px;
   display: flex;
@@ -306,8 +344,21 @@ input[type="radio"]:checked + label { /* 라벨이 꼭 뒤에잇어야함 */
   text-align: left;
   text-decoration: none;
   color: black;
+  white-space: nowrap;
+  display: flex; /* p태그 정렬용 */
+  margin: 5px;
 }
-
+#sideSec1 > #sideCommentList > a > .commentNickname{
+  font-size: 0.8em;
+  font-weight: bold;
+}
+#sideSec1 > #sideCommentList > a > .commentContent{
+  font-size: 0.8em;
+}
+#sideSec1 > #sideCommentList > a > .commentWriteDate{
+  font-size: 0.6em;
+  color: red;
+}
 #sideSec2{
   width: 250px;
   display: flex;
@@ -338,18 +389,18 @@ input[type="radio"]:checked + label { /* 라벨이 꼭 뒤에잇어야함 */
 } */
 
 
-
-/* 표 */
+/* ********************************************** */
+/* ******************표************************** */
 #memberManageTable{
   border-collapse: collapse;
 }
 tr th{height: 40px; background-color: #A0937D;}
-#tableTr > th:first-child{ min-width: 90px;}    /* 아이디 */
+#tableTr > th:first-child{ min-width: 130px;}    /* 아이디 */
 #tableTr > th:nth-child(2){ min-width: 90px;}   /* 프로필사진 */
-#tableTr > th:nth-child(3){ min-width: 90px;}   /* 닉네임 */
-#tableTr > th:nth-child(4){ min-width: 140px;}  /* 가입일 */
-#tableTr > th:nth-child(6){ min-width: 50px;}   /* 권한1 */
-#tableTr > th:last-child{ min-width: 50px;}     /* 권한2 */
+#tableTr > th:nth-child(3){ min-width: 120px;}   /* 닉네임 */
+#tableTr > th:nth-child(4){ min-width: 160px;}  /* 가입일 */
+#tableTr > th:nth-child(6){ min-width: 70px;}   /* 권한1 */
+#tableTr > th:last-child{ min-width: 70px;}     /* 권한2 */
 .orderBtn:hover{
   background-color: #a18e6e;
   cursor: pointer;
@@ -357,6 +408,9 @@ tr th{height: 40px; background-color: #A0937D;}
 tr>td {
   text-align: center;
   height: 36px;
+}
+tbody tr:nth-of-type(2n-1){
+  background-color: rgb(255 255 255);
 }
 tbody tr:nth-of-type(2n){
   background-color: #ececec;
@@ -380,6 +434,140 @@ tbody tr:hover{
   list-style: none;
   margin: 10px;
 }
+.tableBody button{
+  width: 80px;
+  border: 1px solid #333;
+  border-radius: 3px;
+  margin: 4px 10px 4px;
+  height: 30px;
+}
+.tableBody button:hover{
+  cursor: pointer;
+}
+/* 공지게시판미리보기 */
+.boardTr > th:first-child{ min-width: 90px;}    /* 게시글번호 */
+.boardTr > th:nth-child(2){ width: 350px;}      /* 제목 */
+.boardTr > td:nth-child(2){ width: 350px; text-align: left;}   /* 제목 */
+.boardTr > th:nth-child(3){ min-width: 80px;}   /* 조회수 */
+.boardTr > th:nth-child(4){ min-width: 150px;}  /* 작성일 */
+.boardTr > th:nth-child(5){ min-width: 100px;}  /* 작성자 */
+.boardTr .likeCount{
+  font-size: 0.8em;
+  color: red;
+}
+.boardTr .commentCount{
+  font-size: 0.8em;
+  color: grey;
+}
+.boardTr>.boardTitle{
+  display: flex;  
+  flex-direction: row;
+  align-items: center;
+}
+.boardTr>.boardNickname{
+  width: 100px;
+  display: block;
+  white-space: nowrap; /* 텍스트를 한 줄로 표시 */
+  overflow: hidden; /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis; /* 넘치는 부분을 ...로 표시 */
+}
+.pagination > li{
+  text-align: center;
+  min-width: 20px;
+  border: 1px solid #333;
+  border-radius: 3px;
+}
+.pagination>li>a{
+  color: black;
+
+}
+.boardTr a{
+  text-decoration: none;
+  color: black;
+
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* *********************************** */
+/* 노티ㅍl케이션 */
+#noti-form{
+  display: flex;
+  flex-direction: column;
+}
+#noti-form>textarea{
+  height: 150px;
+  border: 1px solid #666;
+  margin: 20px;
+}
+.noti-table{
+  display: flex;
+  flex-direction: column;
+}
+.noti-table>section{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 960px;
+}
+.noti-table>section>*{
+  display: flex;
+  align-items: center;
+}
+.noti-table>.noti-thead{
+  justify-content: space-around;
+  height: 70px;
+}
+.noti-table>.noti-thead>.noti-selsectAll{
+  font-size: 1.3em;
+}
+.noti-table>.noti-thead #selectSchedule{
+  height: 30px;
+  border: 1px solid #333;
+  margin: 10px;
+}
+.noti-table>.noti-thead button{
+  width: 300px;
+  height: 30px;
+  background-color: #333;
+  border-radius: 8px;
+  color: #dfdfdf;
+  font-size: 1.3em; 
+}
+#sendBtn:hover{
+  cursor:pointer;
+}
+.noti-table>.noti-thead{
+  height: 70px;
+}
+.noti-table>.noti-thead>.noti-bodyBoxs{
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: row;
+  width: 300px;
+  margin: 10px;
+}
+.noti-table>.noti-tbody{
+  
+}
+.noti-table>.noti-tbody>.noti-bodyBoxs{
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 300px;
+  height: 75px;
+  margin: 10px;
+}
+.noti-table>.noti-tbody>.noti-bodyBoxs>div{
+  display: flex;
+  align-items: center;
+}
+
+
+
 
 
 /* *********************************** */

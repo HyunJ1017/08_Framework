@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,20 +9,47 @@
 <body>
     <div class="login-container">
         <h1 class="login-title">로그인</h1>
-        <form id="loginForm" onsubmit="return validateForm()">
-            <div class="input-group">
-                <label for="username">아이디</label>
-                <input type="text" id="username" name="username" required placeholder="아이디를 입력하세요">
-            </div>
-            <div class="input-group">
-                <label for="password">비밀번호</label>
-                <input type="password" id="password" name="password" required placeholder="비밀번호를 입력하세요">
-            </div>
-            <button type="submit">로그인</button>
-            <a href="findIdPw">아이디/비밀번호 찾기</a>
+        <form action="/login" id="signinform" method="POST" onsubmit="return validateForm()">
+            <fieldset class="id-pw-area">
+                <div class="input-group">
+                    <label for="username" class="right">아이디</label>
+                    <input type="text" name="memberId" required placeholder="아이디를 입력하세요">
+                    <div class="checkedsaveId">
+                        <label class="design">
+                            아이디 저장
+                            <input type="checkbox" name="saveId">
+                        </label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="password" class="right">비밀번호</label>
+                    <input type="password" name="memberPw" required placeholder="비밀번호를 입력하세요">
+                </div>
+                <button type="submit">로그인</button>
+             <div class="find-text">
+                  
+                  <div class="findIdTextlink">
+                      <a href="findIdPage" style="color: black; text-decoration: none;">&nbsp;아이디 찾기 </a>
+                    </div> 
+                    <div class="cut"><p>/</p>
+                    </div>
+                       <div class="findPwTextlink">
+                         <a href="findPwPage" style="color: black; text-decoration: none;">&nbsp;비밀번호 찾기</a>
+                    </div>
+                    <div class="cut"><p>/</p>
+                    </div>
+                    <div class="signUpTextLink" >
+                        <a href="/tacou" style="color: black; text-decoration: none;">&nbsp;회원가입</a>
+                    </div>
+                </div>
+            </fieldset>
         </form>
        
     </div>
+    
 
+    <th:block th:replace="~{common/footer}"></th:block>
+
+        <script src="/js/signin/signin.js"></script>
 </body>
 </html>

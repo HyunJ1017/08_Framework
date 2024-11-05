@@ -52,5 +52,39 @@
 			MEMBER_NO = #{memberNo}
 		AND GROUP_NO = #{groupNo}
 	</delete>
+	
+	<!-- 현재 모임인원 확인 -->
+	<select id="checkPopulation" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER_GROUP MG
+		JOIN "MEMBER" M ON (MG.MEMBER_NO = M.MEMBER_NO)
+		WHERE
+			MEMBER_DEL_FL = 'N'
+		AND	MEMBER_OUT_FL = 'N'
+		AND MG.GROUP_NO = #{groupNo}
+		AND MG.MEMBER_GROUP_DEL_FL = 'N'
+		AND MG.MEMBER_GROUP_BAN = 'N'
+	</select>
+	
+	<!-- 이전가입내역 확인 -->
+	<select id="searchMember" resultType="GroupMemberManageDto">
+		SELECT 
+			MEMBER_GROUP_BAN,
+			MEMBER_GROUP_DEL_FL
+		FROM "MEMBER_GROUP"
+		WHERE
+			MEMBER_NO = #{memberNo}
+		AND GROUP_NO = #{groupNo}
+	</select>
+	
+	<!-- 재가입인원 업데이드 -->
+	<update id="updateMemberGroup">
+		UPDATE "MEMBER_GROUP"
+		SET MEMBER_GROUP_BAN = 'N',
+			MEMBER_GROUP_DEL_FL = 'N'
+		WHERE
+			MEMBER_NO = #{memberNo}
+		AND GROUP_NO = #{groupNo}
+	</update>
 
 </mapper>

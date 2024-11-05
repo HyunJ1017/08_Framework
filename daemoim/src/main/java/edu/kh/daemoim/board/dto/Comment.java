@@ -26,5 +26,8 @@ public class Comment {
 	
 	/* 댓글에 포함될 작성자명, 작성자 프로핑 */
 	private String memberNickname;
-	private String profileImg;
+	private String memberImg;
+	
+	// 게시판경로
+	private String boardPath;
 }

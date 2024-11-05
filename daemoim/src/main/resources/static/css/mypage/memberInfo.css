@@ -1,0 +1,166 @@
+/* 색상 팔레트 */
+:root {
+  --primary-color: #333;
+  --accent-color: #fc9562;
+  --background-color: #f9f9f9;
+  --text-color: #333;
+  --button-color: #fc9562;
+  --button-hover-color: #e28353;
+  --input-border-color: #ddd;
+  --input-background-color: #f1f1f1;
+  --input-text-color: #555;
+}
+
+/* 기본 페이지 설정 */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  flex-direction: column;
+}
+
+/* 헤더 */
+header {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header .logo img {
+  height: 30px;
+  width: auto;
+}
+
+/* 프로필 컨테이너 */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 700px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* 타이틀 */
+.myPage-title {
+  font-size: 34px;
+  color: var(--primary-color);
+  margin-bottom: 18px;
+}
+
+/* 프로필 이미지 */
+.profile-image-area {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.profile-image-area img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 5px solid var(--accent-color);
+  object-fit: cover;
+}
+
+/* 닉네임과 자기소개 */
+.myPage-row, .profile-details {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.myPage-row label, .profile-introduce-section label {
+  font-weight: bold;
+  color: var(--primary-color);
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+/* input 스타일 */
+.myPage-row input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+  background-color: var(--input-background-color);
+  color: var(--input-text-color);
+  pointer-events: none; /* 비활성화 */
+}
+
+/* textarea 스타일 */
+.profile-introduce-section textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+  background-color: var(--input-background-color);
+  color: var(--input-text-color);
+  resize: none; /* 크기 조정 비활성화 */
+  pointer-events: none; /* 비활성화 */
+}
+
+/* 기본적인 컨테이너 스타일 */
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 500px;
+  margin: 20px 0;
+}
+
+.profile-introduce-section {
+  width: 100%;
+}
+
+/* 텍스트라벨 스타일 */
+.profile-introduce-section label {
+  font-weight: bold;
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* textarea 스타일 */
+textarea.memberIm {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: 120px;
+  max-height: 200px;
+  padding: 12px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  resize: vertical; /* 수직 크기 조절 허용 */
+  box-sizing: border-box;
+}
+
+/* placeholder 색상 설정 */
+textarea.memberIm::placeholder {
+  color: #999;
+}
+

@@ -29,6 +29,9 @@ main{
 }
 
 /* main */
+main{
+  margin: 220px 0 0;
+}
 .mainSec{
   display: flex;
   flex-direction: column;
@@ -46,7 +49,7 @@ main{
 .mainSec > form {
   width: 100%;
 }
-form label, .title{
+#submitGroupCreate > label, .title{
   margin: 50px 0 20px 0;
   font-family: 'AssacomFreeGothicTTF-Regular';
   font-size: 18px;
@@ -92,18 +95,34 @@ form label, .title{
 }
 
 /* 카테고리 리스트 표시 */
-#categoryListView{
+.categoryListRadio, .categoryRadio{
+  display: none;
+}
+.CategoryListTr, .categoryListView{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
-.categoryListView > div{
-  width: 150px;
-  height: 50px;
-  text-align: center;
-  /* display: flex;
+.createContent > section .categoryLabel{
+  width: 110px;
+  height: 40px;
+  margin: 5px 10px 5px;
+  display: flex;
   flex-direction: row;
-  justify-content: center; */
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #989898;
+  border-radius: 3px;
+  background-color: #fff;
+}
+.createContent > section > div > div > .categoryLabel:hover{
+  background-color: #dddddd;
+  cursor: pointer;
+}
+input[type="radio"]:checked + label { /* 라벨이 꼭 뒤에잇어야함 */
+  border: 3px solid #333; /* 선택된 상태에서 테두리 */
+  background-color: #f1f1f1;
 }
 /* *************************************************** */
 @font-face {

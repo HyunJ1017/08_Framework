@@ -1,161 +1,458 @@
-*{
-  border : none;
-}
-/************ 헤더 css ************/
-
+/* Font */
 @font-face {
   font-family: 'PartialSansKR-Regular';
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/PartialSansKR-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'NEXON Lv1 Gothic OTF';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Cafe24Nyangi-W-v1.0';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2410-1@1.0/Cafe24Nyangi-W-v1.0.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 
+/* Reset */
+* {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow-x: hidden; 
+  overflow-y: auto; 
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/************ 헤더 css ************/
 .header {
-  width: 100%;
+  width: calc(100% - 17px);
   background-color: white;
   padding: 10px 20px;
   box-sizing: border-box;
-  position: fixed; /* 헤더를 고정 */
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 100; /* 항상 다른 요소들보다 위에 보이도록 설정 */
-  height: 180px;
+  z-index: 100;
+  height: 220px;
   display: flex;
-  flex-direction: column; /* 상단 로고와 카테고리 탭들을 수직으로 배치 */
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.4);
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 
-/* 상단 로고 */
 .logo {
-  font-family: 'PartialSansKR-Regular'; /* 사용자 정의 폰트 사용 */
-  text-decoration: none; /* 로고에 밑줄 제거 */
-  color: black;
-  font-size: 50px; /* 로고 텍스트 크기 설정 */
-  margin-right: auto; /* 로고를 왼쪽으로 정렬 */
+  font-family: 'PartialSansKR-Regular';
+  text-decoration: none;
+  color: #fc9562;
+  font-size: 80px;
+  margin-right: auto;
+  width: 150px;
+  height: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 
-/* 로그인 버튼 및 검색창 */
+.logo img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
 
-
-.login-search-wrapper {
+.top-row {
   display: flex;
-  align-items: center; /* 수직 가운데 정렬 */
-  justify-content: flex-end; /* 오른쪽 끝으로 정렬 */
-  flex-grow: 1; /* 남은 공간을 차지 */
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
-.search {
-  display: flex;
-  align-items: center; /* 검색창 내 요소들을 수직 가운데 정렬 */
-  border: 1px solid black; /* 검색창 테두리 설정 */
-  padding: 10px;
-  margin-right: 10px; /* 검색창 오른쪽에 여백 추가 */
-}
-
-.headerSearchBtn{
+.mainText {
+  margin: 1px;
+  font-size: 4em;
+  font-family: 'Cafe24Nyangi-W-v1.0';
+  text-decoration: none;
   color: black;
+  position: absolute;
+  top: 30px; 
+  left: 50%; 
+  transform: translateX(-50%);
+  white-space: nowrap;
 }
 
-.search input {
-  border: none;
-  outline: none; /* 선택될 때 파란색 외곽선을 없앰 */
-  padding: 5px;
-  width: 200px; /* 검색창 입력 필드의 너비 설정 */
+/* 화면이 줄어들 때 위치와 크기 조정 */
+@media (max-width: 1825px) {
+  .mainText {
+    top: 0px; 
+    font-size: 30px;
+  }
 }
 
-.search button {
-  padding: 5px 10px;
-  background-color: #ccc; /* 검색 버튼 배경색 설정 */
-  border: none;
-  border-radius: 5px; /* 버튼 모서리 둥글게 설정 */
+.login-search-wrapper,
+.notification-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  white-space: nowrap;
+  overflow: visible;
+  flex-shrink: 0;
 }
 
-
-.headerLoginBtn{
+.headerSearchBtn, .headerLoginBtn {
+  font-family: 'NEXON Lv1 Gothic OTF';
+  font-size: 16px;
   text-decoration: none;
   color: black;
 }
 
+.headerSearchBtn {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.headerLoginBtn {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 15px;
+}
+
+.headerSearchBtn,
+.headerLoginBtn,
+.notification-btn {
+  font-size: 16px;
+  padding: 5px 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+}
 
 .loginBtnBox {
-  margin-left: 10px; /* 로그인 버튼 왼쪽 여백 추가 */
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex-shrink: 0;
 }
 
-
-.login button {
-  padding: 10px 20px;
+/* 알림 및 모임 생성 버튼 스타일 */
+.styled-notification-btn {
+  font-family: 'NEXON Lv1 Gothic OTF';
+  position: relative; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 14px;
-  border-radius: 10px;
-  border: 1px solid #ccc; /* 회색 테두리 설정 */
-  background-color: #f1f1f1; /* 연한 회색 배경색 설정 */
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+  background-color: rgb(28, 138, 106);
+  padding: 10px 15px;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.3s;
+  gap: 8px;
+  width: fit-content;
 }
 
-/* 카테고리 버튼 스타일 */
+.styled-btn i {
+  font-size: 16px;
+}
+
+.styled-notification-btn:hover {
+  background-color: rgb(12, 78, 60);
+  transform: scale(1.05);
+}
+
+/* 알림 수 표시 영역 */
+.notification-count-area {
+  position: absolute;
+  top: -5px;
+  left: -5px; 
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 15px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: red;
+  color: white;
+  z-index: 1;
+}
+
+/* 카테고리 버튼 */
 .bottom-row {
   width: 100%;
-  margin-top: 10px; /* 카테고리 탭과 로그인 부분 사이 여백 */
+  margin-top: 10px;
+  overflow: hidden;
 }
 
 .categories {
   display: flex;
-  justify-content: center; /* 카테고리 버튼들을 중앙에 배치 */
-  gap: 10px; /* 버튼 간 간격 설정 */
+  justify-content: center;
+  gap: 10px;
   margin-top: 10px;
+  overflow: hidden;
+  flex-wrap: nowrap;
 }
 
 .categories a {
   padding: 10px 20px;
-  border-radius: 10px; /* 버튼 모서리 둥글게 설정 */
-  text-decoration: none; /* 밑줄 제거 */
-  color: black; /* 버튼 텍스트 색상 설정 */
+  border-radius: 10px;
+  text-decoration: none;
+  color: black;
   font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+}
+
+.category-btn:hover {
+  background-color: #a7a6a6a2;
+}
+
+/************ 알림 리스트 ************/
+.notification-list {
+  position: absolute;
+  top: 105px;
+  right: 180px;
+  width: 380px;
+  height: 400px;
+  padding: 10px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  box-shadow: 0 0 0 1px #eee, 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: none;
+  z-index: 1501;
+  overflow: hidden;
+}
+
+.notification-show {
+  display: block !important;
+}
+
+.notification-item {
+  background-color: white;
+  margin: 10px 0;
+  padding: 8px;
+  border-radius: 5px;
+  width: 100%;
+  height: auto;
+  font-size: 14px;
+  letter-spacing: -0.5px;
+  position: relative;
+  list-style-type: none;
+}
+
+
+.not-read {
+  background-color: rgba(176, 208, 238, 0.7)
+}
+
+.read {
+  background-color: rgba(238, 238, 238, 0.5);
+}
+
+.notification-text {
+  font-family: 'NEXON Lv1 Gothic OTF';
+  display: flex;
+  width: 100%;
+  height: 100%;
+  gap: 10px;
+  cursor: pointer;
+  align-items: center;
+}
+
+.notification-text > img {
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+  flex-shrink: 0;
+}
+
+.notification-content-container {
+  height: 90%;
+}
+
+.notification-date {
+  font-size: 12px;
+  color: gray;
+}
+
+.notification-content {
+  width: auto;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.notification-delete {
+  position: absolute;
+  top: -5px;
+  right: 2px;
+  user-select: none;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.notification-delete:hover {
+  color: red;
+}
+
+.notification-item:hover > .notification-text {
+  text-decoration: underline;
+}
+
+
+/* 전체 읽음 버튼 */
+.all-read-btn {
+  background-color: rgb(28, 138, 106); /* 원하는 배경색 */
+  color: white;
+  padding: 8px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 5px 0; 
+}
+
+.all-read-btn:hover {
+  background-color: rgb(28, 138, 106); /* 호버 시 색상 */
+}
+
+/* 전체 삭제 버튼 */
+.all-delete-btn {
+  background-color: rgb(244, 54, 48); /* 원하는 배경색 */
+  color: white;
+  padding: 8px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 5px 0; /* 상하 여백 */
+  margin-left: 140px
+}
+
+.all-delete-btn:hover {
+  background-color: rgb(244, 54, 48); /* 호버 시 색상 */
 }
 
 /************ 메인 컨텐츠 css ************/
-
 .main {
-  padding-top: 200px; /* 고정된 헤더의 높이만큼 패딩을 추가 */
-  padding-bottom: 60px; /* 하단 푸터와의 공간 확보 */
+  font-family: 'NEXON Lv1 Gothic OTF';
+  padding-top: 200px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
+.centered-title {
+  text-align: center;
+  margin: 20px 0;
+  
+}
+
+
 .category-container {
-  display: flex;
-  flex-wrap: wrap; /* 화면 크기에 따라 줄바꿈 */
-  justify-content: space-between; /* 아이템 간격 균일하게 배분 */
-  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3열로 설정 */
+  gap: 20px; /* 각 요소 사이 간격 */
+  justify-items: center; /* 각 요소를 중앙에 정렬 */
+  width: 100%; /* 컨테이너가 부모 요소의 너비를 채우도록 설정 */
+  
 }
 
 .category-box {
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  width: 45%; /* 카테고리 박스의 너비 설정 */
-  margin-bottom: 20px; /* 각 박스 간의 간격 설정 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
-  display: flex;
+  border-radius: 15px;
+  width: 300px;
+  /* height: 160px;
+  margin-bottom: 20px; */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+  /* display: flex;
   padding: 15px;
-  align-items: center; /* 수직 가운데 정렬 */
+  align-items: center; */
+      
+}
+
+.category-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.recommendBtn{
+  color: rgb(244, 54, 48);
+  background-color: rgba(228, 87, 87, 0.582);
+  padding: 3px 8px;
+  border-radius: 12px;
+  margin-left: 5px;
+}
+
+.lastChatBtn{
+  color: white;
+  background-color: #53a4fc;
+  padding: 3px 8px;
+  border-radius: 12px;
+  margin-left: 5px;
 }
 
 .icon {
-  width: 20%; /* 아이콘의 너비 비율 설정 */
-  margin-right: 20px; /* 아이콘과 텍스트 간의 간격 설정 */
+  width: 100%;
+  height: 300px; /* 높이를 늘려서 이미지를 더 크게 표시 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box; 
+  overflow: hidden;
+  position: relative;
 }
 
 .icon img {
-  width: 100%;
-  height: auto;
-  border-radius: 50%; /* 아이콘 이미지를 둥글게 */
-  background-color: #eee; /* 아이콘 배경색 설정 */
+  width: 100%; /* 부모 요소 너비에 맞게 설정 */
+  height: 100%; /* 높이를 자동으로 설정하여 비율 유지 */
+  object-fit: cover; /* 이미지가 영역을 꽉 채우도록 설정 */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 이미지 중앙 정렬 */
 }
 
 .details {
-  width: 75%; /* 텍스트 상세 부분의 너비 비율 설정 */
-}
-
-.activity-name {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 5px;
+  padding: 20px;
 }
 
 .location {
@@ -164,195 +461,205 @@
   margin-bottom: 10px;
 }
 
-.participants {
-  display: flex;
-  align-items: center; /* 참여자 목록을 수직 가운데 정렬 */
+.categoryGroup-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #212121;
+  margin-bottom: 10px;
 }
 
-.participant {
+.group-name {
+  font-size: 16px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; 
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  
+}
+
+.participants {
+  display: flex;
+  align-items: center;
+}
+
+.profile-images {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.profile-image {
   width: 30px;
   height: 30px;
-  border-radius: 50%; /* 참여자 이미지를 둥글게 */
-  background-color: #ccc;
-  margin-right: 5px;
-  background-image: url('https://via.placeholder.com/30'); /* 대체 이미지 URL */
-  background-size: cover;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+/* 모임 생성 버튼 스타일 */
+.create-group-btn {
+  font-family: 'NEXON Lv1 Gothic OTF';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+  background-color: #fc9562;
+  padding: 10px 15px;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.3s;
+  gap: 8px;
+}
+
+.create-group-btn i {
+  font-size: 16px; /* 아이콘 크기 */
+}
+
+.create-group-btn:hover {
+  background-color: #c44c21;
+  transform: scale(1.05); /* 약간의 확대 효과 */
+}
+
+.headerSearchBtn {
+  font-family: 'NEXON Lv1 Gothic OTF';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  color: white;
+  background-color: #1082fd;
+  padding: 10px 15px;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.3s;
+  gap: 8px;
+}
+
+.headerSearchBtn:hover{
+  background-color: #0653a7;
+  transform: scale(1.05); /* 약간의 확대 효과 */
 }
 
 /************ 로그인 섹션 css ************/
 
 .login-section {
   text-align: center;
-  margin-bottom: 30px;
 }
 
 .login-box {
-  border: 1px solid black;
-  padding: 20px;
-  width: 50%;
-  margin: 0 auto; /* 가운데 정렬 */
+  width: 450px;
+  margin: 0 auto;
 }
 
 .login-box button {
   width: 100%;
-  padding: 15px;
   font-size: 16px;
 }
 
-.login-box hr {
-  margin: 10px 0;
-}
 
 .login-box article {
   display: flex;
   justify-content: space-around;
 }
 
-/************ 추천 모임 css ************/
-
-.group-section {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 두 개씩 나란히 표시 */
-  grid-gap: 30px; /* 그룹 간의 간격 설정 */
-  justify-items: center;
-}
-
-.group-box {
+.mainLoginButton,
+.pwjoin a {
+  width: 400px;
+  height: 125px;
   display: flex;
-  border: 1px solid black;
-  padding: 20px;
   align-items: center;
-  min-width: 100px;
-  max-width: 400px;
-  width: 100%; 
-}
-
-.group-image {
-  flex: 1;
+  justify-content: center;
   text-align: center;
-}
-
-.group-image img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover; /* 이미지를 박스 크기에 맞게 잘라 표시 */
-}
-
-.group-info {
-  flex: 3;
-  padding-left: 20px;
-}
-
-.group-info a {
-  text-decoration: none;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.group-info h1 {
   font-size: 16px;
-  margin: 10px 0;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0px;
+}
+.mainLoginButton{
+  margin-top: 30px;
+}
+
+.pwjoin {
+  display: flex;
+  align-items: center; /* 버튼을 중앙 정렬 */
 }
 
 /************ 팝업창 css ************/
-
-.popup {
-  display: none; 
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  width: 400px;
-  padding: 20px;
-  background-color: white;
-  border: 2px solid black;
-  z-index: 1000; /* 가장 위에 표시되도록 설정 */
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
+.popup-view, .popup-view * {
+  box-sizing: border-box;
 }
 
-.popup.active {
-  display: block; 
-}
-
-.popup .close-btn {
+.popup-view {
+  width: 302px;
+  height: 302px;
+  border: 1px solid rgb(0, 0, 0, 0.8);
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: grey;
+  top: 20vw;
+  left: 40vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.popup-view > .absoluteDiv {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 101;
+}
+
+.popup-underbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 32px;
+  padding: 3px;
+  background-color: rgb(0, 0, 0, 0.8);
   color: white;
-  border: none;
-  padding: 5px;
-  cursor: pointer; /* 버튼 모양 커서 */
+  z-index: 102;
 }
 
-.popup-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* 배경 반투명 검정색 */
-  z-index: 999;
-}
-
-.popup-overlay.active {
-  display: block;
-}
-
-/************ 반응형 처리 ************/
-
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column; /* 수직으로 배치 */
-    align-items: flex-start;
-    height: auto; /* 콘텐츠에 따라 자동 높이 */
-  }
-
-  .logo {
-    margin-bottom: 10px;
-  }
-
-  .login-search-wrapper {
-    justify-content: flex-start; /* 수평으로 배치 */
-    flex-direction: column; /* 검색창과 로그인 버튼을 수직으로 배치 */
-    align-items: flex-start;
-    width: 100%;
-  }
-
-  .categories {
-    flex-wrap: wrap; /* 줄바꿈 허용 */
-    justify-content: center; /* 중앙에 배치 */
-  }
+.display-non {
+  display: none !important;
 }
 
 /************ 위로가기 버튼 css ************/
-
 .scroll-top {
-  position: sticky;
-  text-align: end;
-  margin-top: 30px;
-  margin-right: 20px;
+  position: fixed; 
+  bottom: 20px; 
+  right: 20px; 
+  z-index: 1800;
 }
-
 .scroll-top button {
-  font-size: 20px;
-  padding: 10px;
+  font-size: 30px;
+  background: none;
+  border: none; 
+  box-shadow: none;
+  cursor: pointer; 
+  outline: none; 
+  color: black; 
 }
 
 /************ 푸터 css ************/
-
 footer {
   width: 100%;
   text-align: center;
   padding: 10px;
-  bottom: 0;
-  left: 0;
-  height: 50px; 
-  z-index: 10; /* 콘텐츠 위로 겹치지 않도록 설정 */
+  background-color: #fdf5f5; 
+  height: 50px;
+  margin-top: auto; 
+  font-size: 14px;
+  color: black;
 }
 
-footer nav a {
-  text-decoration: none;
-  color: black;
-  margin-right: 10px;
-}

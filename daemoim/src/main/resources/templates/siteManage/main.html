@@ -1,104 +1,29 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자 대시보드</title>
-    <link rel="stylesheet" href="styles.css">
+    <th:block th:replace="~{common/common}"></th:block>
+    <link rel="stylesheet" href="/css/siteManage/siteManage.css">
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 </head>
 
-
-<style>
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    display: flex;
-}
-
-.container {
-    display: flex;
-    width: 100%;
-}
-
-.sidebar {
-    width: 200px;
-    background-color: #333;
-    color: white;
-    height: 100vh;
-    padding: 20px;
-    position: fixed;
-}
-
-.sidebar ul {
-    list-style: none;
-}
-
-.sidebar ul li {
-    margin: 20px 0;
-}
-
-.sidebar ul li a {
-    color: white;
-    text-decoration: none;
-}
-
-.content {
-    margin-left: 220px;
-    padding: 20px;
-    width: 100%;
-}
-
-.section {
-    margin-bottom: 50px;
-}
-
-.card {
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table th, table td {
-    padding: 10px;
-    border: 1px solid #ccc;
-}
-
-form label {
-    display: block;
-    margin-top: 10px;
-}
-
-form input, form textarea, form button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-}
-
-form button {
-    background-color: #ffcc00;
-    border: none;
-    cursor: pointer;
-}
-</style>
+<body>
     <div class="container">
         <nav class="sidebar">
+
+            <button class="home-button" onclick="location.href='/'">
+                <i class="fa-solid fa-house fa-lg"></i>
+            </button>
             <ul>
                 <li><a href="#dashboard">대시보드</a></li>
                 <li><a href="#meetings">모임 조회</a></li>
                 <li><a href="#members">회원 조회</a></li>
-                <li><a href="#suspend">계정 정지</a></li>
+                <li><a href="#report">신고 목록</a></li>
+                <li><a href="#suspend">계정 정지 및 탈퇴</a></li>
+                <li><a href="/popup/manage">팝업창 관리</a></li>
             </ul>
         </nav>
 
@@ -107,10 +32,24 @@ form button {
             <section id="dashboard" class="section">
                 <h2>대시보드</h2>
                 <div class="card">
-                    <div>총 모임 수</div>
-                    <p>총 회원 수</p>
-                    <p>정지된 계정</p>
-                    <p>오늘의 새 가입</p>
+                    <table border="1">
+                        <tr>
+                            <td>총 모임 수</td>
+                            <td th:text="${countList.groupAllcount}">총모임수</td>
+                        </tr>
+                        <tr>
+                            <td>총 회원 수</td>
+                            <td th:text="${countList.memberAllcount}">총회원수</td>
+                        </tr>
+                        <tr>
+                            <td>정지된 계정</td>
+                            <td th:text="${countList.outMemberCount}">정지된계정</td>
+                        </tr>
+                        <tr>
+                            <td>오늘의 새 가입</td>
+                            <td th:text="${countList.todayEnrollCount}">오늘의새가입</td>
+                        </tr>
+                    </table>
                 </div>
             </section>
 
@@ -128,27 +67,40 @@ form button {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        <th:block th:if="${groupList}" th:each="group:${groupList}" th:object="${group}">
+                            <tr>
+                                <td th:text="*{groupNo}">#</td>
+                                <td th:text="*{groupName}">모임명</td>
+                                <td th:text="*{memberNickname}">주최자</td>
+                                <td th:text="*{memberCount}">참가자 수</td>
+                                <td th:text="*{groupDate}">생성일</td>
+                            </tr>
+                        </th:block>
+                        <th:block th:unless="${groupList}">
+                            <tr>
+                                <th>#</th>
+                                <th>모임명</th>
+                                <th>주최자</th>
+                                <th>참가자 수</th>
+                                <th>생성일</th>
+                            </tr>
+                        </th:block>
                     </tbody>
                 </table>
             </section>
 
-            <!-- 회원 조회 -->
+            <!-- 회원 조회 섹션 -->
             <section id="members" class="section">
-                <h2>회원 조회</h2>
+
+
+
+                <div class="header-with-button">
+                    <h2>회원 조회</h2>
+                    <!-- 전체보기 버튼 -->
+                    <button type="button" onclick="toggleRows()" id="toggleButton">전체보기</button>
+                </div>
+
+                <!-- 회원 조회 테이블 -->
                 <table>
                     <thead>
                         <tr>
@@ -160,56 +112,127 @@ form button {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        <th:block th:if="${memberList}" th:each="member, iter : ${memberList}" th:object="${member}">
+                            <tr th:classappend="${iter.count > 5} ? 'hidden-row'">
+                                <td th:text="*{memberNo}">회원번호</td>
+                                <td th:text="*{memberNickname}">이름</td>
+                                <td th:text="*{memberEmail}">이메일</td>
+                                <td th:text="*{enrollDate}">가입일</td>
+                                <td th:text="*{memberOutFl} == 'Y' ? '정지' : '가입'">상태</td>
+                            </tr>
+                        </th:block>
+                        <th:block th:unless="${memberList}">
+                            <tr>
+                                <td colspan="5">회원 정보가 없습니다.</td>
+                            </tr>
+                        </th:block>
                     </tbody>
                 </table>
+            </section>
+
+            <!-- 신고 목록 -->
+            <section id="report" class="section">
+                <h2>신고 목록</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>신고분류</th>
+                            <th>신고내용</th>
+                            <th>신고날짜</th>
+                            <th>신고 받은 계정 이메일</th>
+                            <th>신고조회 여부</th>
+                            <th>삭제</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 신고 목록 테이블 -->
+                        <th:block th:if="${reportList}" th:each="report, iterStat : ${reportList}"
+                            th:object="${report}">
+                            <tr th:data-report-list-no="*{reportListNo}" class="report-tr">
+                                <th th:text="${iterStat.index + 1}">#</th>
+                                <th
+                                    th:text="*{reportNo} == 1 ? '댓글' : (*{reportNo} == 2 ? '게시글' : (*{reportNo} == 3 ? '기타' : ''))">
+                                    신고분류</th>
+                                <th th:text="*{reportDetail}" th:data-report-list-no="*{reportListNo}"
+                                    class="reportDetail">신고내용
+                                </th>
+                                <th th:text="*{reportDate}">신고날짜</th>
+                                <th th:text="*{memberEmail}">신고 받은 계정 이메일</th>
+                                <th th:text="*{reportView} == 'N' ? 'X' : '확인 완료'" class="report-view-status"
+                                    th:data-report-list-no="*{reportListNo}">신고조회 여부</th>
+                                <th><button class="deleteReport" th:data-report-list-no="*{reportListNo}">삭제</button>
+                                </th>
+                            </tr>
+                        </th:block>
+
+                        <th:block th:unless="${reportList}">
+                            <tr>
+                                <th>#</th>
+                                <th>신고분류</th>
+                                <th>신고내용</th>
+                                <th>신고날짜</th>
+                                <th>신고조회 여부</th>
+                            </tr>
+                        </th:block>
+
+                    </tbody>
+                </table>
+                <!-- 모달창 -->
+                <div id="reportDetailModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                        <h2>신고 상세 내용</h2>
+                        <p id="modalReportDetail"></p>
+                    </div>
+                </div>
             </section>
 
             <!-- 계정 정지 -->
             <section id="suspend" class="section">
                 <h2>계정 정지</h2>
-                <form>
+                <form action="/siteManage/suspend" id="suspendForm" method="post">
                     <label for="email">이메일</label>
-                    <input type="email" id="email" placeholder="이메일을 입력하세요">
+                    <input type="email" name="email" id="email" placeholder="이메일을 입력하세요">
 
-                    <label for="days">정지 기간 (일)</label>
-                    <input type="number" id="days" placeholder="정지 기간 입력">
+                    <label for="years">정지 기간 (년)</label>
+                    <input type="number" name="years" id="years" placeholder="정지 기간 입력">
 
                     <label for="reason">정지 사유</label>
-                    <textarea id="reason" placeholder="정지 사유 입력"></textarea>
+                    <textarea name="reason" id="reason" placeholder="정지 사유 입력"></textarea>
 
                     <button type="submit">계정 정지</button>
                 </form>
+
+
+
             </section>
 
             <!-- 계정 탈퇴 -->
             <section id="withdrawal" class="section">
                 <h2>계정 탈퇴</h2>
-                <form>
+                <form action="/siteManage/resign" id="resignForm" method="post">
                     <label for="email">이메일</label>
-                    <input type="email" id="email" placeholder="이메일을 입력하세요">
+                    <input type="email" name="email" id="email2" placeholder="이메일을 입력하세요">
 
                     <label for="reason">탈퇴 사유</label>
-                    <textarea id="reason" placeholder="탈퇴 사유 입력"></textarea>
+                    <textarea name="reason" id="reason2" placeholder="탈퇴 사유 입력"></textarea>
 
                     <button type="submit">계정 탈퇴</button>
                 </form>
+
+
             </section>
+
         </main>
     </div>
-    <script src="script.js"></script>
+    <script src="/js/siteManage/siteManage.js"></script>
+    <script>
+        const alertMessage = /*[[${alertMessage}]]*/ '';
+        if (alertMessage) {
+            alert(alertMessage);
+        }
+    </script>
 </body>
+
 </html>

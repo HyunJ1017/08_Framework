@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.kh.daemoim.sse.mapper.SseMapper">
+   
+   <insert id="insertNotification"
+               parameterType="Notification"
+               useGeneratedKeys="true">
+
+      <selectKey order="BEFORE" resultType="_int"
+                      keyProperty="notificationNo">
+         SELECT SEQ_NOTIFICATION_NO.NEXTVAL FROM DUAL
+      </selectKey>
+      
+      INSERT INTO NOTIFICATION
+      VALUES (
+         #{notificationNo},
+         #{notificationContent},
+         DEFAULT, DEFAULT,
+         #{sendMemberNo},
+         #{receiveMemberNo},
+         #{notificationUrl},
+         #{groupNo}
+      )
+   </insert>
+   
+   <!-- <select id="selectReceiveMember" resultType="Notification">
+      SELECT
+         NOTIFICATION_NO,
+         NOTIFICATION_CONTENT,
+         NOTIFICATION_CHECK,
+         <![CDATA[   
+         CASE
+            WHEN CURRENT_DATE - NOTIFICATION_DATE < 1/24/60
+            THEN FLOOR( (CURRENT_DATE - NOTIFICATION_DATE) *60 *60 *24 ) || '초 전'
+            WHEN CURRENT_DATE - NOTIFICATION_DATE < 1/24
+            THEN FLOOR( (CURRENT_DATE - NOTIFICATION_DATE) *60 *24 ) || '분 전'
+            WHEN CURRENT_DATE - NOTIFICATION_DATE < 1
+            THEN FLOOR( (CURRENT_DATE - NOTIFICATION_DATE) *24 ) || '시간 전'
+            ELSE TO_CHAR(NOTIFICATION_DATE, 'YYYY-MM-DD')
+         END AS "NOTIFICATION_DATE",
+         ]]>
+         SEND_MEMBER_NO,
+         RECEIVE_MEMBER_NO,
+         NOTIFICATION_URL,
+         GROUP_NO
+      FROM NOTIFICATION
+      WHERE
+         RECEIVE_MEMBER_NO = #{receiveMemberNo}
+   </select> -->
+   
+   <select id="selectNotificationList" resultType="Notification">
+      SELECT
+         NOTIFICATION_NO,
+         NOTIFICATION_CONTENT,
+         NOTIFICATION_CHECK,
+         <![CDATA[   
+         CASE
+            WHEN CURRENT_DATE - NOTIFICATION_DATE < 1/24/60
+            THEN FLOOR( (CURRENT_DATE - NOTIFICATION_DATE) *60 *60 *24 ) || '초 전'
+            WHEN CURRENT_DATE - NOTIFICATION_DATE < 1/24
+            THEN FLOOR( (CURRENT_DATE - NOTIFICATION_DATE) *60 *24 ) || '분 전'
+            WHEN CURRENT_DATE - NOTIFICATION_DATE < 1
+            THEN FLOOR( (CURRENT_DATE - NOTIFICATION_DATE) *24 ) || '시간 전'
+            ELSE TO_CHAR(NOTIFICATION_DATE, 'YYYY-MM-DD')
+         END AS "NOTIFICATION_DATE",
+         ]]>
+         SEND_MEMBER_NO,
+         RECEIVE_MEMBER_NO,
+         NOTIFICATION_URL,
+         GROUP_NO
+      FROM NOTIFICATION
+      WHERE
+         RECEIVE_MEMBER_NO = #{receiveMemberNo}
+      ORDER BY NOTIFICATION_DATE DESC
+   </select>
+   
+   <select id="notReadCheck" resultType="_int">
+      SELECT COUNT(*)
+      FROM NOTIFICATION
+      WHERE RECEIVE_MEMBER_NO = #{receiveMemberNo}
+      AND NOTIFICATION_CHECK = 'N'
+   </select>
+   
+   <delete id="deleteNotification">
+       DELETE FROM NOTIFICATION
+       WHERE NOTIFICATION_NO = #{notificationNo}
+   </delete>
+   
+   <delete id="deleteAllNotification">
+      DELETE FROM NOTIFICATION
+      WHERE RECEIVE_MEMBER_NO = #{receiveMemberNo}
+   </delete>
+   
+   <update id="updateNotification">
+      UPDATE NOTIFICATION
+      SET NOTIFICATION_CHECK = 'Y'
+      WHERE NOTIFICATION_NO = #{notificationNo}
+   </update>
+   
+   <update id="updateAllNotification">
+      UPDATE NOTIFICATION
+      SET NOTIFICATION_CHECK = 'Y'
+      WHERE RECEIVE_MEMBER_NO = #{receiveMemberNo}
+   </update>
+  
+  
+  
+  
+  
+
+  
+</mapper>

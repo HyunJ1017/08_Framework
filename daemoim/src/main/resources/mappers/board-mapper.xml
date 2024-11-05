@@ -4,44 +4,60 @@
 
 	<resultMap type="Board" id="board_rm">
   
-  	<!-- id 태그 : PK 역할 필드, 컬럼 작성 태그(필수 작성) -->
-  	<id property="boardNo" column="BOARD_NO"/>
-  
-	<!-- collection 태그
-	select로 조회된 결과를 컬렉션(List)에 담아
-	지정된 필드에 세팅
+	  	<!-- id 태그 : PK 역할 필드, 컬럼 작성 태그(필수 작성) -->
+	  	<id property="boardNo" column="BOARD_NO"/>
+	  
+		<!-- collection 태그
+		select로 조회된 결과를 컬렉션(List)에 담아
+		지정된 필드에 세팅
+		
+		property : List를 담을 DTO의 필드명
+		select : 실행할 select의 id
+		column : 조회 결과 중 지정된 컬럼의 값을 파라미터로 전달
+		javaType : List(컬렉션)의 타입을 지정
+		ofType : List(컬렉션)의 제네릭(타입 제한) 지정
+		-->
+
+		 <collection 
+			property="imageList"
+			select="selectImageList"
+			column="BOARD_NO"
+			javaType="java.util.ArrayList"
+			ofType="BoardImg"
+		/>
+		  
+		<collection
+			property="commentList"
+			select="selectCommentList"
+			column="BOARD_NO"
+			javaType="java.util.ArrayList"
+			ofType="Comment"
+		/>
 	
-	property : List를 담을 DTO의 필드명
-	select : 실행할 select의 id
-	column : 조회 결과 중 지정된 컬럼의 값을 파라미터로 전달
-	javaType : List(컬렉션)의 타입을 지정
-	ofType : List(컬렉션)의 제네릭(타입 제한) 지정
-	-->
-	<collection 
-		property="imageList"
-		select="selectImageList"
-		column="BOARD_NO"
-		javaType="java.util.ArrayList"
-		ofType="BoardImg"
-	/>
 	
-	<collection 
-		property="commentList"
-		select="selectCommentList"
-		column="BOARD_NO"
-		javaType="java.util.ArrayList"
-		ofType="Comment"
-	/>
-	
-  </resultMap>
+  	</resultMap>
+  
+	<resultMap type="Schedule" id="schedule_rm">
+	  
+		<id property="scheduleNo" column="SCHEDULE_NO"/>
+		
+		<collection 
+			property="memberImages"
+			select="selectMemberImageList"
+			column="SCHEDULE_NO"
+			javaType="java.util.ArrayList"
+			ofType="Schedule"    
+		/>
+	</resultMap>
   
   
   
-  <!--  boardCode가 일치하는 게시글 중 삭제되지 않은 게시글 수 조회 -->
+  <!--  groupNo와 boardTypeCode가 일치하는 게시물 중 삭제되지 않은 게시글 수 조회 -->
   <select id="getListCount" resultType="_int">
   	SELECT COUNT(*)
   	FROM "BOARD"
   	WHERE BOARD_TYPE_CODE = #{boardTypeCode}
+  	AND GROUP_NO = #{groupNo}
   	AND BOARD_DEL_FL = 'N'
   </select>
   
@@ -59,7 +75,123 @@
 		 AND   C.COMMENT_DEL_FL = 'N') AS "COMMENT_COUNT",
 		 
 		(SELECT COUNT(*)
-		 FROM "BOARD_LIKE" L
+		 FROM "LIKE" L
+		 WHERE L.BOARD_NO = B.BOARD_NO) AS "LIKE_COUNT",
+		 
+
+		<![CDATA[ 
+		CASE 
+			WHEN CURRENT_DATE - BOARD_WRITE_DATE  < 1 / 24 / 60
+			THEN FLOOR( (CURRENT_DATE - BOARD_WRITE_DATE) 
+						* 24 * 60 * 60 ) || '초 전'
+						
+			WHEN CURRENT_DATE - BOARD_WRITE_DATE  < 1 / 24
+			THEN FLOOR( (CURRENT_DATE - BOARD_WRITE_DATE) 
+						* 24 * 60  ) || '분 전'
+			
+			WHEN CURRENT_DATE - BOARD_WRITE_DATE  < 1 
+			THEN FLOOR( (CURRENT_DATE - BOARD_WRITE_DATE) 
+						* 24 ) || '시간 전'
+						
+			ELSE TO_CHAR(BOARD_WRITE_DATE, 'YYYY-MM-DD')
+						
+		END AS "BOARD_WRITE_DATE"
+		]]>
+		
+		,
+
+		(SELECT BOARD_IMG_PATH || BOARD_IMG_RENAME
+		 FROM BOARD_IMG I 
+		 WHERE BOARD_IMG_ORDER = 0 
+		 AND I.BOARD_NO = B.BOARD_NO) AS "THUMBNAIL"
+	FROM
+		"BOARD" B
+	JOIN
+		"MEMBER" M ON (B.MEMBER_NO = M.MEMBER_NO)
+	WHERE 
+		BOARD_DEL_FL = 'N' 
+	<if test="boardTypeCode == 3">
+	AND
+		(SELECT COUNT(*)
+		 FROM BOARD_IMG I 
+		 WHERE BOARD_IMG_ORDER = 0 
+		 AND I.BOARD_NO = B.BOARD_NO) != 0
+	</if>
+	AND   
+		BOARD_TYPE_CODE = #{boardTypeCode} 
+	AND 
+		GROUP_NO = #{groupNo}    
+	ORDER BY 
+		RNUM DESC
+  
+  </select>
+  
+  <!-- 검색 조건이 맞는 게시글 수 조회 -->
+  <select id="getSearchCount" resultType="_int">
+  	SELECT COUNT(*)
+  	FROM "BOARD"
+  	
+  	<if test='key == "w"'>
+  		JOIN "MEMBER" USING(MEMBER_NO)
+  	</if>
+  	
+  	WHERE 
+  		BOARD_TYPE_CODE = #{boardTypeCode}
+	<if test="boardTypeCode == 3">
+	AND
+		(SELECT COUNT(*)
+		 FROM BOARD_IMG I 
+		 WHERE BOARD_IMG_ORDER = 0) != 0
+	</if> 
+  	AND 
+  		GROUP_NO = #{groupNo}
+  	AND 
+  		BOARD_DEL_FL = 'N'
+  	
+  	<choose>
+  	
+  		<!-- 제목 검색 -->
+  		<when test='key=="t"'>
+  			AND BOARD_TITLE LIKE '%' || #{query} || '%'
+  		</when>
+  		
+  		<!-- 내용 검색 -->
+		<when test='key == "c"'>
+			AND BOARD_CONTENT LIKE '%' || #{query} || '%'
+		</when>
+		
+		<!-- 제목 + 내용 검색 -->
+		<when test='key == "tc"'>
+			AND (
+				BOARD_TITLE LIKE '%' || #{query} || '%'
+			 	OR 
+			 	BOARD_CONTENT LIKE '%' || #{query} || '%'
+			)
+		</when>
+		
+		<!-- 작성자 검색 -->
+		<when test='key == "w"'>
+			AND MEMBER_NICKNAME LIKE '%' || #{query} || '%'
+		</when>
+		
+  	</choose>
+  </select>
+  
+  <!-- 검색 목록 조회 -->
+  <select id="selectSearchList" resultType="Board">
+  	SELECT 
+	ROW_NUMBER() OVER (ORDER BY BOARD_NO ASC) AS "RNUM",
+	BOARD_NO,
+	BOARD_TITLE,
+	READ_COUNT,
+	MEMBER_NICKNAME,
+		(SELECT COUNT(*) 
+		 FROM "COMMENT" C
+		 WHERE C.BOARD_NO = B.BOARD_NO
+		 AND   C.COMMENT_DEL_FL = 'N') AS "COMMENT_COUNT",
+		 
+		(SELECT COUNT(*)
+		 FROM "LIKE" L
 		 WHERE L.BOARD_NO = B.BOARD_NO) AS "LIKE_COUNT",
 		 
 		<![CDATA[ 
@@ -82,9 +214,9 @@
 		]]>
 		
 		,
-		(SELECT IMG_PATH || IMG_RENAME 
+		(SELECT BOARD_IMG_PATH || BOARD_IMG_RENAME 
 		 FROM BOARD_IMG I 
-		 WHERE IMG_ORDER = 0 
+		 WHERE BOARD_IMG_ORDER = 0 
 		 AND I.BOARD_NO = B.BOARD_NO) AS THUMBNAIL
 	FROM
 		"BOARD" B
@@ -93,11 +225,276 @@
 	WHERE 
 		BOARD_DEL_FL = 'N' 
 	AND   
-		BOARD_TYPE_CODE = #{boardTypeCode}     
+		BOARD_TYPE_CODE = #{boardTypeCode}
+	<if test="boardTypeCode == 3">
+	AND
+		(SELECT COUNT(*)
+		 FROM BOARD_IMG I 
+		 WHERE BOARD_IMG_ORDER = 0 
+		 AND I.BOARD_NO = B.BOARD_NO) != 0
+	</if>
+	AND 
+		GROUP_NO = #{groupNo}
+		
+	<choose>
+		<!-- 제목 검색인 경우 -->
+		<when test='key == "t"'>
+			AND BOARD_TITLE LIKE '%' || #{query} || '%'
+		</when>
+		
+		<!-- 내용 검색인 경우 -->
+		<when test='key == "c"'>
+			AND BOARD_CONTENT LIKE '%' || #{query} || '%'
+		</when>
+		
+		<!-- 제목 + 내용 검색인 경우 -->
+		<when test='key == "tc"'>
+			AND (
+				BOARD_TITLE LIKE '%' || #{query} || '%'
+			 	OR 
+			 	BOARD_CONTENT LIKE '%' || #{query} || '%'
+			)
+		</when>
+		
+		<!-- 작성자 검색인 경우 -->
+		<when test='key == "w"'>
+			AND MEMBER_NICKNAME LIKE '%' || #{query} || '%'
+		</when>
+		
+	</choose>
+		 
 	ORDER BY 
 		RNUM DESC
-  
   </select>
   
+  <!-- 게시글 상세 조회 -->
+  <select id="selectDetail" resultMap="board_rm">
+    SELECT 
+        BOARD_NO, BOARD_TITLE, BOARD_CONTENT, GROUP_NO,
+        BOARD_TYPE_CODE, READ_COUNT, B.MEMBER_NO,
+        MEMBER_NICKNAME, MEMBER_IMG,
+        
+        TO_CHAR(BOARD_WRITE_DATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') AS "BOARD_WRITE_DATE",
+        TO_CHAR(BOARD_UPDATE_DATE, 'YYYY"년" MM"월" DD"일" HH24:MI:SS') AS "BOARD_UPDATE_DATE",
+        
+        (SELECT COUNT(*) 
+         FROM "LIKE" L
+         WHERE L.BOARD_NO = #{boardNo}) AS "LIKE_COUNT",
+         
+        (SELECT BOARD_IMG_PATH || BOARD_IMG_RENAME
+         FROM BOARD_IMG I
+         WHERE I.BOARD_NO = #{boardNo}
+         AND BOARD_IMG_ORDER = 0
+         AND ROWNUM = 1) AS "THUMBNAIL_PATH",
+         
+        (SELECT COUNT(*) 
+         FROM "LIKE"
+         WHERE BOARD_NO = #{boardNo}
+         AND MEMBER_NO = #{memberNo}) AS "LIKE_CHECK"
+        
+    FROM 
+        "BOARD" B
+    JOIN 
+        "MEMBER" M ON (B.MEMBER_NO = M.MEMBER_NO)
+    WHERE 
+        GROUP_NO = #{groupNo}
+    AND 
+        BOARD_TYPE_CODE = #{boardTypeCode}
+    AND
+        BOARD_NO = #{boardNo}
+</select>
+
+
+  <!-- DB에서 모든 게시판 종류를 조회 -->
+  <select id="selectBoardTypeList" resultType="map">
+  	SELECT 
+  		T.BOARD_TYPE_CODE "boardTypeCode",
+  		T.BOARD_NAME "boardName"
+  	FROM "BOARD_TYPE" T
+  	ORDER BY T.BOARD_TYPE_CODE ASC
+  </select>
+
+  <!-- 특정 게시글의 이미지를 order 순서로 조회 -->
+  <select id="selectImageList" resultType="BoardImg">
+  	SELECT * 
+  	FROM 
+  		BOARD_IMG
+  	WHERE 
+  		BOARD_NO = #{boardNo}
+  	ORDER BY 
+  		BOARD_IMG_ORDER ASC
+  </select>
+  
+  <update id="updateReadCount">
+  	UPDATE 
+  		"BOARD"
+  	SET
+  		READ_COUNT = READ_COUNT + 1
+  	WHERE 
+  		BOARD_NO = #{boardNo}
+  </update>
+  
+  <select id="selectScheduleList" resultMap="schedule_rm">
+  	SELECT 
+  		S.SCHEDULE_NO, 
+  		LOCATION, 
+  		SCHEDULE_DATE, 
+  		LOCATION_ADDRESS,
+  		COST,
+  		GROUP_NO,
+  		(SELECT COUNT(MEMBER_NO)
+  		 FROM SCHEDULE_MEMBER M
+  		 WHERE S.SCHEDULE_NO = M.SCHEDULE_NO) AS COUNT
+	FROM SCHEDULE S
+	WHERE S.GROUP_NO = #{groupNo}
+	AND SCHEDULE_DATE > CURRENT_DATE
+  </select>
+  
+  
+  <select id="selectMemberImageList" resultType="string">
+ 	SELECT MB.MEMBER_IMG
+	FROM SCHEDULE_MEMBER M
+	JOIN MEMBER MB ON M.MEMBER_NO = MB.MEMBER_NO
+	WHERE M.SCHEDULE_NO = #{scheduleNo}
+  </select>
+  
+  <select id="checkSchedule" resultType="_int">
+  	SELECT COUNT(*) FROM SCHEDULE_MEMBER
+  	WHERE SCHEDULE_NO = #{scheduleNo}
+	AND MEMBER_NO = #{memberNo}
+	AND GROUP_NO = #{groupNo}
+  </select>
+  
+ 
+  <update id="attendSchedule">
+  	INSERT INTO SCHEDULE_MEMBER 
+	VALUES(#{scheduleNo}, #{memberNo}, #{groupNo})
+  </update>
+  
+
+  <update id="cancelSchedule">
+  	DELETE FROM SCHEDULE_MEMBER
+	WHERE SCHEDULE_NO = #{scheduleNo}
+	AND MEMBER_NO = #{memberNo}
+	AND GROUP_NO = #{groupNo}
+  </update>
+  
+  
+  <insert id="createSchedule">
+  	INSERT INTO SCHEDULE
+	VALUES(DAEMOIM.SEQ_SCHEDULE_NO.NEXTVAL, 
+		   #{location},
+		   TO_DATE(#{scheduleDate}, 'YYYY-MM-DD"T"HH24:MI'),
+		   #{location},
+		   #{cost},
+		   #{groupNo})
+  </insert>
+  
+  <select id="checkBoardLike" resultType="_int">
+  	SELECT 
+  		COUNT(*)
+  	FROM
+  		"LIKE"
+  	WHERE
+  		MEMBER_NO = #{memberNo}
+  	AND
+  		BOARD_NO = #{boardNo}
+  </select>
+  
+  <!-- 댓글 목록 조회(비동기) -->
+  <select id="selectCommentList" resultType="Comment">
+  	SELECT LEVEL, C.*
+  	FROM
+  		(SELECT 
+  			COMMENT_NO, COMMENT_CONTENT,
+  			TO_CHAR(COMMENT_WRITE_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') COMMENT_WRITE_DATE,
+  			BOARD_NO, MEMBER_NICKNAME, MEMBER_IMG, PARENT_COMMENT_NO, COMMENT_DEL_FL, MEMBER_NO
+  		FROM "COMMENT" 
+  		JOIN MEMBER  USING(MEMBER_NO)
+  		WHERE BOARD_NO = #{boardNo}) C
+  	WHERE COMMENT_DEL_FL = 'N'
+  	OR 0 != (SELECT COUNT(*) 
+  			 FROM "COMMENT" SUB
+  			 WHERE SUB.PARENT_COMMENT_NO = C.COMMENT_NO
+  			 AND COMMENT_DEL_FL = 'N')
+  	START WITH PARENT_COMMENT_NO IS NULL
+  	CONNECT BY PRIOR COMMENT_NO = PARENT_COMMENT_NO
+  	ORDER SIBLINGS BY COMMENT_NO
+  </select>
+
+	<!-- 현재 게시물이 속해있는 페이지 번호조회 -->
+	<select id="getCurrentPage" resultType="_int">
+		SELECT CEIL(RBUM/#{limit}) cp
+		FROM
+			(SELECT
+				ROW_NUMBER() OVER(ORDER BY BOARD_NO DESC) RBUM, BOARD_NO
+			FROM "BOARD"
+			
+			<!-- 작성자 검색인 경우 -->
+			<if test='key == "w"'>
+				JOIN "MEMBER" USING(MEMBER_NO)
+			</if>
+			
+			WHERE 
+				GROUP_NO = #{groupNo}
+			AND
+				BOARD_TYPE_CODE = #{boardTypeCode}
+			AND
+				BOARD_NO = #{boardNo}
+			AND
+				BOARD_DEL_FL = 'N'
+				
+			<choose>
+				<!-- 제목 검색인 경우 -->
+				<when test='key == "t"'>
+					AND BOARD_TITLE LIKE '%' || #{query} || '%'
+				</when>
+				
+							
+				<!-- 내용 검색인 경우 -->
+				<when test='key == "c"'>
+					AND BOARD_CONTENT LIKE '%' || #{query} || '%'
+				</when>
+				
+				<!-- 제목 + 내용 검색인 경우 -->
+				<when test='key == "tc"'>
+					AND (
+						BOARD_TITLE LIKE '%' || #{query} || '%'
+					 	OR 
+					 	BOARD_CONTENT LIKE '%' || #{query} || '%'
+					)
+				</when>
+				<!-- 작성자 검색인 경우 -->
+				<when test='key == "w"'>
+					AND MEMBER_NICKNAME LIKE '%' || #{query} || '%'
+				</when>
+			</choose>
+			)
+	</select>
+
+
+	<!-- 좋아요 DB에 저장 -->
+	<insert id="insertBoardLike">
+		INSERT INTO "LIKE" (MEMBER_NO, BOARD_NO)
+		VALUES(#{memberNo}, #{boardNo})
+	</insert>
+	
+	
+	
+	
+	<!-- 좋아요 DB에서 삭제 -->
+	<delete id="deleteBoardLike">
+		DELETE FROM "LIKE"
+		WHERE MEMBER_NO = #{memberNo}
+		AND   MEMBER_NO = #{boardNo}
+	</delete>
+	
+	<select id="getLikeCount">
+		SELECT COUNT(*)
+		FROM "LIKE"
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+
+
   
 </mapper>

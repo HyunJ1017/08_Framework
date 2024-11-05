@@ -1,0 +1,128 @@
+@font-face {
+  font-family: 'NEXON Lv1 Gothic OTF';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+body {
+  font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f9f9f9;
+}
+
+.findPwPageTitle {
+  text-align: center;
+  font-size: 32px;
+  color: #fc9562;
+  margin-bottom: 40px;
+}
+
+.pwSearch {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.finalBox {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.designId, .maxBox {
+  width: 100%;
+}
+
+.IdTitle, .emailDesign {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+.searchPw-input-area {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+input[type="text"], button {
+  height: 42px;
+  font-size: 16px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 0 10px;
+  border: 1px solid #ddd;
+}
+
+input[type="text"]:focus {
+  border-color: #fc9562;
+  outline: none;
+}
+
+button {
+  background-color: #fc9562;
+  color: #ffffff;
+  padding: 0 20px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #e57c49;
+}
+
+.required {
+  color: red;
+  font-weight: bold;
+}
+
+.findPw-message {
+  color: #333;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.checkPwAuthKeyBtn {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  gap: 10px;
+}
+
+#authKey {
+  padding: 0 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  height: 42px;
+}
+
+#authKey:focus {
+  border-color: #fc9562;
+  outline: none;
+}
+
+.midlebox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

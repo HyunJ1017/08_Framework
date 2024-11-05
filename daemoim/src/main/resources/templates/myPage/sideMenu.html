@@ -1,21 +1,19 @@
+<link rel="stylesheet" href="/css/myPage/sideMenu.css">
+<section class="left-side" id="side-menu">
 
-<section class="left-side">
-  사이드 메뉴
+  <header>
+    <div>
+      <a href="/" class="logo"><img src="/images/mainHeader/logo.png"></a>
+    </div>
+     </header>
 
-  <ul class="list-group">
-  
-    <li>
+    <div class="sidebar">
       <a href="/myPage/info">내 정보</a>
-    </li>
-
-    <li>
+      <a href="/myPage/myGroup">가입한 모임</a>
       <a href="/myPage/changePw">비밀번호 변경</a>
-    </li>
-
-    <li>
       <a href="/myPage/withdrawal">회원 탈퇴</a>
-    </li>
-
-  </ul>
-
+   </div>
 </section>
+
+<!--  <th:block th:if= "${session.loginMember?.memberNo}==${board.memberNo}">
+        로그인회원과 세션에 로그인이 일치해야 띄워주는 코드  -->

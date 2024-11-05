@@ -17,18 +17,19 @@ public class MyPage {
 
 	private int memberNo;
 	private String memberEmail;
-	private String memberDomain;
-	private String memberFullEmail;
 	private String memberIm;
 	private String memberKind;
 	private String memberId;
 	private String memberPw;
 	private String memberNickname;
 	private String memberTel;
-	private String memberAddress;
-	private String profileImg;
+	private String memberImg;
 	private String enrollDate;
 	private String memberDelFl;
 	private int authority;
+	
+	private int groupNo;
+	private int boardTypeCode;
+	private int boardNo;
 
 }

@@ -65,3 +65,26 @@ body>main #dustSearch:hover{
   border-collapse: collapse;
   text-align: center;
 }
+
+
+.result-container {
+  display: flex;
+  /* gap: 20px; */
+  border: 2px solid black;
+  width: 500px;
+  height: 150px;
+  padding: 20px;
+  margin-top: 10px;
+  box-sizing: border-box;
+}
+.result-row {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+.result-row {
+  text-align: center;
+}
+.result-row > div:first-child {
+  font-size: 3em;
+}

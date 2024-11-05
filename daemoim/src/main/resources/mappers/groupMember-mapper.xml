@@ -31,9 +31,17 @@
 			MEMBER_DEL_FL = 'N'
 		AND	MEMBER_OUT_FL = 'N'
 		AND MG.GROUP_NO = #{groupNo}
-		AND MG.GROUP_NO = #{groupNo}
 		AND MG.MEMBER_GROUP_DEL_FL = 'N'
 		AND MG.MEMBER_GROUP_BAN = 'N'
+		<choose>
+			<when test='key== "i"'>
+				AND MEMBER_ID LIKE '%' || #{query} || '%'
+			</when>
+			<when test='key== "n"'>
+				AND MEMBER_NICKNAME LIKE '%' || #{query} || '%'
+			</when>
+		</choose>
+		
 		<choose>
 			<when test="order== 1">
 				ORDER BY MEMBER_ID ASC
@@ -78,7 +86,12 @@
 	
 	<!-- 가입신청 수 확인 -->
 	<select id="getInviteCount">
-		SELECT COUNT(*) FROM "INVITE" WHERE GROUP_NO = #{groupNo}
+		SELECT COUNT(*)
+		FROM "INVITE" I
+		JOIN "MEMBER" M ON(I.MEMBER_NO = M.MEMBER_NO)
+		WHERE I.GROUP_NO = #{groupNo}
+		AND	M.MEMBER_DEL_FL = 'N'
+		AND	M.MEMBER_OUT_FL = 'N'
 	</select>
 	
 	<!-- 가입신청목록 확인 -->
@@ -94,7 +107,7 @@
 			"INVITE" I
 		JOIN "MEMBER" M ON(I.MEMBER_NO = M.MEMBER_NO)
 		WHERE
-			GROUP_NO = #{groupNo}
+			I.GROUP_NO = #{groupNo}
 		AND	M.MEMBER_DEL_FL = 'N'
 		AND	M.MEMBER_OUT_FL = 'N'
 		AND I.INVITE_DEL_FL = 'N'

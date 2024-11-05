@@ -1,0 +1,74 @@
+/* 색상 팔레트 */
+:root {
+  --primary-color: #333;
+  --accent-color: #fc9562;
+  --background-color: #f9f9f9;
+  --text-color: #333;
+  --link-hover-color: #e28353;
+}
+
+/* 기본 페이지 설정 */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color);
+  display: flex;
+}
+
+/* 사이드 메뉴 스타일 */
+#side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 255px;
+  height: 100vh;
+  background-color: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  box-sizing: border-box;
+}
+
+/* 로고 스타일 */
+#side-menu header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+#side-menu .logo img {
+  width: 150px;
+  height: auto;
+}
+
+/* 사이드바 링크 스타일 */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+}
+
+.sidebar a {
+  display: block;
+  padding: 15px;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.sidebar a:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+/* 링크 간의 간격 */
+.sidebar a:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}

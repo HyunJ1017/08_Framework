@@ -1,79 +1,76 @@
+// 페이지 이동을 위한 버튼 모두 얻어오기
+const pageNoList = document.querySelectorAll(".pagination a");
 
+// 페이지 이동 버튼이 클릭 되었을 때
+pageNoList?.forEach((item, index) => {
+  item.addEventListener("click", e => {
+    e.preventDefault();
+    
+    if(item.classList.contains("current")) return;
 
-let currentPage = 1;
-const photosPerPage = 4;
-let allPhotos = [];
+    let pathname = location.pathname;
 
-function createPhotoElement(photo) {
-  return `
-                <div class="photo-item" data-id="${photo.id}">
-                    <img src="https://via.placeholder.com/300x300?text=Photo+${photo.id}" alt="${photo.title}">
-                    <div class="photo-info">
-                        <h3>${photo.title}</h3>
-                        <p>댓글: ${photo.commentCount} | 날짜: ${photo.date} | 좋아요: ${photo.likes}</p>
-                    </div>
-                </div>
-            `;
-}
+    switch(item.innerText){
+      case '<<': pathname += "?cp=1";                       break;
+      case '<' : pathname += "?cp=" + pagination.prevPage;  break;
+      case '>' : pathname += "?cp=" + pagination.nextPage;  break;
+      case '>>': pathname += "?cp=" + pagination.maxPage;   break;
+      default  : pathname += "?cp=" + item.innerText;
+    }
 
-function loadPhotos() {
-  // *** 수정 필요 ***
-  // 실제 구현에서는 여기서 서버에 API 요청을 보내야
-  // 이 예제에서는 더미 데이터를 사용
-  const dummyData = Array(photosPerPage).fill().map((_, index) => ({
-    id: (currentPage - 1) * photosPerPage + index + 1,
-    title: `사진 ${(currentPage - 1) * photosPerPage + index + 1}`,
-    commentCount: Math.floor(Math.random() * 10),
-    date: new Date().toLocaleDateString(),
-    likes: Math.floor(Math.random() * 100)
-  }));
+    const params = new URLSearchParams(location.search);
+    const key = params.get("key");
+    const query = params.get("query");
 
-  allPhotos = [...allPhotos, ...dummyData];
+    if(key !== null){
+      pathname += `&key=${key}&query=${query}`;
+    }
 
-  const gallery = document.getElementById('photo-gallery');
-  dummyData.forEach(photo => {
-    gallery.insertAdjacentHTML('beforeend', createPhotoElement(photo));
+    location.href = pathname;
   });
+});
 
-  currentPage++;
+// 검색 기록 유지
+(() => {
+  const params = new URLSearchParams(location.search);
+  const key = params.get("key");
+  const query = params.get("query");
 
-  // 새로 추가된 요소들에 대해 클릭 이벤트 리스너를 추가합니다.
-  addClickListeners();
-}
+  if(key === null) return;
 
-function addClickListeners() {
-  const photoItems = document.querySelectorAll('.photo-item');
-  photoItems.forEach(item => {
-    item.addEventListener('click', function () {
-      const photoId = this.getAttribute('data-id');
-      window.location.href = `boardDetail.html?id=${photoId}`;
-    });
+  document.querySelector("#searchQuery").value = query;
+
+  const options = document.querySelectorAll("#searchKey > option");
+  options.forEach(op => {
+    if(op.value === key){
+      op.selected = true;
+      return;
+    }
   });
-}
+})();
 
-function searchPhotos(position) {
-  const searchTerm = document.getElementById(`${position}-search`).value.toLowerCase();
-  const filteredPhotos = allPhotos.filter(photo =>
-    photo.title.toLowerCase().includes(searchTerm)
-  );
+// 글쓰기 버튼 클릭 시
+const insertBtn = document.querySelector("#insertBtn");
 
-  const gallery = document.getElementById('photo-gallery');
-  gallery.innerHTML = ''; // 기존 갤러리 내용을 지움
+insertBtn?.addEventListener("click", () => {
+  const groupNo = location.pathname.split("/")[2];
+  const boardTypeCode = location.pathname.split("/")[3];
+  location.href = `/editBoard/${groupNo}/${boardTypeCode}/insert`;
+});
 
-  filteredPhotos.forEach(photo => {
-    gallery.insertAdjacentHTML('beforeend', createPhotoElement(photo));
-  });
-
-  addClickListeners();
-}
-
-document.getElementById('load-more').addEventListener('click', loadPhotos);
-
-// 초기 로드
-loadPhotos();
-
-// 게시글 등록 버튼 클릭 이벤트
-document.getElementById('add-post-btn').addEventListener('click', function () {
-  alert('게시글 등록 페이지로 이동합니다.');
-  // 여기에 게시글 등록 페이지로 이동하는 로직을 추가하세요.
+// 스크롤 시 헤더 고정
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('header');
+  const footer = document.querySelector('footer');
+  
+  if(header && footer) {
+    header.style.position = 'fixed';
+    header.style.top = '0';
+    header.style.width = '100%';
+    header.style.zIndex = '1000';
+    
+    footer.style.position = 'fixed';
+    footer.style.bottom = '0';
+    footer.style.width = '100%';
+  }
 });

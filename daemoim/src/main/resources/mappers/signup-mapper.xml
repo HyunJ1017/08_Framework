@@ -11,7 +11,7 @@
   	FROM 
   		"MEMBER"
   	WHERE 
-  		MEMBER_EMAIL = #{memberFullEmail}
+  		MEMBER_EMAIL = #{email}
   	AND
   		MEMBER_DEL_FL = 'N'
   	
@@ -40,6 +40,32 @@
   		"MEMBER"
   	WHERE 
   		MEMBER_NICKNAME = #{nickname}
+  	AND
+  		MEMBER_DEL_FL = 'N'
+  </select>
+  
+
+  <!-- DB에 등록 -->
+	<insert id="signUp">
+		INSERT INTO "MEMBER"
+	VALUES(
+		SEQ_MEMBER_NO.NEXTVAL, 
+		#{memberId},
+		#{memberPw},
+		#{memberEmail},
+		#{memberNickname}, 
+		#{memberTel}, 
+		 DEFAULT,DEFAULT, DEFAULT,NULL,NULL, DEFAULT)
+	</insert>
+  
+  <!-- 전화번호 체크  -->
+  <select id="telCheck" resultType="_int">
+  	SELECT
+  		COUNT(*)
+  	FROM 
+  		"MEMBER"
+  	WHERE 
+  		MEMBER_TEL = #{tel}
   	AND
   		MEMBER_DEL_FL = 'N'
   </select>

@@ -1,0 +1,244 @@
+/* 색상 팔레트 */
+:root {
+  --primary-color: #333;
+  --accent-color: #fc9562;
+  --background-color: #f9f9f9;
+  --text-color: #333;
+  --button-color: #fc9562;
+  --button-hover-color: #e28353;
+  --input-border-color: #ddd;
+  --input-background-color: #f1f1f1;
+  --input-text-color: #555;
+}
+
+/* 기본 페이지 설정 */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding-bottom: 70px; /* 푸터 공간 확보 */
+  box-sizing: border-box;
+}
+
+/* 사이드 메뉴 */
+#sideMenu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 255px;
+  height: calc(100vh - 70px); /* 푸터와 겹치지 않도록 조정 */
+  background-color: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  padding-top: 20px;
+  z-index: 1;
+  overflow-y: auto; /* 내용이 길어질 경우 스크롤 */
+}
+
+/* 프로필 컨테이너 중앙 정렬 */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 700px;
+  width: 100%;
+  margin-left: 275px; /* 사이드 메뉴 확보 공간 */
+  padding: 28px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* 타이틀 */
+.myPage-title {
+  font-size: 34px;
+  color: var(--primary-color);
+  margin-bottom: 18px;
+}
+
+/* 서브 텍스트 */
+.myPage-subject {
+  font-size: 20px;
+  color: var(--primary-color);
+  margin-bottom: 24px;
+}
+
+/* 프로필 이미지 */
+.profile-image-area {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.profile-image-area img {
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  border: 5px solid var(--accent-color);
+}
+
+/* 버튼 영역 */
+.profile-btn-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+/* 파일 선택 버튼 스타일 */
+.profile-btn-area label {
+  display: inline-block;
+  font-size: 18px;
+  color: white;
+  background-color: var(--button-color);
+  padding: 10px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.profile-btn-area label:hover {
+  background-color: var(--button-hover-color);
+}
+
+/* 숨겨진 파일 입력 요소 */
+.profile-btn-area input[type="file"] {
+  display: none;
+}
+
+/* 변경하기 버튼 */
+.profile-btn-area button {
+  background-color: var(--button-color);
+  color: white;
+  padding: 10px 24px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.profile-btn-area button:hover {
+  background-color: var(--button-hover-color);
+}
+
+/* 닉네임과 자기소개 */
+.myPage-row,
+.profile-details {
+  width: 100%;
+  max-width: 490px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.myPage-row label,
+.profile-introduce-section label {
+  font-weight: bold;
+  color: var(--primary-color);
+  font-size: 18px;
+}
+
+/* 입력 필드 스타일 */
+.myPage-row input{
+  padding: 12px;
+  font-size: 18px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+  width: 100%;
+  max-width: 100%;
+  height: auto; /* 높이는 자동 */
+  background-color: var(--input-background-color);
+  color: var(--input-text-color);
+  box-sizing: border-box;
+}
+
+.profile-introduce-section input {
+  padding: 12px;
+  font-size: 18px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+  width: 100%;
+  max-width: 100%;
+  height: 120px; /* 높이를 늘려서 여러 줄의 텍스트가 표시되도록 함 */
+  background-color: var(--input-background-color);
+  color: var(--input-text-color);
+  box-sizing: border-box;
+  overflow-y: auto; /* 텍스트가 넘칠 경우 스크롤 가능 */
+  white-space: pre-wrap; /* 텍스트 줄바꿈 허용 */
+}
+
+
+.myPage-row input::placeholder,
+.profile-introduce-section input::placeholder {
+  color: #999;
+}
+
+/* 푸터 스타일링 */
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0;
+  background-color: #f0f0f0;
+  width: 100%;
+  font-size: 18px;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  left: 0;
+}
+
+/* 변경 버튼을 감싸는 레이블 스타일 */
+.changeBtnDesign {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* 변경 버튼 스타일 */
+.changeBtnDesign button {
+  background-color: var(--button-color); /* 메인 버튼 색상 */
+  color: white;
+  padding: 12px 30px; /* 패딩으로 버튼 크기 조정 */
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+}
+
+/* 버튼 호버 효과 */
+.changeBtnDesign button:hover {
+  background-color: var(--button-hover-color);
+  transform: translateY(-2px); /* 마우스를 올렸을 때 살짝 떠오르는 효과 */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* 그림자 강화 */
+}
+
+/* 버튼 클릭 효과 */
+.changeBtnDesign button:active {
+  transform: translateY(0); /* 클릭할 때 위치 초기화 */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* 클릭 시 그림자 감소 */
+}
+
+.memberIm {
+  padding: 12px;
+  font-size: 18px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  background-color: var(--input-background-color);
+  color: var(--input-text-color);
+  box-sizing: border-box;
+  resize: none; /* 크기 조절 비활성화 */
+  overflow-y: auto; /* 텍스트가 넘칠 경우 스크롤 가능 */
+}

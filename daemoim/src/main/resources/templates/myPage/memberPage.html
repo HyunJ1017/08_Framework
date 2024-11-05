@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[[${userInfo.memberNickname}]] 님의 페이지</th:block= ></title>
+  <link rel="stylesheet" href="/css/myPage/memberInfo.css">
+</head>
+<header>
+  <div>
+  <a href="/" class="logo"><img src="/images/mainHeader/logo.png"></a>
+</div>
+</header>
+
+
+<body>
+  <section id="sideMenu"> 
+  </section>
+  <main class="profile-container">
+    <h1 class="myPage-title">[[${userInfo.memberNickname}]] 님의 페이지</h1>
+
+    <div class="profile-image-area">
+      <img th:with="user=#{user.default.image}" 
+         th:src="${session.loginMember.memberImg}" 
+           id="profileImg">
+    </div>
+
+    <div class="myPage-row">
+      <label for="memberNickname">닉네임</label>
+      <input type="text" name="memberNickname" maxlength="10" id="memberNickname" th:value="${session.loginMember.memberNickname}">
+    </div>
+
+
+   <div class="profile-details">
+        <div class="profile-introduce-section">
+          <label for="memberIm">자기소개</label><br>
+          <textarea th:text="${session.loginMember.memberIm}" id="memberIm" class="memberIm" placeholder="자기소개 입력" name="memberIm" rows="5" cols="30"></textarea>
+        </div>
+      </div>
+      
+  </main>
+  <script src="/js/myPage/memberInfo.js"></script>
+</body>
+
+</html>

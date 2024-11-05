@@ -1,50 +1,146 @@
-.searchBox {
+html, body {
+  height: 100%;
+  margin: 0;
   display: flex;
-  justify-content: center;
-  align-items: center; 
-  height: 100vh; 
+  flex-direction: column;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000; 
+}
+
+.main {
+  flex-grow: 1;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-bottom: 60px; 
+}
+.searchBox {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  margin-top: 20px;
 }
 
 .searchBox form {
   display: flex;
-  flex-direction: column;
+  justify-content: center; 
+  align-items: center;
+  gap: 10px; 
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 3px solid black;
+  padding: 10px;
+  margin-right: 10px;
+  flex-grow: 1; 
+}
+
+.searchBox input {
+  border: none;
+  outline: none;
+  padding: 5px;
+  width: 100%; 
+}
+
+
+
+
+
+/************ 추천 모임 크기 조정 ************/
+
+.activity-section {
+  width: 100%;
+  max-width: 1200px; 
+  margin-top: 30px;
+  padding: 20px;
+}
+
+.category-container {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: space-between; /* 아이템 간격 균일하게 배분 */
+  width: 100%;
+  gap: 20px; /* 아이템 간격 */
+  padding: 20px;
+}
+
+.category-box {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: calc(50% - 20px); /* 두 개씩 배치하고 간격을 고려한 너비 설정 */
+  max-width: 500px; /* 최대 너비 설정 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  padding: 15px;
   align-items: center;
 }
 
-.dropdown {
-  display: none;
-  position: absolute;
-  background-color: white;
-  border: 1px solid #ddd;
+.icon {
+  width: 20%; /* 아이콘의 너비 비율 설정 */
+  margin-right: 20px; /* 아이콘과 텍스트 간의 간격 설정 */
+}
+
+.icon img {
+  width: 100%;
+  height: auto;
+  border-radius: 5%;
+  background-color: #eee;
+}
+
+.details {
+  width: 75%; 
+}
+
+.activity-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.group-name {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.location {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.participants {
+  display: flex;
+  align-items: center;
+}
+
+.participants i {
+  margin-right: 5px;
+}
+
+footer {
+  margin-top: auto;
+  width: 100%;
+  text-align: center;
   padding: 10px;
-  z-index: 1;
+  bottom: 0;
+  left: 0;
+  height: 50px; 
 }
 
-/* 드롭다운 메뉴 활성화 시 */
-.dropdown.active {
-  display: block;
-}
+/************ 반응형 처리 ************/
 
-.filter-container {
-  position: relative;
-  margin-top: 10px;
-}
-
-.filter-icon {
-  cursor: pointer;
-}
-
-.dropdown a {
-  display: block;
-  padding: 5px 10px;
-  text-decoration: none;
-  color: black;
-}
-
-.dropdown a:hover {
-  background-color: #f1f1f1;
-}
-
-button[type="submit"] {
-  margin-top: 10px; /* 검색 버튼과 검색창 사이의 간격 */
+@media (max-width: 768px) {
+  .category-box {
+    width: 100%; 
+  }
 }

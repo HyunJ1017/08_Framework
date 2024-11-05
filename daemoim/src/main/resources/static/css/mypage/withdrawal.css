@@ -1,0 +1,147 @@
+/* 색상 팔레트 */
+:root {
+  --primary-color: #333;
+  --accent-color: #fc9562;
+  --background-color: #f9f9f9;
+  --text-color: #333;
+  --button-color: #fc9562;
+  --button-hover-color: #e28353;
+  --input-border-color: #ddd;
+}
+
+/* 기본 페이지 설정 */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+/* 사이드 메뉴 */
+#sideMenu {
+  width: 255px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+/* 메인 콘텐츠 */
+.withdrawal-content {
+  margin-left: 275px;
+  width: calc(100% - 275px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+/* 타이틀 */
+.withdrawalTitleName h3 {
+  font-size: 36px;
+  font-weight: bold;
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* 약관 프레임 */
+.withdrawal-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+.withdrawalIframBox {
+  width: 100%;
+}
+
+.withdrawal-frame iframe {
+  width: 100%;
+  height: 250px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.agreement {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+.agreement input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.3);
+}
+
+/* 비밀번호 입력 필드 */
+.withdrawal-box {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.myPage-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.myPage-row label {
+  font-weight: bold;
+  color: var(--primary-color);
+  font-size: 18px;
+}
+
+.myPage-row input[type="password"] {
+  padding: 15px;
+  font-size: 18px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+  width: 70%;
+  box-sizing: border-box;
+}
+
+/* 탈퇴 버튼 */
+.withdrawalBtnbox {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.withdrawalBtn {
+  background-color: var(--button-color);
+  color: white;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 200px;
+  text-align: center;
+}
+
+.withdrawalBtn:hover {
+  background-color: var(--button-hover-color);
+}

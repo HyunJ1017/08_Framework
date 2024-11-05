@@ -4,7 +4,11 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import edu.kh.daemoim.board.dto.Board;
+import edu.kh.daemoim.board.dto.Comment;
+import edu.kh.daemoim.groupMain.dto.Schedule;
 import edu.kh.daemoim.groupManage.dto.GroupManageDto;
+import edu.kh.daemoim.groupManage.dto.GroupMemberManageDto;
 import edu.kh.daemoim.groupManage.dto.ManageCategory;
 
 public interface GroupManageService {
@@ -46,5 +50,51 @@ public interface GroupManageService {
 	 * @return
 	 */
 	int updateGroup(GroupManageDto updateGroup, List<MultipartFile> images, List<Integer> deleteOrderList);
+
+	/** [인터페이스] 최근작성댓글 얻어오기
+	 * @param groupNo
+	 * @return
+	 */
+	List<Comment> getRecentComments(String groupNo);
+
+	
+	/**공시글 불러오기
+	 * @param groupNo
+	 * @return
+	 */
+	List<Board> getOrderBoard(int groupNo);
+
+	/** 최근글 불러오기
+	 * @param groupNo
+	 * @return
+	 */
+	List<Board> getRecentBoard(int groupNo);
+
+	/** 인기글 불러오기
+	 * @param groupNo
+	 * @param period
+	 * @return
+	 */
+	List<Board> getPopularBoard(int groupNo, int period);
+
+	/** [인터페이스] 모임상단이미지
+	 * @param groupNo
+	 * @return
+	 */
+	String getGroupHeaderImg(String groupNo);
+
+	/** 멤버리스트 호출
+	 * @param groupNo
+	 * @return
+	 */
+	List<GroupMemberManageDto> getMemberList(int groupNo);
+
+	// 일정호출
+	List<Schedule> getScheduleList(int groupNo);
+
+	// 일정회원불러오기
+	List<Integer> searchScheduleMember(int scheduleNo);
+
+
 
 }

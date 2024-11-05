@@ -71,8 +71,14 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 		
 		// 전체멤버 상세조회
 		List<GroupMemberManageDto> memberList = mapper.getInviteMembers(paramMap, rowBounds);
-
+		
+		
 		Map<String, Object> map = new HashMap<>();
+		map.put("memberCount", memberAllCount);
+		
+		// 전체멤버수가 필요해서 다시 조회
+		memberAllCount = mapper.getMemberCount((int)paramMap.get("groupNo"));
+		
 		map.put("memberAllCount", memberAllCount);
 		map.put("memberList", memberList);
 		map.put("pagination", pagination);
@@ -121,7 +127,13 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 		// 차단멤버 상세조회
 		List<GroupMemberManageDto> memberList = mapper.getBans(paramMap, rowBounds);
 		
+		
 		Map<String, Object> map = new HashMap<>();
+		map.put("memberCount", memberAllCount);
+		
+		// 전체멤버수가 필요해서 다시 조회
+		memberAllCount = mapper.getMemberCount((int)paramMap.get("groupNo"));
+		
 		map.put("memberAllCount", memberAllCount);
 		map.put("memberList", memberList);
 		map.put("pagination", pagination);

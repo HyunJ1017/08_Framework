@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/siteManage/siteManage.css">
+  <link rel="stylesheet" href="/css/siteManage/popupManage.css">
+
+</head>
+
+<body>
+
+  <div class="container">
+    <nav class="sidebar">
+      <ul>
+        <li><a href="/siteManage/main">돌아가기</a></li>
+      </ul>
+    </nav>
+
+    <main class="content">
+      <!-- 목록 -->
+      <section id="dashboard" class="section">
+        <section class="card">
+
+          <h1>팝업창 관리</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>이름</th>
+                <th>w</th>
+                <th>h</th>
+                <th>선택</th>
+                <th>삭제</th>
+              </tr>
+            </thead>
+            <tbody id="popupListTr">
+              <th:block th:if= "${popupList}" th:each= "popup:${popupList}" th:object="${popup}">
+                  <tr>
+                    <td th:text="*{popupName}"></td>
+                    <td th:text="*{popupLeft}"></td>
+                    <td th:text="*{popupUp}"></td>
+                    <td> <button th:data-popup-no="*{popupNo}" class="selectPopup">선택</button> </td>
+                    <td> <button th:data-popup-no="*{popupNo}" class="deletePopup">삭제</button> </td>
+                  </tr>
+                </th:block>
+                <th:block th:unless= "${popupList}">
+                  <tr>
+                    <td colspan="5">
+                      현재 팝업 목록이 없습니다.
+                    </td>
+                  </tr>
+                </th:block>
+            </tbody>
+
+          </table>
+        </section>
+      </section>
+
+      <!-- 파일 등록 -->
+      <section id="meetings" class="section">
+        <section class="card">
+          <form action="/popup/insert" method="post" id="inputForm" enctype="multipart/form-data">
+            <h1>파일선택</h1>
+            <label for="popupImage">이미지등록</label>
+            <input type="file" id="popupImage" name="popupImage">
+            <label for="popupLeft">좌측간격</label>
+            <input type="range" id="popupLeft" name="popupLeft" min="0" max="100" value="50" step="1">
+            <label for="popupUp">상단간격</label>
+            <input type="range" id="popupUp" name="popupUp" min="0" max="100" value="50" step="1">
+            <button>만들기</button>
+          </form>
+        </section>
+      </section>
+
+      <!-- 미리보기 -->
+      <section id="members" class="section">
+        <section class="card">
+
+          <h1>미리보기</h1>
+          <section class="preview-sec">
+            <img src="/images/mainPopup/daemoimMain.png" alt="메인이미지">
+            <img src="#" alt="팝업이미지 미리보기" id="inputImgPreview"
+                 class="inputImgPreview display-none" width="1600px" height="781px">
+          </section>
+        </section>
+      </section>
+
+
+    </main>
+  </div>
+
+  <script th:inline="javascript">
+  </script>
+  <script src="/js/siteManage/popupManage.js"></script>
+
+</body>
+
+</html>

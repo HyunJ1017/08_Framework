@@ -1,0 +1,102 @@
+body, th, td, input, select, textarea, button {
+  font-size: 16px;
+  line-height: 1.5;
+  font-family: 'NotoSans Light', 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', '돋움', dotum, sans-serif;
+  color: #555;
+}
+body {
+  background: #fc9562;
+  word-wrap: break-word;
+  word-break: keep-all;
+}
+.tab_policy {
+  overflow: hidden;
+  height: 50px;
+  padding-top: 40px;
+}
+dl, ul, ol, menu, li {
+  list-style: none;
+}
+::selection {
+  background: #ffee33;
+}
+.policy-content {
+  background-color: #fff;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.policy-content h2 {
+  font-size: 18px;
+  color: #555;
+  margin-top: 20px;
+}
+.policy-content p, .policy-content ul {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #555;
+  margin-top: 10px;
+}
+.policy-content ul li {
+  list-style-type: none;
+  margin: 8px 0;
+}
+.scroll-top {
+  position: fixed; 
+  bottom: 20px; 
+  right: 20px; 
+  z-index: 1000;
+}
+.scroll-top button {
+  font-size: 30px;
+  background: none;
+  border: none; 
+  box-shadow: none;
+  cursor: pointer; 
+  outline: none; 
+  color: black; 
+}
+.footer {
+  background-color: #fc9562;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+  margin-top: 20px;
+  font-size: 13px;
+}
+.tab_policy ul {
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+}
+.tab_policy li {
+  position: relative;
+  display: table;
+  float: left;
+  width: 165px;
+  height: 48px;
+  margin-right: -1px;
+  border: 1px solid #d4d4d4;
+  text-align: center;
+  line-height: 48px;
+}
+.tab_policy .link_policy {
+  display: table-cell;
+  color: #555;
+  font-size: 14px;
+  line-height: 20px;
+  vertical-align: middle;
+  color: white;
+  text-decoration: none;
+}
+a {
+  color: #333;
+  text-decoration: none;
+}
+
+
+.link_policy:hover, .on .link_policy {
+  background-color: #fc732f;
+  border-radius: 5px;
+}

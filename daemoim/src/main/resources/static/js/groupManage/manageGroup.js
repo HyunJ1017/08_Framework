@@ -113,7 +113,7 @@ const radioArr = document.querySelectorAll(".categoryRadio");
 radioArr.forEach(e=>{
   e.addEventListener("change", e=>{
 
-    // alert("e.value : " + e.target.value + ", e.value.type" + typeof Number( e.target.value ));
+    // alertM("e.value : " + e.target.value + ", e.value.type" + typeof Number( e.target.value ));
 
     getCategoryList( Number( e.target.value ) );
   })
@@ -158,33 +158,33 @@ const submitDiv = document.querySelector(".submitDiv");
 submitDiv?.addEventListener("click", e => {
 
   if(detailConfirm.groupName === false){
-    alert("모임명을 확인해 주세요.");
+    alertM("모임명을 확인해 주세요.");
     groupName.focus();
     return;
   }
-
+  
   if(detailConfirm.groupIntroduce === false){
-    alert("모임소개를 확인해 주세요.");
+    alertM("모임소개를 확인해 주세요.");
     groupIntroduce.focus();
     return;
   }
-
+  
   if(detailConfirm.category === false){
     if(checkedCategory() === null){// 체크된 카테고리가 없는경우
-      alert("카테고리 체크를 확인해주세요");
+      alertM("카테고리 체크를 확인해주세요");
       return;
     }
   }
-
+  
   if(detailConfirm.categoryList === false){
     if(checkedCategoryList() === null){// 체크된 카테고리가 없는경우
-      alert("카테고리 리스트 체크를 확인해주세요");
+      alertM("카테고리 리스트 체크를 확인해주세요");
       return;
     }
   }
 
   // deleteOrderList 적재
-  const input = document.querySelector("input");
+  const input = document.createElement("input");
   input.type = 'hidden';
   input.name = 'deleteOrderList';
   input.value = Array.from(deleteOrderList);
@@ -368,6 +368,7 @@ java가서만 따로따로 받으면되지 검사 자체는 뭉뚱그려서 검�
 
 // 이미지 인풋태그
 const inputImageArr = document.getElementsByName("inputImg");
+const imgName2 = document.querySelector("#imgName2");
 
 // 이미지 미리보기 창
 const imgPreview = document.querySelectorAll(".inputImgPreview");
@@ -387,45 +388,71 @@ for(let i=0; i < inputImageArr?.length ; i++){
     
     if(file === undefined){
       if(lastImg[i] === null) return;
-
-      const transfer = new DataTransfer();
-      transfer.items.add(lastImg[i]);
-      inputImageArr[i].files = transfer.files;
-
+      backupLoad(i);
       return;
     }
 
     if(file.size > 1*1024*1024*1){
-      alert("파일크기가 10MB를 초과합니다");
-      const transfer = new DataTransfer();
-      transfer.items.add(lastImg[i]);
-      inputImageArr[i].files = transfer.files;
+      alertM("파일크기가 10MB를 초과합니다");
+      backupLoad(i);
       return;
     }
 
-    imgPreviewFuntion(file, i); // 미리보기 함수 호출
-  }) // inputImage event end
+    // 해더이미지 비율 확인
+    if( i > 0 ){
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
 
+      const img = new Image();
+
+      reader.addEventListener("load", e => {
+        img.src = e.target.result;
+        const width = img.width;
+        const height = img.height;
+        const ratio = width / height;
+
+        if(ratio <= 4 || ratio >= 9){
+          alertM("이미지 크기가 올바르지 않습니다.\n현재비율 : " + ratio);
+          imgName2.innerText = "* 권장비율 4:1 ~ 9:1";
+          backupLoad(i);
+          return;
+        }
+        imgName2.innerText = '';
+
+        imgPreviewFunction(file, i); // 미리보기 함수 호출
+      })
+    } // 이미지 비율확인 종료
+
+  }) // inputImage event end
 } // for end
 
-const imgPreviewFuntion = (file, order) => {
+const backupLoad = (i) => {
+  const transfer = new DataTransfer();
+  if(lastImg[i] == null) return;
+  transfer.items.add(lastImg[i]);
+  inputImageArr[i].files = transfer.files;
+};
+
+const imgPreviewFunction = (file, order) => {
 
   lastImg[order] = file;
   
   // 입력받은 파일을 미리보기창에 url형태로 전달
   const reader = new FileReader();
   reader.readAsDataURL(file);
+
   reader.addEventListener("load", e => {
-    
+
     imgPreview[order].src=e.target.result;
     // 메인상단이미지는 미리보기 화면도 바꿈
     if(order === 1){
-      imgPreview[2].src=e.target.result;
+      imgPreview[2].src = e.target.result;
     }
-  })
+  });
 
   deleteOrderList.delete(order);
-} // imgPreviewFuntion() end
+
+}; // imgPreviewFuntion() end
 
 // X 버튼 클릭시 기본이미지로 변경
 const imgDelBtns = document.querySelectorAll(".imgDelBtn");
@@ -553,11 +580,12 @@ const removeMemberArrBtn = () => {
 
       const btnMemberNo = btn.dataset.memberNo;
 
-      // alert(btnMemberNo + "번 멤버 탈퇴 클릭됨");
-      if(confirm("해당 회원을 모임에서 강퇴 하시겠습니까?") == false) return;
+      confirmM("해당 회원을 모임에서 강퇴 하시겠습니까?")
+      .then(result => {
+        if(!result) return;
 
-      memberRemove(btnMemberNo);
-
+        memberRemove(btnMemberNo);
+      });
     });
   });
 };
@@ -582,11 +610,11 @@ const memberRemove = (memberNo) => {
      3 : 모임장 불일치
     */
     switch(result){
-      case '0' : alert("회원을 강퇴에 실패 하였습니다."); break;
-      case '1' : alert("회원을 강퇴 시켰습니다."); break;
-      case '2' : alert("모임번호를 불러오는데 실패하였습니다."); break;
-      case '3' : alert("모임장만 강퇴할 수 있습니다."); location.href="/"; break;
-      default : alert("알 수 없는 오류가 발생하였습니다.");
+      case '0' : alertM("회원을 강퇴에 실패 하였습니다."); break;
+      case '1' : alertM("회원을 강퇴 시켰습니다."); break;
+      case '2' : alertM("모임번호를 불러오는데 실패하였습니다."); break;
+      case '3' : alertM("모임장만 강퇴할 수 있습니다."); location.href="/"; break;
+      default : alertM("알 수 없는 오류가 발생하였습니다.");
     }
 
     // 화면초기화 함수 호출
@@ -608,40 +636,50 @@ const delegateArr = document.querySelectorAll(".delegate");
 const delegateArrBtn = () => {
   delegateArr?.forEach( (btn) => {
     btn.addEventListener("click", ()=>{
-      
-      if(confirm("모임장 권한을 이임하시겠습니까?") === false) return;
 
-      // 클릭버튼에서 얻어온 회원번호
-      const btnMemberNo = btn.dataset.memberNo;
+      confirmM("모임장 권한을 이임하시겠습니까?")
+      .then(result => {
+        if(!result) return;
 
-      let memberNickname;
-
-      // 위임하려는 회원정보 얻어오기
-      fetch("/groupMember?memberNo=" + btnMemberNo)
-      .then( response => {
-        if(response.ok) return response.text();
-        throw new Error("멤버조회 비동기통신 실패")
-      })
-      .then( result => {
-
-        memberNickname = result;
-
-        if(confirm( "[ " + memberNickname + " ] 회원에게 모임장의 권한을 양도하는것이 맞습니까?") === false) return;
+        /* 컨펌 진행함수 start */
         
-        // body태그에 form태그 만들어서 제출
-        const form = document.createElement("form");
-        form.action = "/groupMemberManage/changeLeader";
-        form.method = "POST";
-        const input = document.createElement("input");
-        input.type = "hidden";
-        input.name = "nextLeader";
-        input.value = btnMemberNo;
-        form.append(input);
-        document.querySelector("body").append(form);
-        form.submit();
+        // 클릭버튼에서 얻어온 회원번호
+        const btnMemberNo = btn.dataset.memberNo;
+  
+        let memberNickname;
+  
+        // 위임하려는 회원정보 얻어오기
+        fetch("/groupMember?memberNo=" + btnMemberNo)
+        .then( response => {
+          if(response.ok) return response.text();
+          throw new Error("멤버조회 비동기통신 실패")
+        })
+        .then( result => {
+  
+          memberNickname = result;
+  
+          confirmM( "[ " + memberNickname + " ] 회원에게 모임장의 권한을 양도하는것이 맞습니까?")
+          .then(result => {
+            if(!result) return;
+            // 컨펌 진행함수 start 
+            // body태그에 form태그 만들어서 제출
+            const form = document.createElement("form");
+            form.action = "/groupMemberManage/changeLeader";
+            form.method = "POST";
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "nextLeader";
+            input.value = btnMemberNo;
+            form.append(input);
+            document.querySelector("body").append(form);
+            form.submit();
+            
+          });// 컨펌 진행함수 end
+  
+        })
+        .catch( err => console.error(err) );
 
-      })
-      .catch( err => console.error(err) );
+      }); // 컨펌 진행함수 end
 
 
     });
@@ -662,9 +700,16 @@ const backupMemberArrBtn = () => {
 
       const btnMemberNo = btn.dataset.memberNo;
 
-      if(confirm("해당 회원을 차단해제 하시겠습니까?") == false) return;
-      memberBan(btnMemberNo);
+      confirmM("해당 회원을 차단해제 하시겠습니까?")
+      .then(result => {
+        if(!result) return;
 
+        /* 컨펌 진행함수 start */
+        
+        memberBan(btnMemberNo);
+
+        /* 컨펌 진행함수 end */
+      });
     });
   });
 }
@@ -689,11 +734,11 @@ const memberBan = (memberNo) => {
      3 : 모임장 불일치
     */
     switch(result){
-      case '0' : alert("작업 실패 하였습니다."); break;
-      case '1' : alert("회원을 차단해제 시켰습니다."); break;
-      case '2' : alert("모임번호를 불러오는데 실패하였습니다."); break;
-      case '3' : alert("모임장만 강퇴할 수 있습니다."); location.href="/"; break;
-      default : alert("알 수 없는 오류가 발생하였습니다.");
+      case '0' : alertM("작업 실패 하였습니다."); break;
+      case '1' : alertM("회원을 차단해제 시켰습니다."); break;
+      case '2' : alertM("모임번호를 불러오는데 실패하였습니다."); break;
+      case '3' : alertM("모임장만 강퇴할 수 있습니다."); location.href="/"; break;
+      default : alertM("알 수 없는 오류가 발생하였습니다.");
     }
 
     // 화면 초기화 함수 호출
@@ -709,6 +754,8 @@ const memberBan = (memberNo) => {
 /********************************************************************** */
 
 
+/* 모임 가입 수락/거절 */
+
 const inviteAgreeBtns = document.querySelectorAll(".inviteAgree");
 const inviteRefuseBtns = document.querySelectorAll(".inviteRefuse");
 
@@ -722,16 +769,22 @@ const btnsAddEvent = () => {
       const btnMemberNo = btn.dataset.memberNo;
       const btnMemberNickname = btn.dataset.memberNickname;
 
-      if(confirm("[" + btnMemberNickname + "] 님의 가입을 승인 하시겠습니까?") === false) return;
+      confirmM("[" + btnMemberNickname + "] 님의 가입을 승인 하시겠습니까?")
+      .then(result => {
+        if(!result) return;
 
-      const inviteObj = {
-        "memberNo" : btnMemberNo,
-        "groupNo" : groupNo,
-        "inviteDelFl" : "Y"
-      };
+        // 컨펌 진행함수 start 
+        const inviteObj = {
+          "memberNo" : btnMemberNo,
+          "groupNo" : groupNo,
+          "inviteDelFl" : "Y"
+        };
+  
+        // 비동기 요청 호출
+        inviteSubmit(inviteObj);
 
-      // 비동기 요청 호출
-      inviteSubmit(inviteObj);
+      }); // 컨펌 진행함수 end
+
       
     });
   });
@@ -742,17 +795,22 @@ const btnsAddEvent = () => {
     btn.addEventListener("click", ()=>{
       const btnMemberNo = btn.dataset.memberNo;
       const btnMemberNickname = btn.dataset.memberNickname;
-      
-      if(confirm("[" + btnMemberNickname + "] 님의 가입을 거절 하시겠습니까?") === false) return;
 
-      const inviteObj = {
-        "memberNo" : btnMemberNo,
-        "groupNo" : groupNo,
-        "inviteDelFl" : "N"
-      };
+      confirmM("[" + btnMemberNickname + "] 님의 가입을 거절 하시겠습니까?")
+      .then(result => {
+        if(!result) return;
+        // 컨펌 진행함수 start 
+        const inviteObj = {
+          "memberNo" : btnMemberNo,
+          "groupNo" : groupNo,
+          "inviteDelFl" : "N"
+        };
+  
+        // 비동기 요청 호출
+        inviteSubmit(inviteObj);
+        
+      }); // 컨펌 진행함수 end
 
-      // 비동기 요청 호출
-      inviteSubmit(inviteObj);
     
     });
   });
@@ -761,7 +819,7 @@ const btnsAddEvent = () => {
 // 수락&거절 요청
 const inviteSubmit = (inviteObj) => {
 
-  fetch("/groupMember", {
+  fetch("/groupMember/invite", {
     method : "POST",
     headers : {"Content-Type" : "application/json"},
     body : JSON.stringify(inviteObj)
@@ -774,8 +832,20 @@ const inviteSubmit = (inviteObj) => {
     /*
      0 : 실패
      1 : 성공
+     2 : 모임인원초과
      3 : 모임장 불일치
+     4 : 강퇴회원
+     5 : 중복가입
     */
+     switch(result){
+      case '0' : alertM("작업 실패 하였습니다."); break;
+      case '1' : alertM("회원이 가입되었습니다."); break;
+      case '2' : alertM("현재 모임의 정원이 초과되었습니다."); break;
+      case '3' : alertM("모임장의 권한입니다."); location.href="/"; break;
+      case '4' : alertM("강퇴한 회원 입니다."); break;
+      case '5' : alertM("이미 가입되어있는 회원 입니다."); break;
+      default : alertM("알 수 없는 오류가 발생하였습니다.");
+    }
     // 화면 초기화 함수 호출
     tableAjaxRequest(2);
   })
@@ -835,7 +905,15 @@ const tableAjaxRequest = (int) => {
           const td11 = document.createElement("td");
             td11.innerText = member.memberId;
           const td12 = document.createElement("td");
-            td12.innerText = member.memberImg; 
+            const img121 = document.createElement("img");
+          img121.style.width = '40px';
+              img121.style.height = '40px';
+            if(member.memberImg != null){
+              img121.src = member.memberImg;
+            } else {
+              img121.src = "/images/dafault.png";
+            }
+            td12.append(img121);
           const td13 = document.createElement("td");
             td13.innerText = member.memberNickname;
           const td14 = document.createElement("td");
@@ -864,7 +942,15 @@ const tableAjaxRequest = (int) => {
           const td21 = document.createElement("td");
             td21.innerText = member.memberId;
           const td22 = document.createElement("td");
-            td22.innerText = member.memberImg; 
+            const img221 = document.createElement("img");
+              img221.style.width = '40px';
+              img221.style.height = '40px';
+              if(member.memberImg != null){
+                img221.src = member.memberImg;
+              } else {
+                img221.src = "/images/dafault.png";
+              }
+            td22.append(img221);
           const td23 = document.createElement("td");
             td23.innerText = member.memberNickname;
           const td24 = document.createElement("td");
@@ -889,7 +975,15 @@ const tableAjaxRequest = (int) => {
           const td31 = document.createElement("td");
             td31.innerText = member.memberId;
           const td32 = document.createElement("td");
-            td32.innerText = member.memberImg; 
+            const img321 = document.createElement("img");
+              img321.style.width = '40px';
+              img321.style.height = '40px';
+              if(member.memberImg != null){
+                img321.src = member.memberImg;
+              } else {
+                img321.src = "/images/dafault.png";
+              }
+              td32.append(img321);
           const td33 = document.createElement("td");
             td33.innerText = member.memberNickname;
           const td34 = document.createElement("td");
@@ -906,21 +1000,159 @@ const tableAjaxRequest = (int) => {
       }
       
       tableBody.append(tr);
-
+      
     });
-
-    // 버튼 이벤트추가 함수
-
-    // 모임가입 수락, 거절버튼
-    if(inviteAgreeBtns !== undefined){
-      btnsAddEvent();
-    }
+    
+    backupMemberArrBtn();
+    btnsAddEvent();
+    delegateArrBtn();
+    removeMemberArrBtn();
 
   })
   .catch();
 
 
 };
+
+
+
+/********************************************************************** */
+/********************************************************************** */
+
+
+
+
+// 게시판 전체보기버튼 클릭시
+ const gotoBoard1 = document.querySelector(".gotoBoard1"); // 공지게시판
+ const gotoBoard2 = document.querySelector(".gotoBoard2"); // 일반게시판
+ gotoBoard1?.addEventListener("click", () => {location.href = "/board/" + groupNo + "/1" });
+ gotoBoard2?.addEventListener("click", () => {location.href = "/board/" + groupNo + "/2" });
+
+
+/********************************************************************** */
+/********************************************************************** */
+
+/* 알림보내기 */
+const selectAll = document.querySelector(".noti-selectAll input");
+selectAll?.addEventListener("change", ()=> {
+  const inputTags = document.querySelectorAll(".noti-tbody input");
+  
+  inputTags.forEach(e=>{
+    e.checked = selectAll.checked;
+  })
+  
+});
+
+// 일정선택이벤트
+const selectSchedule = document.querySelector("#selectSchedule");
+selectSchedule?.addEventListener("change", e=>{
+  selectAll.checked = false;
+  const scheduleNo = e.target.value;
+  const inputTags = document.querySelectorAll(".noti-tbody input");
+  
+  if(scheduleNo == 0){
+    selectAll.checked = false;
+    inputTags.forEach(e=>{
+      e.checked = false;
+    })
+    return;
+  }
+
+  fetch("/groupManage/searchScheduleMember?scheduleNo=" + scheduleNo)
+  .then(response => {
+    if(response.ok) return response.json();
+    throw new Error("일정조회오류" + response.status);
+  })
+  .then(numList => {
+    console.log(numList);
+    inputTags.forEach(e=>{
+      if(numList.includes( Number(e.value) )) {
+        e.checked = true;
+      } else {
+        e.checked = false;
+      }
+    })
+
+  })
+  .catch(err => console.error(err));
+});
+
+
+// 제출이벤트
+const sendBtn = document.querySelector("#sendBtn");
+sendBtn?.addEventListener("click", ()=>{
+  const notificationContent = document.querySelector('[name="notificationContent"]');
+
+  if(notificationContent.value.trim().length === 0){
+    alertM("알림 내용을 입력해 주세요");
+    return;
+  }
+
+  const inputTags = document.querySelectorAll(".noti-tbody input");
+  
+  const objList = [];
+  let count = 0;
+
+  inputTags.forEach(e=>{
+
+    if(e.checked) {
+      const inputObj = {
+  
+        "notificationContent" : notificationContent.value,
+        "notificationUrl" : "/groupMain/" + groupNo,
+        "sendMemberNo" : chatLoginMemberNo,
+        "receiveMemberNo" :   e.value,
+        "groupNo" : groupNo
+      }
+      objList.push(inputObj);
+      count ++;
+    }
+  })
+  
+  if(count === 0){
+    alertM("알림을 보낼 회원을 1명이상 선택해 주세요");
+    return;
+  }
+
+  confirmM(count + "명의 회원에게 알림을 보내겠습니까?")
+  .then(result => {
+    if(!result) return;
+
+    // 컨펌 진행함수 start 
+    fetch("notification", {
+      method : "POST",
+      headers : {"Content-Type" : "application/json"},
+      body : JSON.stringify( objList )
+    })
+    .then(response => {
+      if(response.ok) return response.text();
+      throw new Error("일정조회오류" + response.status);
+    })
+    .then(result => {
+      if(result > 0 ){
+        alertM("총 " + result + "개의 알림을 보내었습니다");
+        notificationContent.value = '';
+        selectAll.checked = false;
+        inputTags.forEach(e=>{
+          e.checked = false;
+        })
+      } else {
+        alertM("실패 하였습니다.");
+      }
+  
+    })
+    .catch(err => console.error(err));
+    
+  });// 컨펌 진행함수 end
+
+}) // 알림제출 종료
+
+
+
+
+
+/********************************************************************** */
+/********************************************************************** */
 
 
 document.addEventListener("DOMContentLoaded", ()=>{
@@ -944,6 +1176,44 @@ document.addEventListener("DOMContentLoaded", ()=>{
     backupMemberArrBtn();
   }
 
+  // select태그들 초기설정
+  const params = new URLSearchParams( location.search );
+  const periodParam = params.get("period");
+  const keyParam = params.get("key");
+  const queryInput = document.querySelector("#searchQuery");
   
+  if(periodParam){
+    document.getElementById("searchPeriod").value = periodParam;
+  }
+  if(keyParam){
+    document.querySelector("#searchKey").value = keyParam;
+    queryInput.value = params.get("query");
+  }
+
+  // 회원정보 검색에서 검색내용 없으면 제출 막기
+  const searchForm = document.querySelector(".searchForm form");
+  searchForm?.addEventListener("submit", e =>{
+    if(queryInput){
+      if(queryInput.value.trim().length === 0){
+        e.preventDefault();
+        alertM("검색어를 입력해 주세요");
+        return;
+      }
+    }
+  })
+
+  // 메인칸 높이 지정하기
+  const mainSec = document.querySelector('.mainSec');
+  const children = Array.from(mainSec.children);
+  let heightSum = 0;
+  children?.forEach(e => {
+    heightSum += e.offsetHeight;
+    // 자식 요소의 상단, 하단 마진 가져오기
+    const childStyle = getComputedStyle(e);
+    heightSum += parseFloat(childStyle.marginTop);
+    heightSum += parseFloat(childStyle.marginBottom);
+    console.log( e.offsetHeight);
+  });
+  mainSec.style.height = `${heightSum}px`;
 
 });

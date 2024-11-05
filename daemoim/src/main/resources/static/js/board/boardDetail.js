@@ -1,5 +1,5 @@
 // 현재 상세 조회한 게시글 번호
-const boardNo = location.pathname.split("/")[3];
+const boardNo = location.pathname.split("/")[4];
 
 /* 좋아요 하트 클릭 시 */
 const boardLike = document.querySelector("#boardLike");
@@ -90,6 +90,7 @@ deleteBtn?.addEventListener("click", () => {
   document.querySelector("body").append(form); 
 
   form.submit(); // 제출
+  
 })
 
 // ---------------------------------------------------
@@ -110,7 +111,7 @@ const updateBtn = document.querySelector("#updateBtn");
 updateBtn?.addEventListener("click", () => {
   const form = document.createElement("form");
 
-  //  /editBoard/{boardCode}/{boardNo}/updateView
+  //  /editBoard/{groupNo}/{boardTypeCode}/{boardNo}/updateView
   form.action = location.pathname.replace("board","editBoard")
                 + "/updateView";
 

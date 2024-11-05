@@ -24,9 +24,15 @@ public class GroupManageDto {
 	private int    memberNo;
 	private String groupMainImg;		// 모임 대표이미지 요청경로 + 이름
 	private String groupHeaderImg;	// 모임 상단이미지 요청경로 + 이름
-
+	private int    groupMaxPopulation;
+	
 	private String categoryName;
 	private String categoryListName;
+	
+	private String memberNickname; // 닉네임
+	
+	private int    memberCount;	// 모임활동갯수
+	private int    activeCount;	// 모임활동갯수
 	
 	
 }

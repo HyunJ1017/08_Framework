@@ -1,0 +1,146 @@
+/* 색상 팔레트 */
+:root {
+  --primary-color: #333;
+  --accent-color: #fc9562;
+  --background-color: #f9f9f9;
+  --text-color: #333;
+  --button-color: #fc9562;
+  --button-danger-color: #ff4d4d;
+}
+
+/* 기본 페이지 설정 */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 사이드 메뉴 */
+#sideMenu {
+  width: 255px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background-color: white;
+  padding: 20px 10px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+/* 타이틀 */
+#titleName {
+  width: calc(100% - 275px);
+  margin-left: 275px;
+  text-align: center;
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+
+#titleName h2 {
+  font-size: 44px;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+#titleName p {
+  font-size: 18px;
+  color: var(--text-color);
+}
+
+/* 가입한 모임 리스트 섹션 */
+#myGrouplist {
+  width: calc(100% - 275px);
+  margin-left: 275px;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* 활동 섹션 */
+.activity-section {
+  display: flex;
+  flex-wrap: wrap; /* 여러 요소가 한 줄에 나타나도록 설정 */
+  gap: 20px;
+  justify-content: space-between;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* 그룹 박스 */
+.category-box {
+  width: 300px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* 그룹 이미지 */
+.icon img {
+  width: 100%;
+  height: 150px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* 그룹 텍스트 */
+.categoryGroup-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--primary-color);
+  text-decoration: none;
+  margin: 10px 0;
+}
+
+.group-name {
+  font-size: 16px;
+  color: var(--text-color);
+  margin-bottom: 5px;
+}
+
+.location {
+  font-size: 14px;
+  color: var(--accent-color);
+  margin-bottom: 5px;
+}
+
+.participants {
+  font-size: 14px;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+}
+
+.participants i {
+  margin-right: 5px;
+}
+
+/* 나가기 버튼 */
+.outGroupBtn {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background-color: transparent;
+  color: var(--button-danger-color);
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.outGroupBtn:hover {
+  color: darkred;
+}

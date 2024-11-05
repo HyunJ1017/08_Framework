@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import edu.kh.daemoim.groupManage.service.GroupMemberManageService;
+import edu.kh.daemoim.myPage.dto.MyPage;
 import lombok.RequiredArgsConstructor;
 
 /* groupMember 비동기 요청을 관리할 컨트롤러
@@ -61,7 +63,8 @@ public class GroupMemberManageController {
 	@DeleteMapping("")
 	public int removeMember(
 			@RequestBody int memberNo,
-			@RequestHeader("referer") String referer) {
+			@RequestHeader("referer") String referer,
+			@SessionAttribute("loginMember") MyPage loginMember) {
 		
 		/* 모임번호 추출하기 */
 		//http://localhost/groupMemberManage/2/memberManage
@@ -69,7 +72,7 @@ public class GroupMemberManageController {
 		groupNo = Integer.parseInt( referer.split("/")[4] );
 		
 		/* Session에서 로그인 멤버 얻어오셔야 합니다 */
-		int loginMemberNo = 1;
+		int loginMemberNo = loginMember.getMemberNo();
 		
 		// 모임 강퇴 서비스 호출
 		// 삭제할 회원번호, 로그인한 모임장 회원번호
@@ -88,7 +91,8 @@ public class GroupMemberManageController {
 	@PutMapping("")
 	public int backupMember(
 			@RequestBody int memberNo,
-			@RequestHeader("referer") String referer) {
+			@RequestHeader("referer") String referer,
+			@SessionAttribute("loginMember") MyPage loginMember) {
 		
 		/* 모임번호 추출하기 */
 		//http://localhost/groupMemberManage/2/memberManage
@@ -96,7 +100,7 @@ public class GroupMemberManageController {
 		groupNo = Integer.parseInt( referer.split("/")[4] );
 		
 		/* Session에서 로그인 멤버 얻어오셔야 합니다 */
-		int loginMemberNo = 1;
+		int loginMemberNo = loginMember.getMemberNo();
 		
 		// 모임 강퇴 서비스 호출
 		// 삭제할 회원번호, 로그인한 모임장 회원번호
@@ -109,13 +113,20 @@ public class GroupMemberManageController {
 	/** 모임가입 승인, 거절
 	 * @param map 모임번호, 신청한 멤버번호, 승인Y,거절N 가 담긴 map
 	 * @return result
+	 *  0 : 실패
+     	1 : 성공
+     	2 : 모임인원초과
+     	3 : 모임장 불일치
+     	4 : 강퇴인원
+     	5 : 이미 가입된 회원
 	 */
-	@PostMapping("")
+	@PostMapping("invite")
 	public int inviteMember(
-			@RequestBody Map<String, Object> map) {
+			@RequestBody Map<String, Object> map,
+			@SessionAttribute("loginMember") MyPage loginMember) {
 		
 		/* Session에서 로그인 멤버 얻어오셔야 합니다 */
-		int loginMemberNo = 1;
+		int loginMemberNo = loginMember.getMemberNo();
 		
 		// 서비스 호출
 		return service.inviteMember(loginMemberNo, map);

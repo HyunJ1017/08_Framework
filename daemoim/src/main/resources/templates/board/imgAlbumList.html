@@ -1,35 +1,130 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>사진첩 게시판</title>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
 
-    
-    <link rel="stylesheet" th:href="@{/css/board/imageAlbum.css}">
-    <th:block th:replace="~{common/common}"></th:block>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title th:text="${boardName}">이미지 게시판</title>
+  <link rel="stylesheet" th:href="@{/css/board/imageAlbumList.css}">
 </head>
 <body>
-        <div class="top-controls">
-          <div class="search-box">
-              <input type="text" id="top-search" placeholder="게시글 제목 검색">
-              <button onclick="searchPhotos('top')">검색</button>
-          </div>
-            <button id="add-post-btn">게시글 등록</button>
-        </div>
+  <!-- Header -->
+  <div class="header">
+    <img th:with="groupHeaderDefault=#{groupHeader.default.image}"
+        th:src="${groupHeaderImg ?: groupHeaderDefault}" alt="모임배경사진">
+  </div>
 
-        <main id="photo-gallery">
-            <!-- 사진들이 여기에 동적으로 추가됩니다 -->
-        </main>
+  <div class="container">
+      <nav>
+        <!-- Sidebar (왼쪽 배너) -->
+        <ul>
+            <li class="banner2">
+                <a href="/">홈</a>
+            </li>
+            <li class="banner2">
+                <a th:href="@{/board/{groupNo}(groupNo = ${groupNo})}">모임 메인 게시판</a>
+            </li>
+            <li class="banner2">
+                <a th:href="@{/board/{groupNo}/3(groupNo = ${groupNo})}">사진 게시판</a>
+            </li>
+            <li class="banner2">
+                <a th:href="@{/board/boardSchedule/{groupNo}(groupNo = ${groupNo})}">일정</a>
+            </li>
+        </ul>
+      </nav>
+    
+    <section class="image-board-list">
+      <h1 class="board-name" th:text="${boardName}">이미지 게시판</h1>
 
-        <footer>
-            <div class="footer-controls">
-                <div id="load-more">더 보기</div>
+      <div class="image-grid">
+        <!-- 게시글이 존재하지 않을 때 -->
+        <th:block th:if="${#lists.isEmpty(boardList)}">
+          <p>게시글이 존재하지 않습니다.</p>
+        </th:block>
+
+        <!-- 게시글이 존재할 때 -->
+        <th:block th:unless="${#lists.isEmpty(boardList)}">
+          <article th:each="board : ${boardList}" th:object="${board}" class="image-card">
+            <div class="image-wrapper">
+              <img th:if="*{thumbnail}" th:src="*{thumbnail}" alt="게시글 이미지">
             </div>
-        </footer>
-        <th:block th:replace="~{common/footer}"></th:block>
-    </div>
+            <div class="card-content">
+              <h3>
+                <!-- 검색이 아닌 경우 -->
+                <a th:unless="${param.key}" th:href="@{/board/{groupNo}/{boardTypeCode}/{boardNo}
+                            (groupNo=${groupNo},
+                             boardTypeCode=${boardTypeCode},
+                             boardNo=*{boardNo})}" th:text="*{boardTitle}">게시글 제목</a>
+                <!-- 검색인 경우 -->
+                <a th:if="${param.key}" th:href="@{/board/{groupNo}/{boardTypeCode}/{boardNo} 
+                            (groupNo=${groupNo},
+                             boardTypeCode=${boardTypeCode}, 
+                             boardNo=${boardNo},
+                             key=${param.key}, query=${param.query})}" th:text="*{boardTitle}">게시글 제목</a>
+              </h3>
 
-    <script src="/js/board/imageAlbumList.js"></script>
+              <div class="card-info">
+                <span th:text="*{rnum}">글번호</span>
+                <span th:text="*{memberNickname}">작성자</span>
+                <span th:text="*{boardWriteDate}">작성일</span>
+              </div>
+              <div class="card-stats">
+                <span>조회수 <th:block th:text="*{readCount}">0</th:block></span>
+                <span>좋아요 <th:block th:text="*{likeCount}">0</th:block></span>
+              </div>
+            </div>
+          </article>
+        </th:block>
+      </div>
+
+      <div class="btn-area">
+        <!-- 로그인 상태일 경우 글쓰기 버튼 노출 -->
+        <button th:if="${session.loginMember}" id="insertBtn">글쓰기</button>
+      </div>
+
+      <!-- 페이지네이션 -->
+      <div class="pagination-area" th:unless="${#lists.isEmpty(boardList)}">
+        <ul class="pagination" th:object="${pagination}">
+          <li><a href="#">&lt;&lt;</a></li>
+          <li><a href="#">&lt;</a></li>
+
+          <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+            <li th:if="${i} == *{currentPage}">
+              <a class="current" th:text="${i}">현재 페이지</a>
+            </li>
+            <li th:unless="${i} == *{currentPage}">
+              <a href="#" th:text="${i}">이동할 수 있는 페이지</a>
+            </li>
+          </th:block>
+
+          <li><a href="#">&gt;</a></li>
+          <li><a href="#">&gt;&gt;</a></li>
+        </ul>
+      </div>
+
+      <!-- 검색창 -->
+      <div class="search-area">
+        <form th:action="@{{code}(code=${boardTypeCode})}" method="get" id="boardSearch">
+          <select name="key" id="searchKey">
+            <option value="t">제목</option>
+            <option value="w">작성자</option>
+          </select>
+          <input type="text" name="query" id="searchQuery" placeholder="검색어를 입력해주세요.">
+          <button>검색</button>
+        </form>
+      </div>
+    </section>
+    <section class="blank"></section>
+  </div>
+
+  <script th:inline="javascript">
+    const pagination = /*[[${pagination}]]*/ "페이지네이션객체";
+  </script>
+
+  <script src="/js/board/imageAlbumList.js"></script>
+
+
 </body>
+
 </html>

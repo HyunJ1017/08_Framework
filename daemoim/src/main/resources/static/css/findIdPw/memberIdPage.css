@@ -1,0 +1,91 @@
+/* 색상 팔레트 */
+:root {
+  --primary-color: #333;
+  --accent-color: #fc9562;
+  --background-color: #f9f9f9;
+  --text-color: #333;
+  --button-color: #fc9562;
+  --button-hover-color: #e28353;
+  --input-border-color: #ddd;
+  --input-background-color: #f1f1f1;
+  --input-text-color: #555;
+}
+
+/* 기본 레이아웃 */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--background-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* 전체 컨테이너 */
+.deisign {
+  background-color: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* 제목 스타일 */
+.deisign h1 {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+/* ID 표시 박스 */
+.border {
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 2px solid var(--input-border-color);
+  border-radius: 8px;
+  background-color: var(--input-background-color);
+}
+
+.border p {
+  font-size: 18px;
+  color: var(--text-color);
+  margin: 0;
+}
+
+/* 로그인 및 비밀번호 찾기 버튼 */
+.login {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.login button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: var(--button-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login button:hover {
+  background-color: var(--button-hover-color);
+}
+
+.login a {
+  text-decoration: none;
+  color: white;
+}
+
+/* 버튼을 감싸는 label 제거 */
+label[for="gologin"], label[for="goFindPw"] {
+  display: inline;
+}

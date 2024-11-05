@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>비밀번호 변경</title>
+  <link rel="stylesheet" href="/css/findIdPw/findPwChangePage.css">
+</head>
+
+<body>
+
+  
+  <div class="titleName"><h1>비밀번호 변경 페이지</h1></div>
+  <form action="findPwChangePage" method="POST" name="chagePwAuthKeyPageForm" id="chagePwAuthKeyPageForm">
+    <input type="hidden" name="findPwMemberId" id="findPwMemberId">
+    <!-- 비밀번호/비밀번호 확인 입력 -->
+    <div class="chagePwAuthKeyPage">
+      <label for="memberPw">
+        <span class="required">*</span> 비밀번호
+      </label>
+
+      <div class="signUp-input-area">
+        <input type="password" name="newPw" id="newPw" placeholder="변경할 비밀번호를 입력해주세요" maxlength="20" required>
+      </div>
+
+      <div class="signUp-input-area">
+        <input type="password" name="newPwConfirm" id="newPwConfirm" placeholder="변경할 비밀번호 확인 페이지" maxlength="20" required>
+      </div>
+     <label class="deisign"><button type="submit" class="changePw-submit">변경하기</button></label>
+    </div>
+  </form>
+  <script src="/js/findIdPw/findPwChangePage.js"></script>
+</body>
+
+</html>

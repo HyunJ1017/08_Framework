@@ -5,115 +5,81 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="${boardName}">게시판 이름</title>
+  <title th:text="${boardTitle}">사진첩</title>
 
   <th:block th:replace="~{common/common}"></th:block>
-
-  <link rel="stylesheet" th:href="@{/css/board/imageAlbumWrite.css}">
+  <link rel="stylesheet" href="/css/board/imageAlbumUpdate.css">
 </head>
 
 <body>
   <main>
-    <th:block th:replace="~{common/header}"></th:block>
+    <form action="update" 
+          method="POST" 
+          th:object="${board}"
+          id="boardUpdateFrm" 
+          class="board-write" 
+          enctype="multipart/form-data">
 
-    <!-- 상대 경로ㄱ -->
-    <form action="update" th:object="${board}" method="POST" class="imageAlbum-write" id="imageAlbumUpdateFrm"
-      enctype="multipart/form-data">
+      <h1 class="board-name" th:text="*{boardTitle}">게시판 이름</h1>
 
-      <h1 class="board-name" th:text="${boardName}">게시판 이름</h1>
+      <!-- 게시글 번호(숨김) -->
+      <input type="hidden" name="boardNo" th:value="*{boardNo}">
 
-      <!-- 제목 -->
-      <h1 class="board-title">
-        <input type="text" name="boardTitle" placeholder="제목" th:value="${board.boardTitle}">
-      </h1>
-
-
-
-
-      <!-- 썸네일 영역 -->
-      <h5>썸네일</h5>
-      <div class="img-box">
-        <div class="boardImg thumbnail">
-          <label for="img0">
-            <img class="preview">
-          </label>
-          <input type="file" name="images" class="inputImage" id="img0" accept="image/*">
-          <span class="delete-image">&times;</span>
-        </div>
+      <!-- 제목 입력 영역 -->
+      <div class="board-title">
+        <input type="text" name="boardTitle" 
+               th:value="${board.boardTitle}" placeholder="제목을 입력해주세요">
       </div>
 
+      <!-- 이미지 업로드 영역 -->
+      <div class="image-upload-container">
+        <h5>이미지 업로드 (<span id="imageCount">0</span>/20)</h5>
+        <div class="img-box" id="imageList">
+          <!-- 기존 이미지 목록 -->
+          <th:block th:each="img : ${board.imageList}">
+            <div class="preview-wrapper existing-image">
+              <img class="preview" 
+                   th:src="|${img.boardImgPath}${img.boardImgRename}|" 
+                   th:alt="${img.boardImgOriginalName}">
+              <span class="file-name" th:text="${img.boardImgOriginalName}"></span>
+              <input type="hidden" 
+                     name="existingImages" 
+                     th:value="${img.boardImgNo}">
+              <button type="button" class="delete-image">×</button>
+            </div>
+          </th:block>
+          <!-- 이미지 프리뷰 템플릿 -->
+          <div class="image-preview-template" style="display: none;">
+            <div class="preview-wrapper">
+              <img class="preview" alt="이미지 미리보기">
+              <span class="file-name"></span>
+            </div>
+            <button type="button" class="delete-image">×</button>
+          </div>
 
-      <!-- 업로드 이미지 영역 -->
-      <h5>업로드 이미지</h5>
-      <div class="img-box">
 
-        <div class="boardImg">
-          <label for="img1">
-            <img class="preview">
-          </label>
-          <input type="file" name="images" class="inputImage" id="img1" accept="image/*">
-          <span class="delete-image">&times;</span>
-        </div>
-
-        <div class="boardImg">
-          <label for="img2">
-            <img class="preview">
-          </label>
-          <input type="file" name="images" class="inputImage" id="img2" accept="image/*">
-          <span class="delete-image">&times;</span>
-        </div>
-
-        <div class="boardImg">
-          <label for="img3">
-            <img class="preview">
-          </label>
-          <input type="file" name="images" class="inputImage" id="img3" accept="image/*">
-          <span class="delete-image">&times;</span>
-        </div>
-
-        <div class="boardImg">
-          <label for="img4">
-            <img class="preview">
-          </label>
-          <input type="file" name="images" class="inputImage" id="img4" accept="image/*">
-          <span class="delete-image">&times;</span>
+          <!-- 이미지 추가 버튼 -->
+          <div class="add-image-btn">
+            <label for="imageInput">
+              <i class="fas fa-plus"></i>
+              <span>이미지 추가</span>
+            </label>
+          </div>
+          <input type="file" name="images" id="imageInput" multiple accept="image/*">
         </div>
       </div>
 
       <!-- 버튼 영역 -->
       <div class="board-btn-area">
-        <button type="submit" id="writebtn">등록</button>
+        <button type="submit" id="writeBtn">수정</button>
+        <button type="button" id="cancelBtn">취소</button>
       </div>
-
-      <!-- 수정 성공 시 주소(쿼리스트링) 유지용도 -->
-      <input type="hidden" name="cp" th:value="${param.cp}">
     </form>
-
   </main>
 
   <th:block th:replace="~{common/footer}"></th:block>
-
-  <script th:src="@{/js/board/boardUpdate.js}"></script>
-
-
-  <!-- 이미지 미리보기 설정 -->
-  <script th:inline="javascript">
-
-    const imageList = /*[[${board.imageList}]]*/[];
-    const previewList = document.querySelectorAll('img.preview');
-
-    for (let img of imageList) {
-      previewList[img.imgOrder].src = img.imgPath + img.imgRename;
-
-
-      // 미리보기가 출력된 이미지 순서를
-      // orderList에 
-      // orderList에 추가
-      orderList.push(img.imgOrder);
-    }
-
-  </script>
-
+  <script src="/js/board/imageAlbumUpdate.js"></script>
 </body>
 
 </html>
+<input type="text" >

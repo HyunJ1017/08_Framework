@@ -1,41 +1,109 @@
 <header class="header">
   <section>
     <div class="top-row">
-      <a href="/" style="font-family:'PartialSansKR-Regular'" class="logo">
-        대모임 <!-- 로고 텍스트 -->
+      <a href="/" class="logo">
+        <img src="/images/mainHeader/logo.png" alt="대모임">
       </a>
+      <a href="/" class="mainText">
+        <h1>
+          <span style="color: #fc9562;">D</span>ae<span style="color: rgb(28, 138, 106);">M</span>oi<span style="color: #1082fd;">M</span>
+        </h1>
+      </a>
+       
 
-      <div class="login-search-wrapper">
-        <a href="/search/search" class="headerSearchBtn">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </a>
-        <div class="loginBtnBox">
-          <a href="/signin" class="headerLoginBtn">로그인</a>
+      <!-- 로그인 상태에 따른 UI -->
+      <th:block th:unless="${session.loginMember}">
+        <div class="login-search-wrapper">
+          <a href="/category/category" class="headerSearchBtn">
+            <i class="fa-solid fa-magnifying-glass"></i> 검색
+          </a>
+          <div class="loginBtnBox">
+            <a href="/signin" class="headerLoginBtn">로그인</a>
+          </div>
         </div>
-      </div>
+      </th:block>
+
+      <th:block th:if="${session.loginMember}">
+        <div class="login-search-wrapper">
+          <div class="loginBtnBox">
+            <!-- 모임 생성 버튼 -->
+            <a href="/groupManage/createGroup" class="create-group-btn">
+              <i class="fa fa-plus-circle"></i> 모임 생성
+            </a>
+            
+            <!-- 알림 버튼 -->
+            <div class="notification-container">
+              <button class="styled-notification-btn">
+                <i class="fa-regular fa-bell"></i>&nbsp; 알림
+                <div class="notification-count-area" style="display: none;">
+                  [[${notificationCount > 0 ? notificationCount : ''}]]
+                </div>
+              </button>
+            </div>
+
+            <!-- 검색 및 프로필 -->
+            <a href="/category/category" class="headerSearchBtn">
+              <i class="fa-solid fa-magnifying-glass"></i> 검색
+            </a>
+            <a href="/myPage/info">
+              <img th:src="${session.loginMember.memberImg != null ? session.loginMember.memberImg : '/images/default-profile.png'}"
+                   alt="프로필 이미지" class="profile-img" style="width: 40px; height: 40px; border-radius: 100%;">
+            </a>
+            <a href="/myPage/info" class="headerLoginBtn">[[${session.loginMember.memberNickname}]] 님</a>
+            <a href="/logout" class="headerLoginBtn">로그아웃</a>
+          </div>
+        </div>
+      </th:block>
     </div>
   </section>
 
+  <!-- 카테고리 네비게이션 -->
   <section>
     <div class="bottom-row">
       <nav class="categories">
-        <!-- 각 카테고리를 클릭하면 category 페이지로 이동하면서, 카테고리 이름을 query parameter로 전달 -->
         <a href="/category/category?type=allCategory" class="category-btn" data-category="allCategory">
-          <i class="fa-solid fa-bars"> 전체</i>
+          <i class="fa-solid fa-bars">
+            <span style="font-family: 'NEXON Lv1 Gothic OTF';">전체</span>
+          </i>
         </a>
         <a href="/category/category?type=activity" class="category-btn" data-category="activity">
-          <i class="fa-solid fa-person-running"> 액티비티</i>
+          <i class="fa-solid fa-person-running">
+            <span style="font-family: 'NEXON Lv1 Gothic OTF';">액티비티</span>
+          </i>
         </a>
         <a href="/category/category?type=culture" class="category-btn" data-category="culture">
-          <i class="fa-solid fa-star"> 문화/여가</i>
+          <i class="fa-solid fa-star">
+            <span style="font-family: 'NEXON Lv1 Gothic OTF';">문화/여가</span>
+          </i>
         </a>
         <a href="/category/category?type=develop" class="category-btn" data-category="develop">
-          <i class="fa-solid fa-book"> 자기계발</i>
+          <i class="fa-solid fa-book">
+            <span style="font-family: 'NEXON Lv1 Gothic OTF';">자기계발</span>
+          </i>
         </a>
         <a href="/category/category?type=dating" class="category-btn" data-category="dating">
-          <i class="fa-solid fa-heart"> 연애</i>
+          <i class="fa-solid fa-heart">
+            <span style="font-family: 'NEXON Lv1 Gothic OTF';">연애</span>
+          </i>
         </a>
       </nav>
     </div>
   </section>
 </header>
+
+
+<!-- 팝업창 -->
+<section class="popup-view display-non">
+  <!-- 팝업창 내부 이미지 박스, position-absolute -->
+  <div class="absoluteDiv">
+    <!-- <div style="width: 300px; height: 300px; background-color: blue;">이미지 대체용</div> -->
+    <img src="#" alt="popupImage" id="popupImage">
+  </div>
+  <!-- 하단 체크,닫기버튼 -->
+  <form action="#" method="post" class="popup-underbar" id="popupCheckClose">
+    <div>하루동안 보지않기 <input type="checkbox" name="aDayNoneView" id="popupCheck"></div>
+    <button>닫기</button>
+  </form>
+</section>
+
+<script src="/js/header.js"></script>

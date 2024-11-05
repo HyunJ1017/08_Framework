@@ -1,47 +1,57 @@
 <!DOCTYPE html>
-<html lang='en' xmlns:th="http://www.thymeleaf.org">
+<html lang='en' xmlns="http://www.thymeleaf.org">
   <head>
     <meta charset='utf-8' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
-    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.15/index.global.min.js'></script>
-    <script>
-
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        let popup = document.querySelector('dialog');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth',
-          googleCalendarApiKey: 'API 주소 들어갈 곳',
-          events: {
-          googleCalendarId: '구글 캘린더 주소'
-          },
-          eventClick: function(info) {
-            info.jsEvent.preventDefault(); // don't let the browser navigate
-            popup.querySelector('#detail').innerHTML =
-              `<h3>${info.event.title}</h3>
-              <div>${info.event.extendedProps.description}</div>`;
-            popup.setAttribute('open','open');
-          }
-        });
-        calendar.render();
-        popup.querySelector('button').addEventListener('click', () => {
-          popup.removeAttribute('open');
-        });
-      });
-
-    </script>
     <link rel="stylesheet" href="/css/board/boardCalendar.css">
   </head>
   <body>
-     <!-- Header -->
-     <div class="header">
-      <h1>모임배경사진</h1>
-  </div>
+    <!-- Header -->
+    <div class="header">
+      <img th:with="groupHeaderDefault=#{groupHeader.default.image}"
+        th:src="${groupHeaderImg ?: groupHeaderDefault}" alt="모임배경사진">
+    </div>
 
-    <div id='calendar'></div>
-    <dialog>
-      <div id="detail">제목 테스트</div>
-      <button>닫기</button>
-    </dialog>
+    <section class="container">
+      <nav>
+        <!-- Sidebar (왼쪽 배너) -->
+        <ul>
+            <li class="banner2">
+                <a href="/" style="font-family: 'NEXON Lv1 Gothic OTF';">홈</a>
+            </li>
+            <li class="banner2">
+                <a th:href="@{/board/{groupNo}(groupNo = ${groupNo})}"
+                  style="font-family: 'NEXON Lv1 Gothic OTF';">모임 메인 게시판</a>
+            </li>
+            <li class="banner2">
+                <a th:href="@{/board/{groupNo}/3(groupNo = ${groupNo})}"
+                  style="font-family: 'NEXON Lv1 Gothic OTF';">사진 게시판</a>
+            </li>
+            <li class="banner2">
+                <a th:href="@{/board/boardSchedule/{groupNo}(groupNo = ${groupNo})}"
+                  style="font-family: 'NEXON Lv1 Gothic OTF';">일정</a>
+            </li>
+        </ul>
+      </nav>
+      <!-- FullCalendar -->
+      <div id='calendar'></div>
+
+      <!-- Popup for displaying events of a selected date -->
+      <div class="popup" id="popup">
+        <div id="popup-content">일정 목록이 여기에 표시됩니다.</div>
+        <button id="popup-close">닫기</button>
+      </div>
+
+      <!-- Dialog for displaying event details -->
+      <div class="dialog" id="dialog">
+        <div id="detail">이벤트 세부 정보</div>
+        <button id="dialog-close">닫기</button>
+      </div>
+
+      <!-- Overlay to darken background -->
+      <div class="overlay" id="overlay"></div>
+    </section>
+
+    <script src="/js/board/boardCalendar.js"></script>
   </body>
 </html>

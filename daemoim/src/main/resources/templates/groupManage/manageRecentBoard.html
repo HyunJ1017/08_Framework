@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>대모임</title>
+  <link rel="stylesheet" href="/css/groupManage/manageGroup.css">
+</head>
+<body>
+
+  <!-- 해더 -->
+  <th:block th:replace= "~{common/header}" ></th:block>
+  
+
+  <main class="space-around">
+
+    <!-- 사이드메뉴 -->
+    <th:block th:replace= "~{groupManage/manageGroup :: th-lfSide }" ></th:block>
+
+
+    <section class="mainSec">
+      <h1><th:block th:text="${group.groupName}"></th:block> 최신 글 확인 </h1>
+      <table>
+        <thead>
+          <tr class="boardTr">
+            <th>
+              게시글번호
+            </th>
+            <th>
+              제목
+            </th>
+            <th>
+              조회수
+            </th>
+            <th>
+              작성일
+            </th>
+            <th>
+              작성자
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <th:block th:if= "${boardList}" th:each= "board:${boardList}" th:object="${board}">
+            <tr class="boardTr">
+              <td th:text="*{rnum}">게시글번호</td><!-- 게시글번호로 쓸 필드 없어서 좋아요체크로가져옴 -->
+              <td class="boardTitle">
+                <span class="likeCount" th:unless= "*{likeCount == 0}" th:text="*{likeCount}">좋아요수</span>
+                <a th:href="@{/board/{groupNo}/{boardTypeCode}/{boardNo}(groupNo=*{groupNo},boardTypeCode=*{boardTypeCode},boardNo=*{boardNo})}" th:text="*{boardTitle}">제목</a>
+                <span class="commentCount" th:unless= "*{commentCount == 0}" th:text="|[*{commentCount}]|">댓글수</span></td>
+              <td th:text="*{readCount}">조회수</td>
+              <td th:text="*{boardWriteDate}">작성일</td>
+              <td th:text="*{memberNickname}">작성자</td>
+            </tr>
+          </th:block>
+          <th:block th:if= "${boardList.isEmpty}">
+            <tr>
+              <td>작성한 게시글이 없습니다.</td>
+            </tr>
+          </th:block>
+        </tbody>
+      </table>
+
+      <div id="btnDiv">
+        <div class="gotoBoard2">전체보기</div>
+        <div>작성하기</div>
+      </div>
+      <th:block th:replace= "~{common/footer}" ></th:block>
+    </section>
+
+
+    <section id="sideSec2">
+    </section>
+  </main>
+  
+  <!-- 푸터 -->
+  <th:block th:replace= "~{common/common}" ></th:block>
+  <th:block th:replace= "~{groupManage/manageGroup :: th-manageGroupFooter }" ></th:block>
+
+</body>
+</html>

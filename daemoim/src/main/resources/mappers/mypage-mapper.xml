@@ -3,4 +3,99 @@
 <mapper namespace="edu.kh.daemoim.myPage.mapper.MyPageMapper">
 
 
+	<update id="updateMember" >
+		UPDATE
+			MEMBER
+		SET
+			MEMBER_NICKNAME = #{memberNickname},
+			MEMBER_IM = #{memberIm}
+		WHERE
+			MEMBER_NO =#{memberNo}
+		</update>
+
+	<update id="withdrawal">
+		UPDATE
+			"MEMBER"
+		SET
+			MEMBER_DEL_FL = 'Y'
+		WHERE
+			MEMBER_NO = #{memberNo}
+	
+	</update>
+
+	<select id="checkNickname" resultType="_int">
+		SELECT COUNT(*)
+		FROM "MEMBER"
+		WHERE  MEMBER_NICKNAME = #{input}
+	</select>
+	
+	
+		<!-- 비밀번호 변경 -->
+	<update id="changePw">
+		UPDATE "MEMBER"
+		SET
+			MEMBER_PW = #{encPw}
+		WHERE
+			MEMBER_NO = #{memberNo}
+	</update>
+	
+	<update id="profile">
+		UPDATE "MEMBER"
+		SET
+			MEMBER_IMG = #{url}
+		WHERE
+			MEMBER_NO = #{memberNo}
+	</update>
+	
+	<select id="selectMemberNickname" resultType="myPage">
+	        SELECT MEMBER_NO AS memberNo,
+			       MEMBER_ID AS memberId,
+               	   MEMBER_NICKNAME AS memberNickname,	
+               	   MEMBER_NICKNAME AS memberNickname,
+               	   MEMBER_IMG AS memberImg       
+             FROM MEMBER     	   
+              WHERE MEMBER_NICKNAME = #{memberNickname}   
+	</select>
+	
+	  <select id="findMyGroup" resultType="MainDTO">
+	 SELECT 
+	 	g.GROUP_NO AS groupNo,
+	    g.GROUP_MAIN_IMG AS groupMainImg, 
+	    g.GROUP_NAME AS groupName, 
+	    g.GROUP_INTRODUCE AS groupIntroduce, 
+	    c.CATEGORY_NAME AS categoryName,  
+	    g.GROUP_MAX_POPULATION AS maxPopulation,
+	    (SELECT COUNT(DISTINCT mg2.MEMBER_NO)  
+	     FROM MEMBER_GROUP mg2 
+	     WHERE mg2.GROUP_NO = g.GROUP_NO 
+	     AND mg2.MEMBER_GROUP_BAN = 'N' 
+	     AND mg2.MEMBER_GROUP_DEL_FL = 'N') AS currentPopulation
+	  FROM 
+	    "GROUP" g
+	  JOIN 
+	    CATEGORY c ON g.CATEGORY_NO = c.CATEGORY_NO
+	  WHERE 
+	    g.GROUP_DEL_FL = 'N' 
+	  AND EXISTS (SELECT 1 
+	              FROM MEMBER_GROUP mg 
+	              WHERE mg.GROUP_NO = g.GROUP_NO 
+	              AND mg.MEMBER_NO = #{memberNo}
+	              AND mg.MEMBER_GROUP_DEL_FL = 'N'
+	              AND mg.MEMBER_GROUP_BAN = 'N')
+	  GROUP BY 
+	    g.GROUP_NO, g.GROUP_MAIN_IMG, g.GROUP_NAME, g.GROUP_INTRODUCE, c.CATEGORY_NAME, g.GROUP_MAX_POPULATION
+	</select>
+	
+	<update id="groupOut">
+		UPDATE
+			MEMBER_GROUP	
+		SET
+			MEMBER_GROUP_DEL_FL = 'Y'
+		WHERE
+			MEMBER_NO = #{memberNo}
+		AND
+			GROUP_NO = #{groupNo}
+	</update>
+	
+	
 </mapper>

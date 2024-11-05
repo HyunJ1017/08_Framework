@@ -97,3 +97,13 @@ document.addEventListener("DOMContentLoaded", ()=>{
     getAirQualityFunction(sidoName);
   });
 })
+
+
+
+//-------------------------------------------------------------------------
+
+document.querySelector("#selectBtn2").addEventListener("click", ()=>{
+
+  const cityName = document.querySelector("#cityName2").value;
+  location.href = location.pathname + "?sidoName=" + cityName;
+});

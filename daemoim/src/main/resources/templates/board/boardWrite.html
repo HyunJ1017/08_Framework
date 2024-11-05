@@ -7,18 +7,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title th:text="${boardName}">게시판 이름</title>
 
-	<th:block th:replace="~{common/common}"></th:block>
-
-	<link rel="stylesheet" th:href="@{/css/board/boardWrite-style.css}">
+	<link rel="stylesheet" th:href="@{/css/board/boardWrite.css}">
 </head>
 
 <body>
 	<main>
-		<th:block th:replace="~{common/header}"></th:block>
-
 		<!-- <form th:action="@{/editBoard/{boardCode}/insert(boardCode=${boardCode})}"  -->
-		<form action="insert" th:object="${board}" method="POST" class="board-write" id="boardWriteFrm"
-			enctype="multipart/form-data">
+		<form action="insert" 
+				th:object="${board}" method="POST" class="board-write" 
+				id="boardWriteFrm"
+				>
 
 			<h1 class="board-name" th:text="${boardName}">게시판 이름</h1>
 
@@ -26,57 +24,6 @@
 			<h1 class="board-title">
 				<input type="text" name="boardTitle" placeholder="제목" value="">
 			</h1>
-
-
-			<!-- 썸네일 영역 -->
-			<h5>썸네일</h5>
-			<div class="img-box">
-				<div class="boardImg thumbnail">
-					<label for="img0">
-						<img class="preview" src="">
-					</label>
-					<input type="file" name="images" class="inputImage" id="img0" accept="image/*">
-					<span class="delete-image">&times;</span>
-				</div>
-			</div>
-
-
-			<!-- 업로드 이미지 영역 -->
-			<h5>업로드 이미지</h5>
-			<div class="img-box">
-
-				<div class="boardImg">
-					<label for="img1">
-						<img class="preview" src="">
-					</label>
-					<input type="file" name="images" class="inputImage" id="img1" accept="image/*">
-					<span class="delete-image">&times;</span>
-				</div>
-
-				<div class="boardImg">
-					<label for="img2">
-						<img class="preview" src="">
-					</label>
-					<input type="file" name="images" class="inputImage" id="img2" accept="image/*">
-					<span class="delete-image">&times;</span>
-				</div>
-
-				<div class="boardImg">
-					<label for="img3">
-						<img class="preview" src="">
-					</label>
-					<input type="file" name="images" class="inputImage" id="img3" accept="image/*">
-					<span class="delete-image">&times;</span>
-				</div>
-
-				<div class="boardImg">
-					<label for="img4">
-						<img class="preview" src="">
-					</label>
-					<input type="file" name="images" class="inputImage" id="img4" accept="image/*">
-					<span class="delete-image">&times;</span>
-				</div>
-			</div>
 
 			<!-- 내용 -->
 			<div class="board-content">
@@ -94,10 +41,7 @@
 
 	</main>
 
-	<th:block th:replace="~{common/footer}"></th:block>
-
 	<script th:src="@{/js/board/boardWrite.js}"></script>
 
 </body>
-
 </html>

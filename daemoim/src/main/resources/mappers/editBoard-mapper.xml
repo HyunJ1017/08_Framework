@@ -3,5 +3,95 @@
 <mapper namespace="edu.kh.daemoim.board.mapper.EditBoardMapper">
 
 
+	<!-- 게시글 부분(제목, 내용, 작성자, 게시판 종류) DB에 추가 -->
+	<insert id="boardInsert" parameterType="Board" useGeneratedKeys="true">
+
+		<selectKey order="BEFORE" resultType="_int" keyProperty="boardNo">
+			SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
+		</selectKey>
+
+		INSERT INTO "BOARD"
+		VALUES(
+		#{boardNo},
+		#{boardTitle},
+		#{boardContent},
+		DEFAULT, DEFAULT, DEFAULT, DEFAULT,
+		#{memberNo},
+		#{boardTypeCode},
+		#{groupNo}
+		)
+	</insert>
+	
+	<!-- 여러이미지 한 번에 DB에 추가 -->
+ 	<insert id="insertUploadList">
+		INSERT INTO "BOARD_IMG"
+		<foreach collection="list" item="img" open="(" close=")" separator=" UNION ALL ">
+			SELECT
+			NEXT_BOARD_IMG_NO(),
+			#{img.boardImgPath},
+			#{img.boardImgOriginalName},
+			#{img.boardImgRename},
+			#{img.boardImgOrder},
+			#{img.boardNo}
+			FROM DUAL
+		</foreach>
+	</insert>
+	
+	<!-- 게시글 삭제 -->
+  	<update id="boardDelete">
+  		UPDATE "BOARD"
+  		SET BOARD_DEL_FL = 'Y'
+  		WHERE BOARD_NO = #{boardNo}
+  		AND MEMBER_NO = #{memberNo}
+  	</update>
+  	
+  	<!-- 게시글 부분만 수정(제목/내용) -->
+  	<update id="boardUpdate">
+  		UPDATE "BOARD"
+  		SET BOARD_TITLE = #{boardTitle},
+  			BOARD_CONTENT = #{boardContent}
+  		WHERE BOARD_TYPE_CODE = #{boardTypeCode}
+  		AND BOARD_NO = #{boardNo}
+  		AND MEMBER_NO = #{memberNo}
+  		AND GROUP_NO = #{groupNo}
+  	</update>
+  	
+  	<!-- 기존에 존재하던 이미지 DB에서 삭제 -->
+  	<delete id="deleteImage">
+  		DELETE FROM "BOARD_IMG"
+  		WHERE BOARD_NO = #{boardNo}
+  		AND BOARD_IMG_ORDER IN(${orders})
+  	</delete>
+  	
+  	<!-- 이미지 1행 수정 -->
+  	<update id="updateImage">
+  		UPDATE "BOARD_IMG"
+  		SET BOARD_IMG_ORIGINAL_NAME = #{boardImgOriginalName},
+  			BOARD_IMG_RENAME = #{boardImgRename}
+  		WHERE BOARD_NO = #{boardNo}
+  		AND BOARD_IMG_ORDER = #{boardImgOrder}
+  	</update>
+  	
+  	<!-- 새로운 이미지 1행 삽입 -->
+  	<insert id="insertImage">
+  		INSERT INTO "BOARD_IMG"
+  		VALUES(SEQ_BOARD_IMG_NO.NEXTVAL,
+  			#{boardImgPath},
+  			#{boardImgOriginalName},
+  			#{boardImgRename},
+  			#{boardImgOrder},
+  			#{boardNo})
+  	</insert>
+
+  <!-- 특정 게시글의 이미지를 order 순서로 조회 -->
+  <select id="selectImageList" resultType="BoardImg">
+  	SELECT BOARD_IMG_ORDER
+  	FROM 
+  		BOARD_IMG
+  	WHERE 
+  		BOARD_NO = #{boardNo}
+  	ORDER BY 
+  		BOARD_IMG_ORDER ASC
+  </select>
 
 </mapper>

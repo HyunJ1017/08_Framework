@@ -1,12 +1,134 @@
-<footer id="footer">
-  <section class="footer-copyright">
-    <nav>
-      <h4>Copyright &copy; 2024. All rights reserved by Daemoim.</h4>
-    
-      <a href="#">기업정보</a> | 
-      <a href="#">이용약관</a> | 
-      <a href="#">개인정보처리방침</a> | 
-      <a href="#">고객센터</a>
-    </nav>
-  </section>
+<link rel="stylesheet" href="/css/main-style.css/">
+<footer id="footer" class="foot_damoim"  style="font-family: 'NEXON Lv1 Gothic OTF';;">
+    <div class="footer_copyright">
+        <div class="inner_copyright">
+            <div class="info_copyright">
+              <br>
+              <a href="/policy#company-info" class="info_svc" style="color: black; text-decoration: none;">기업정보&nbsp;&nbsp;</a>
+              <a href="/policy#terms" class="info_svc" style="color: black; text-decoration: none;">이용약관&nbsp;&nbsp;</a>
+              <a href="/policy#privacy" class="info_svc" style="color: black; text-decoration: none;">개인정보 처리방침&nbsp;&nbsp;</a>
+              <a href="/policy#location" class="info_svc" style="color: black; text-decoration: none;">위치정보 이용약관&nbsp;&nbsp;</a>
+              <br>
+              <br>
+              <br>
+            
+              <small class="txt_copyright" >
+                  Copyright © <a href="/policy" class="link_daemoim" style="color: black; text-decoration: none;">Daemoim Corp.</a> All rights reserved. <br><br>
+              </small> 
+              <br>
+            </div>
+        </div>
+    </div>
 </footer>
+
+<link rel="stylesheet" href="/css/chat.css">
+
+<!-- 채팅 팝업 전체화면 display-none-->
+<section class="chat-boxSec display-none">
+</section>
+
+<!-- 채팅 바디 박스 -->
+<section class="chat-body display-none">
+  <div class="chat-topBody">
+    <div class="chat-groupName">
+      <!-- 모임명 -->
+      <span class="chat-unReaded"><!-- 안읽은숫자 --></span>
+    </div>
+  </div>
+  <div class="chat-mainBody">
+    <div class="chat-nickDiv">
+      <ul>
+        <li>
+          <!-- 닉네임 태그 입니다 -->
+        </li>
+      </ul>
+    </div>
+
+    <div class="chat-contentDiv">
+      <ul>
+
+        <li class="chat-contentOthers">
+          <!-- 컨탠츠 태그 입니다 -->
+        </li>
+        <li class="chat-contentSelf">
+          <!-- 컨탠츠 태그 입니다 -->
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+  <div class="chat-footBody">
+    <form action="#" id="chat-form"><textarea name="chatContent" id="chat-textarea"></textarea><button>입력</button></form>
+  </div>
+</section>
+
+
+<!-- 채팅 아이콘 off-->
+<section  class="chat-offBtn display-none">
+  <i class="fa-solid fa-envelope-open-text" style="color: #74C0FC;"></i>
+</section>
+
+<!-- 채팅 아이콘 on-->
+<section class="chat-onBtn display-none">
+  <i class="fa-solid fa-square-envelope" style="color: #74C0FC;"></i>
+  <span class="chat-unReaded"><!-- 안읽은 메시지갯수 --></span>
+</section>
+
+<!-- alert -->
+<section class="msg-body mc-body  display-none">
+  <section>
+    <section class="msg-head">
+      <div class="msg-logo">
+        <p>D</p><p>a</p><p>e</p><p>m</p><p>o</p><p>i</p><p>m</p>
+      </div>
+      <div><i id="msg-closeBtn" class="fa-solid fa-xmark" style="color: #ff6600;"></i></div>
+    </section>
+    <section class="msg-main">
+      <pre id="msg-content"></pre>
+    </section>
+    <section class="msg-foot">
+      <div></div>
+      <div class="msg-logo">
+        <p>D</p><p>a</p><p>e</p><p>m</p><p>o</p><p>i</p><p>m</p>
+      </div>
+    </section>
+  </section>
+</section>
+
+<!-- confirm -->
+<section class="cnf-body mc-body display-none">
+  <section>
+    <section class="msg-head">
+      <div class="msg-logo">
+        <p>D</p><p>e</p><p>a</p><p>m</p><p>o</p><p>i</p><p>m</p>
+      </div>
+      <div></div>
+    </section>
+    <section class="msg-main">
+      <pre id="cnf-content"></pre>
+      <div class="cnf-btnBox">
+        <div id="cnf-yBtn">예</div>
+        <div id="cnf-nBtn">아니오</div>
+      </div>
+    </section>
+    <section class="msg-foot">
+      <div></div>
+      <div class="msg-logo">
+        <p>D</p><p>e</p><p>a</p><p>m</p><p>o</p><p>i</p><p>m</p>
+      </div>
+    </section>
+  </section>
+</section>
+
+<script th:inline="javascript">
+  const chatLoginCheck = /*[[${session.loginMember} ? true : false]]*/ false;
+  const chatLoginMemberNo = /*[[${session.loginMember?.memberNo}]]*/ "로그인한 회원 번호";
+  const messageCheck = /*[[${message} ? true : false]]*/ false;
+  const messageContent = /*[[${message}]]*/ "메시지내용";
+  const sessionMessage = /*[[${session.message}]]*/ "";
+
+</script>
+<script src="https://kit.fontawesome.com/8695e357e4.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+<script src="/js/footer.js"></script>

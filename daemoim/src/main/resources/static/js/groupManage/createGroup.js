@@ -4,7 +4,6 @@ const createConfirm = {
   "groupName"      : false,
   "groupIntroduce" : false,
   "category"       : false,
-  "categoryList"   : false,
   "groupLimitAge"  : true // 초기값이 '제한없음'
 };
 
@@ -20,9 +19,11 @@ const groupName = document.querySelector("#groupName");
 // 모임 이름 유효성검사 메세지 표시
 const nameMessage = document.querySelector("#groupNameMessage");
 const nameMessageConfirm = {
-  "nomal" : "사용할 모임명을 입력 해 주세요",
+  "nomal"    : "사용할 모임명을 입력 해 주세요",
   "shortage" : "3글자 이상의 이름을 사용해 주십시오.",
-  "overlap" : "동일한 이름을 이미 사용중입니다.",
+  "tooLong"  : "최대 500자까지 입력이 가능합니다.",
+  "rules"    : "한글, 알파벳, 숫자, 띄어쓰기 만 입력 가능 합니다.",
+  "overlap"  : "동일한 이름을 이미 사용중입니다.",
   "statusOk" : "사용 가능한 이름 입니다."
 };
 
@@ -51,7 +52,31 @@ groupName.addEventListener("input", () => {
     createConfirm.groupName = false;
     return;
   }
+
+  // 500글자 넘을 때
+  if(inputName.length > 500){
+    nameMessage.innerText = "";
+    nameMessage.innerText = nameMessageConfirm.tooLong;
+    countName.classList.add("red");
+    nameMessage.classList.add("red");
+    nameMessage.classList.remove("green");
+    detailConfirm.groupName = false;
+    return;
+  }
   
+    
+  // 입력한거 확인
+  const pattern = /^[가-힣a-zA-Z0-9\s]+$/;
+  if(pattern.test(inputName) === false){
+    nameMessage.innerText = "";
+    nameMessage.innerText = nameMessageConfirm.rules;
+    countName.classList.add("red");
+    nameMessage.classList.add("red");
+    nameMessage.classList.remove("green");
+    detailConfirm.groupName = false;
+    return;
+  }
+
   // 중복되는 이름일때
   fetch("groupNameCheck?inputName=" + inputName)
   .then(response=>{
@@ -154,7 +179,7 @@ imgInput.addEventListener("change", e => {
 
   // 업로드한 이미지 크기 확인
   if(img?.size > 1024*1024*1){
-    alert("10MB 이하의 이미지를 선택해 주세요");
+    alertM("10MB 이하의 이미지를 선택해 주세요");
     flag = true;
   }
 
@@ -214,61 +239,85 @@ const returnImig = () => {
 
 /* 카테고리 */
 
+
+const CategoryListTr = document.querySelector(".CategoryListTr");
+const categoryText = document.querySelector(".categoryText");
 // 카테고리 라디오버튼 아무거나 선택하면 true
 
 
-
-const categoryInputArr = document.querySelectorAll('[name="categoryNo"]');
-const categoryListView = document.querySelector("#categoryListView");
-const categoryText = document.querySelector("#categoryText");
-
-for(let category of categoryInputArr){
-
-  category.addEventListener("click", ()=>{
-    createConfirm.category = true;
-
-    /* 카테고리 리스트 불러오기 */
-    const categoryNo = category.value;
-
-    // console.log(categoryNo);
-    fetch("getCategoryList?categoryNo=" + categoryNo)
-    .then(response => {
-      if(response.ok)return response.json();
-      throw new Error("카테고리 불러오기 오류")
-    })
-    .then(categoryList => {
-      console.log("가져온 목록 수 : " + categoryList.length);
-
-      if(categoryList.length === 0) return;
-
-      categoryText.innerHTML='<div>카테고리 리스트 선택</div>';
-      categoryListView.innerHTML='';
-
-      categoryList.forEach( e => {
-        const divbox = document.createElement("div");
-        const label = document.createElement("label");
-        label.innerText = e.categoryListName;
-        const input = document.createElement("input");
-        input.type = 'radio';
-        input.name = 'categoryListNo';
-        input.value = e.categoryListNo;
-        input.id = e.categoryListNo;
-        input.addEventListener("click", ()=>{createConfirm.categoryList = true});
-        label.htmlFor = e.categoryListNo;
-        divbox.append(label, input);
-        categoryListView.append(divbox);
-      })
-
-    })
-    .catch( err => console.error(err));
-
-  });
-
+// 체크된 카테고리 라디오의 값 얻어오기
+const checkedCategory = () => {
+  // name="categoryNo"인 라디오 버튼 중에서 체크된 버튼 선택
+  const checkedRadio = document.querySelector('input[name="categoryNo"]:checked');
+  
+  // 체크된 버튼이 있으면 그 value 값을 반환, 없으면 null 반환
+  if (checkedRadio) {
+    return checkedRadio.value;
+  } else {
+    return null; // 아무 것도 체크되지 않은 경우
+  }
 }
 
+// 체크된 카테고리 리스트 라디오의 값 얻어오기(제출전확인용)
+const checkedCategoryList = () => {
+  // name="categoryNo"인 라디오 버튼 중에서 체크된 버튼 선택
+  const checkedRadio = document.querySelector('input[name="categoryListNo"]:checked');
+  
+  // 체크된 버튼이 있으면 그 value 값을 반환, 없으면 null 반환
+  if (checkedRadio) {
+    return checkedRadio.value;
+  } else {
+    return null; // 아무 것도 체크되지 않은 경우
+  }
+}
 
+// CategoryNo을 넘겨받아 비동기로 카테고리리스트의 화면을 최신화 하기
+const getCategoryList = (categoryNo)=> {
 
+  fetch("getCategoryList?categoryNo=" + categoryNo)
+  .then(response => {
+    if(response.ok)return response.json();
+    throw new Error("카테고리 불러오기 오류")
+  })
+  .then(categoryList => {
 
+    if(categoryList.length === 0) return;
+
+    categoryText.innerText = '작은 카테고리';
+    CategoryListTr.innerHTML = '';
+
+    categoryList.forEach( e => {
+      const div = document.createElement("div");
+      const label = document.createElement("label");
+      label.innerText = e.categoryListName;
+      label.classList.add("categoryLabel");
+      const input = document.createElement("input");
+      input.type = 'radio';
+      input.name = 'categoryListNo';
+      input.value = e.categoryListNo;
+      input.id = 'categoryList' + e.categoryListNo;
+      input.classList.add("categoryListRadio");
+      //input.addEventListener("click", ()=>{createConfirm.categoryList = true});
+      label.htmlFor = 'categoryList' + e.categoryListNo;
+      div.append(input, label);
+      CategoryListTr.append(div);
+    })
+
+  })
+  .catch( err => console.error(err));
+};
+
+// 카테고리 변경시 카테고리 리스트 불러오기
+const radioArr = document.querySelectorAll(".categoryRadio");
+radioArr.forEach(e=>{
+  e.addEventListener("change", e=>{
+
+    // alertM("e.value : " + e.target.value + ", e.value.type" + typeof Number( e.target.value ));
+
+    getCategoryList( Number( e.target.value ) );
+    createConfirm.category = true;
+  })
+});
 
 /********************************************************************** */
 /********************************************************************** */
@@ -464,32 +513,32 @@ submitGroupCreate.addEventListener("submit", e => {
   //e.preventDefault();
 
   if(!createConfirm.groupName ){
-    alert("모임명이 잘못 입력되었습니다.");
+    alertM("모임명이 잘못 입력되었습니다.");
     e.preventDefault();
     return;
   }
   if(!createConfirm.groupIntroduce ){
-    alert("모임 소개글을 입력해 주세요.");
+    alertM("모임 소개글을 입력해 주세요.");
     e.preventDefault();
     return;
   }
   if(!createConfirm.category ){
-    alert("카테고리를 선택해 주셔야 합니다.");
+    alertM("카테고리를 선택해 주셔야 합니다.");
     e.preventDefault();
     return;
   }
-  if(!createConfirm.categoryList ){
-    alert("세부카테고리를 선택해 주셔야 합니다.");
+  if(checkedCategoryList() === null ){
+    alertM("세부카테고리를 선택해 주셔야 합니다.");
     e.preventDefault();
     return;
   }
 /*   if(!createConfirm.groupLimitAge ){
-    alert("옳바른 나이제한을 입력해 주세요.");
+    alertM("옳바른 나이제한을 입력해 주세요.");
     e.preventDefault();
     return;
   } */
 
-  alert("모임이 생성되었습니다.");
+  alertM("모임이 생성되었습니다.");
 
 });
 

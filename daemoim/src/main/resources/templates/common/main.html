@@ -1,139 +1,328 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title th:text="#{app.name}">messages.properties 값 출력</title>
 
   <link rel="stylesheet" href="/css/main-style.css/">
-  
-  <!-- templates/common/common.html 조각으로 추가 -->
+
   <th:block th:replace="~{common/common}"></th:block>
 </head>
-<body>
 
+<body>
+  <th:block th:replace="~{common/header}"></th:block>
   <main class="main">
 
-    <!-- common/header.html 을 조각으로 추가 -->
-    <th:block th:replace="~{common/header}"></th:block>
 
-    <section class="login-section">
-      <form action="/signin">
-        <fieldset>
-          <div class="login-box">
-            <button>로그인</button>
-            <hr>
-            <article>
-              <a href="findIdPw">아이디 비밀번호 찾기</a>
-              <span> | </span>
-              <a href="tacou">회원가입</a>
-            </article>
+    <!-- 세션 값이 있는지 확인
+    <p th:text="${loginMember != null ? '로그인 상태입니다' : '로그인 상태가 아닙니다'}"></p>
+
+    세션에 저장된 loginMember의 값 출력 (디버그용)
+    <p th:text="${loginMember != null ? loginMember.memberId : '로그인 상태가 아님'}"></p> -->
+
+    <!-- 로그인 상태가 아닐 때 -->
+    <th:block th:if="${loginMember == null}">
+      <!-- 로그인 섹션 -->
+      <section class="login-section">
+        <form action="/signin">
+          <fieldset>
+            <div class="login-box">
+              <div class="wrapLoginButton">
+                <button class="mainLoginButton" style="font-family: 'NEXON Lv1 Gothic OTF';">로그인</button>
+              </div>
+              <article class="pwjoin">
+                <a href="findIdPage" class="pwjoin-button" style="color: black; text-decoration: none;">아이디 찾기</a>
+                <a href="findPwPage" class="pwjoin-button" style="color: black; text-decoration: none;">비밀번호 찾기</a>
+                <a href="tacou" class="pwjoin-button" style="color: black; text-decoration: none;">회원가입</a>
+              </article>
+            </div>
+
+          </fieldset>
+        </form>
+      </section>
+
+      <!-- 추천 모임 목록 -->
+
+      <th:block th:if="${#lists.isEmpty(recommendedGroups)}">
+        <p>추천 모임이 없습니다.</p>
+      </th:block>
+      <th:block th:if="${recommendedGroups != null && !#lists.isEmpty(recommendedGroups)}">
+        <h4 class="centered-title" style="color: rgb(28, 138, 106);"> &nbsp;&nbsp; ★ 추천 모임</h4>
+        <h1 class="centered-title" style="color: black;">" 마음으로 이어진 모임 " <br><br> </h1>
+
+        </h1>
+
+        <section class="activity-section">
+          <div class="category-container">
+            <div class="category-box" th:each="group : ${recommendedGroups}">
+              <div class="icon">
+                <img th:src="${group.groupMainImg != null ? group.groupMainImg : '/images/default.png'}" />
+              </div>
+              <div class="details">
+                <div class="location">[[${group.categoryName}]]
+                  <span class="recommendBtn">
+                    추천
+                  </span>
+                </div>
+
+                <a th:href="@{/groupMain/{groupNo}(groupNo=${group.groupNo})}" class="categoryGroup-name"
+                  style="color: black; text-decoration: none;">
+                  [[${group.groupName}]]
+                </a>
+                <div class="group-name">[[${group.groupIntroduce}]]</div>
+                <div class="participants">
+                  <i class="fa-solid fa-users"> &nbsp;</i>
+                  <div>
+                    [[${group.currentPopulation}]] / [[${group.maxPopulation}]]
+                  </div>
+                </div>
+
+                <div class="profile-images">
+                  <div th:each="member : ${group.members}">
+                    <img th:src="${member.memberImg != null ? member.memberImg : '/images/default-profile.png'}"
+                      alt="프로필 이미지" class="profile-image" onerror="this.src='/images/default-profile.png'">
+                  </div>
+                </div>
+
+              </div>
+            </div>
           </div>
-        </fieldset>
-      </form>
+        </section>
+      </th:block>
+
+
+
+      <!-- 최근 채팅 모임 목록 -->
+      <th:block th:if="${recentChatGroups != null && !#lists.isEmpty(recentChatGroups)}">
+        <h4 class="centered-title" style="color: #1082fd;"><br><br><br><br><br><br><br><br><br> &nbsp;&nbsp; 💬 최근 채팅 모임
+        </h4>
+        <div class="centered-title" style="text-align: center; color: black;">
+          <h1 style="display: inline; font-size: 2em;">" 대</h1>
+          <h3 style="display: inline;">화로</h3>
+        </div>
+        <div class="centered-title" style="text-align: center; color: black;">
+          &nbsp;&nbsp;<h1 style="display: inline; font-size: 2em;">모</h1>
+          <h3 style="display: inline;">두 함께하는</h3>
+        </div>
+        <div class="centered-title" style="text-align: center; color: black;">
+          &nbsp;&nbsp;<h3 style="display: inline;">모</h3>
+          <h1 style="display: inline; font-size: 2em;">임 "</h1> <br><br>
+
+        </div>
+        <section class="activity-section">
+          <div class="category-container">
+            <div class="category-box" th:each="group : ${recentChatGroups}">
+              <div class="icon">
+                <img th:src="${group.groupMainImg != null ? group.groupMainImg : '/images/default.png'}" />
+              </div>
+              <div class="details">
+                <div class="location">[[${group.categoryName}]]
+                  <span class="lastChatBtn"> [[${recentChatTimes[group.groupNo]}]] 마지막 채팅</span>
+                </div>
+
+                <a th:href="@{/groupMain/{groupNo}(groupNo=${group.groupNo})}" class="categoryGroup-name"
+                  style="color: black; text-decoration: none;">
+                  [[${group.groupName}]]
+                </a>
+                <div class="group-name">[[${group.groupIntroduce}]]</div>
+                <div class="participants">
+                  <i class="fa-solid fa-users"> &nbsp;</i>
+                  <div>
+                    [[${group.currentPopulation}]] / [[${group.maxPopulation}]]
+                  </div>
+                </div>
+                <div class="profile-images">
+                  <div th:each="member : ${group.members}">
+                    <img th:src="${member.memberImg != null ? member.memberImg : '/images/default-profile.png'}"
+                      alt="프로필 이미지" class="profile-image" onerror="this.src='/images/default-profile.png'">
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </section>
+      </th:block>
+    </th:block>
+
+
+
+    <!-- 로그인 상태가 아닐때 모임 목록 -->
+    <th:block th:if="${loginMember != null}">
+      <th:block th:unless="${joinGroups != null && !#lists.isEmpty(joinGroups)}">
+        <h2 style="margin-top: 130px; margin-left: 44%; margin-bottom: 100px; font-family: 'NEXON Lv1 Gothic OTF';">가입한
+          모임이 없습니다.</h2>
+        <th:block th:if="${#lists.isEmpty(recommendedGroups)}">
+          <p>추천 모임이 없습니다.</p>
+        </th:block>
+        <th:block th:if="${recommendedGroups != null && !#lists.isEmpty(recommendedGroups)}">
+          <h4 class="centered-title" style="color: rgb(28, 138, 106);"> &nbsp;&nbsp; ★ 추천 모임</h4>
+          <h1 class="centered-title" style="color: black;">" 마음으로 이어진 모임 " <br><br> </h1>
+
+          </h1>
+
+          <section class="activity-section">
+            <div class="category-container">
+              <div class="category-box" th:each="group : ${recommendedGroups}">
+                <div class="icon">
+                  <img th:src="${group.groupMainImg != null ? group.groupMainImg : '/images/default.png'}" />
+                </div>
+                <div class="details">
+                  <div class="location">[[${group.categoryName}]]
+                    <span class="recommendBtn">
+                      추천
+                    </span>
+                  </div>
+
+                  <a th:href="@{/groupMain/{groupNo}(groupNo=${group.groupNo})}" class="categoryGroup-name"
+                    style="color: black; text-decoration: none;">
+                    [[${group.groupName}]]
+                  </a>
+                  <div class="group-name">[[${group.groupIntroduce}]]</div>
+                  <div class="participants">
+                    <i class="fa-solid fa-users"> &nbsp;</i>
+                    <div>
+                      [[${group.currentPopulation}]] / [[${group.maxPopulation}]]
+                    </div>
+                  </div>
+
+                  <div class="profile-images">
+                    <div th:each="member : ${group.members}">
+                      <img th:src="${member.memberImg != null ? member.memberImg : '/images/default-profile.png'}"
+                        alt="프로필 이미지" class="profile-image" onerror="this.src='/images/default-profile.png'">
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </section>
+        </th:block>
+
+
+
+        <!-- 최근 채팅 모임 목록 -->
+        <th:block th:if="${recentChatGroups != null && !#lists.isEmpty(recentChatGroups)}">
+          <h4 class="centered-title" style="color: #1082fd;"><br><br><br><br><br><br><br><br><br> &nbsp;&nbsp; 💬 최근 채팅
+            모임</h4>
+          <div class="centered-title" style="text-align: center; color: black;">
+            <h1 style="display: inline; font-size: 2em;">" 대</h1>
+            <h3 style="display: inline;">화로</h3>
+          </div>
+          <div class="centered-title" style="text-align: center; color: black;">
+            &nbsp;&nbsp;<h1 style="display: inline; font-size: 2em;">모</h1>
+            <h3 style="display: inline;">두 함께하는</h3>
+          </div>
+          <div class="centered-title" style="text-align: center; color: black;">
+            &nbsp;&nbsp;<h3 style="display: inline;">모</h3>
+            <h1 style="display: inline; font-size: 2em;">임 "</h1> <br><br>
+
+          </div>
+          <section class="activity-section">
+            <div class="category-container">
+              <div class="category-box" th:each="group : ${recentChatGroups}">
+                <div class="icon">
+                  <img th:src="${group.groupMainImg != null ? group.groupMainImg : '/images/default.png'}" />
+                </div>
+                <div class="details">
+                  <div class="location">[[${group.categoryName}]]
+                    <span class="lastChatBtn"> [[${recentChatTimes[group.groupNo]}]] 마지막 채팅</span>
+                  </div>
+
+                  <a th:href="@{/groupMain/{groupNo}(groupNo=${group.groupNo})}" class="categoryGroup-name"
+                    style="color: black; text-decoration: none;">
+                    [[${group.groupName}]]
+                  </a>
+                  <div class="group-name">[[${group.groupIntroduce}]]</div>
+                  <div class="participants">
+                    <i class="fa-solid fa-users"> &nbsp;</i>
+                    <div>
+                      [[${group.currentPopulation}]] / [[${group.maxPopulation}]]
+                    </div>
+                  </div>
+                  <div class="profile-images">
+                    <div th:each="member : ${group.members}">
+                      <img th:src="${member.memberImg != null ? member.memberImg : '/images/default-profile.png'}"
+                        alt="프로필 이미지" class="profile-image" onerror="this.src='/images/default-profile.png'">
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </section>
+        </th:block>
+      </th:block>
+    </th:block>
+
+
+    <!-- 로그인 상태일 때 내가 가입한 모임 목록 -->
+    <th:block th:if="${joinGroups != null && !#lists.isEmpty(joinGroups)}">
+      <h4 class="centered-title" style="color: rgb(244, 54, 48);"><br><br><br> &nbsp;&nbsp; ♥ 내가 가입한 모임</h4>
+      <h1 class="centered-title" style="color: black;">" 마음으로 이어진 모임 " <br><br> </h1>
+      <section class="activity-section">
+        <div class="category-container">
+          <div class="category-box" th:each="group : ${joinGroups}">
+            <div class="icon">
+              <img th:src="${group.groupMainImg != null ? group.groupMainImg : '/images/default.png'}" />
+            </div>
+            <div class="details">
+              <div class="location">[[${group.categoryName}]]</div>
+              <a th:href="@{/groupMain/{groupNo}(groupNo=${group.groupNo})}" class="categoryGroup-name"
+                style="color: black; text-decoration: none;">
+                [[${group.groupName}]]
+              </a>
+              <div class="group-name">[[${group.groupIntroduce}]]</div>
+              <div class="participants">
+                <i class="fa-solid fa-users"> &nbsp;</i>
+                <div>
+                  [[${group.currentPopulation}]] / [[${group.maxPopulation}]]
+                </div>
+              </div>
+              <div class="profile-images">
+                <img th:src="${member.memberImg != null ? member.memberImg : '/images/default-profile.png'}"
+                  alt="프로필 이미지" class="profile-image" th:each="member : ${group.members}" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </th:block>
+    </th:block>
+    <section>
+      <img src="" alt="">
     </section>
 
-    <section class="popup-section">
-      <div class="popup-overlay" id="popupOverlay"></div>
-      <!-- 팝업창  매번 x 눌러야해서 주석처리 해야함-->
-      <!-- <div class="popup" id="popup">
-        <button class="close-btn" id="closePopup">X</button>
-        <h2>공지사항</h2>
-        <p>팝업창 내용</p>
-        <img src="../../static/images/group.png" alt="팝업 이미지" style="width:100%;">
-      </div> -->
-    </section>
+    <!--    <section class="scroll-top">
+      <button id="scrollTopBtn"><i class="fa-solid fa-circle-chevron-up"></i></button>
+    </section> -->
+    <br>
+    <br>
+    <!-- <script>
+    document.getElementById('scrollTopBtn').addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  </script> -->
 
-    <!-- 로그인 전 추천 모임 / 로그인 후 본인 모임 추후 수정예정 -->
-    <section class="group-section">
-      <div class="group-box">
-        <section class="groupMainImage">
-          <img src="/images/group.png" alt="모임 대표 사진" style="width: 100px" height="50px">
-        </section>
-        <section class="group-info">
-          <a href="/groupMain">모임 이름</a>
-          <h1>모임 소개</h1>
-          <br>
-          <a href="#">모임 카테고리</a> <a href="#">위치</a><span> | </span>  <a href="#">인원수</a>
-        </section>
-      </div>
-
-
-      <div class="group-box">
-        <section class="groupMainImage">
-          <img src="/images/group.png" alt="모임 대표 사진" style="width: 100px" height="50px">
-        </section>
-        <section class="group-info">
-          <a href="/groupMain">모임 이름</a>
-          <h1>모임 소개</h1>
-          <br>
-          <a href="#">모임 카테고리</a> <a href="#">위치</a><span> | </span>  <a href="#">인원수</a>
-        </section>
-      </div>
-
-      <div class="group-box">
-        <section class="groupMainImage">
-          <img src="/images/group.png" alt="모임 대표 사진" style="width: 100px" height="50px">
-        </section>
-        <section class="group-info">
-          <a href="/groupMain">모임 이름</a>
-          <h1>모임 소개</h1>
-          <br>
-          <a href="#">모임 카테고리</a> <a href="#">위치</a><span> | </span>  <a href="#">인원수</a>
-        </section>
-      </div>
-
-      <div class="group-box">
-        <section class="groupMainImage">
-          <img src="/images/group.png" alt="모임 대표 사진" style="width: 100px" height="50px">
-        </section>
-        <section class="group-info">
-          <a href="/groupMain">모임 이름</a>
-          <h1>모임 소개</h1>
-          <br>
-          <a href="#">모임 카테고리</a> <a href="#">위치</a><span> | </span>  <a href="#">인원수</a>
-        </section>
-      </div>
-
-      <div class="group-box">
-        <section class="groupMainImage">
-          <img src="/images/group.png" alt="모임 대표 사진" style="width: 100px" height="50px">
-        </section>
-        <section class="group-info">
-          <a href="/groupMain">모임 이름</a>
-          <h1>모임 소개</h1>
-          <br>
-          <a href="#">모임 카테고리</a> <a href="#">위치</a><span> | </span>  <a href="#">인원수</a>
-        </section>
-      </div>
-
-      <div class="group-box">
-        <section class="groupMainImage">
-          <img src="/images/group.png" alt="모임 대표 사진" style="width: 100px" height="50px">
-        </section>
-        <section class="group-info">
-          <a href="/groupMain">모임 이름</a>
-          <h1>모임 소개</h1>
-          <br>
-          <a href="#">모임 카테고리</a> <a href="#">위치</a><span> | </span>  <a href="#">인원수</a>
-        </section>
-      </div>
-
-      
-    </section>
-
-    <section class="scroll-top">
-      <button>^</button>
-    </section>
-
+    <th:block th:replace="~{common/footer}"></th:block>
   </main>
-  
-  <!-- common/footer.html 추가 -->
-  <th:block th:replace="~{common/footer}"></th:block>
 
 
 
-  <script src="../static/js/main.js"></script>
+  <script src="/js/main.js"></script>
 
 </body>
+
 </html>
+
+
+
+
+<!-- main.html 수정 -->

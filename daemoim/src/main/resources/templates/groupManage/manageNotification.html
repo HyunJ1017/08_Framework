@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>대모임</title>
+  <link rel="stylesheet" href="/css/groupManage/manageGroup.css">
+</head>
+<body>
+
+  <!-- 해더 -->
+  <th:block th:replace= "~{common/header}" ></th:block>
+  
+
+  <main class="space-around">
+
+    <!-- 사이드메뉴 -->
+    <th:block th:replace= "~{groupManage/manageGroup :: th-lfSide }" ></th:block>
+
+
+    <section class="mainSec">
+      <h1><th:block th:text="${group.groupName}"></th:block> 알림</h1>
+      <section>
+        <div>알림내용</div>
+        <section id="noti-form">
+          <textarea name="notificationContent"></textarea>
+          <section class="noti-table">
+
+            <section class="noti-thead">
+              <article class="noti-selectAll">
+                <label for="selectAll"><input type="checkbox" id="selectAll">전체선택</label>
+                <select id="selectSchedule">
+                  <option value="0">일정선택</option>
+                  <th:block th:if="${scheduleList}" th:each= "schedule:${scheduleList}" th:object="${schedule}">
+                    <option value="1" th:text="|*{scheduleDate}/location|">일정내용</option>
+                  </th:block>
+                  <th:block th:unless= "${scheduleList}">
+                    <option value="0">현제 예정된 일정이 없습니다.</option>
+
+                  </th:block>
+                </select>
+              </article>
+              <article class="btnBox">
+                <button id="sendBtn">보내기</button>
+              </article>
+            </section>
+
+            <section class="noti-tbody">
+              <th:block th:if= "${memberList}" th:each= "member:${memberList}" th:object="${member}">
+                <article class="noti-bodyBoxs">
+                  <div>
+                    <input type="checkbox" name="receiveMemberNo" th:value="*{memberNo}">
+                  </div>
+                  <div th:text="*{memberNickname}"></div>
+                </article>
+              </th:block>
+              <th:block th:unless= "${memberList}">
+                <article class="noti-bodyBoxs">
+                  <div>조회된 회원이 없습니다.</div>
+                </article>
+              </th:block>
+              
+            </section>
+
+          </section>
+
+        </section>
+        <th:block th:replace= "~{common/footer}" ></th:block>
+      </section>
+      
+    </section>
+
+
+    <section id="sideSec2">
+    </section>
+  </main>
+  
+  <!-- 푸터 -->
+  <th:block th:replace= "~{common/common}" ></th:block>
+  <th:block th:replace= "~{groupManage/manageGroup :: th-manageGroupFooter }" ></th:block>
+
+</body>
+</html>

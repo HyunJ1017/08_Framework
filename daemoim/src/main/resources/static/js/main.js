@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", () => {
   // 팝업창
   const popup = document.getElementById("popup");
   const popupOverlay = document.getElementById("popupOverlay");
@@ -7,35 +7,51 @@ document.addEventListener("DOMContentLoaded", function() {
   if (popup && popupOverlay) {
     popup.classList.add("active");
     popupOverlay.classList.add("active");
-  
+
     // 팝업 닫기 버튼 클릭 시 팝업 닫기
-    closePopupBtn.onclick = function() {
+    closePopupBtn.onclick = () => {
       popup.classList.remove("active");
       popupOverlay.classList.remove("active");
-    }
+    };
   }
 
   // 로그인 버튼 클릭 시
   const loginBtn = document.getElementById("login-btn");
   if (loginBtn) {
-    loginBtn.addEventListener("click", function() {
+    loginBtn.addEventListener("click", () => {
       const loginWrapper = document.querySelector(".login-wrapper");
-
-      // 로그인 버튼 -> 알림과 마이페이지 버튼으로 변경
-      loginWrapper.innerHTML = `
-        <button id="alert-btn">알림</button>
-        <button id="mypage-btn">마이페이지</button>
-      `;
 
       // 알림 버튼 클릭 시
       const alertBtn = document.getElementById("alert-btn");
-      alertBtn.addEventListener("click", function() {
-      });
+      if (alertBtn) {
+        alertBtn.addEventListener("click", () => {
+          // 알림 기능 로직 추가
+        });
+      }
 
       // 마이페이지 버튼 클릭 시
       const mypageBtn = document.getElementById("mypage-btn");
-      mypageBtn.addEventListener("click", function() {
-      });
+      if (mypageBtn) {
+        mypageBtn.addEventListener("click", () => {
+          // 마이페이지 이동 로직 추가
+        });
+      }
     });
   }
+
+
+
+ // 카테고리 박스 클릭 시 페이지 이동
+ document.querySelectorAll(".category-box").forEach(box => {
+   box.addEventListener("click", (event) => {
+     if (event.target.tagName === "A") {
+       return;
+     }
+     const link = box.querySelector("a.categoryGroup-name");
+     if (link) {
+       window.location.href = link.href;
+     }
+   });
+ });
 });
+
