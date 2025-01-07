@@ -62,7 +62,7 @@ js파일은 하나만 만들어서 html파일에 다 가져다 쓰는데
 
 myPage.js:30 Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')
 여러 페이지에서 다쓰니까 나는 오류
-
+  
 [해결1 : 있을때만 만들으라고 함]
 if(document.querySelector("#findAddressBtn") !== null){ ... }
 
